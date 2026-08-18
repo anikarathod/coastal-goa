@@ -1,7 +1,6 @@
 import {
   FaUser,
   FaCalendarAlt,
-  FaUsers,
   FaSuitcase,
   FaConciergeBell,
   FaWhatsapp,
@@ -20,10 +19,10 @@ const BookingSummary = ({
   } = bookingData;
 
   return (
-    <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-lg border">
+    <div className="rounded-2xl border bg-white p-4 md:p-6 shadow-lg lg:sticky lg:top-24">
 
       {/* Header */}
-      <h2 className="mb-6 text-2xl font-bold text-gray-800">
+      <h2 className="mb-4 md:mb-6 text-xl md:text-2xl font-bold text-gray-800">
         Booking Summary
       </h2>
 
@@ -36,27 +35,10 @@ const BookingSummary = ({
           </h3>
         </div>
 
-        <div className="space-y-2 text-sm text-gray-600">
-          <p>
-            <span className="font-medium">
-              Name:
-            </span>{" "}
-            {customer.fullName || "-"}
-          </p>
-
-          <p>
-            <span className="font-medium">
-              Phone:
-            </span>{" "}
-            {customer.phone || "-"}
-          </p>
-
-          <p>
-            <span className="font-medium">
-              Email:
-            </span>{" "}
-            {customer.email || "-"}
-          </p>
+        <div className="space-y-2 text-sm text-gray-600 break-words">
+          <p><span className="font-medium">Name:</span> {customer.fullName || "-"}</p>
+          <p><span className="font-medium">Phone:</span> {customer.phone || "-"}</p>
+          <p><span className="font-medium">Email:</span> {customer.email || "-"}</p>
         </div>
       </div>
 
@@ -72,33 +54,12 @@ const BookingSummary = ({
         </div>
 
         <div className="space-y-2 text-sm text-gray-600">
+          <p><span className="font-medium">Date:</span> {travel.travelDate || "-"}</p>
+          <p><span className="font-medium">Adults:</span> {travel.adults}</p>
+          <p><span className="font-medium">Children:</span> {travel.children}</p>
           <p>
-            <span className="font-medium">
-              Date:
-            </span>{" "}
-            {travel.travelDate || "-"}
-          </p>
-
-          <p>
-            <span className="font-medium">
-              Adults:
-            </span>{" "}
-            {travel.adults}
-          </p>
-
-          <p>
-            <span className="font-medium">
-              Children:
-            </span>{" "}
-            {travel.children}
-          </p>
-
-          <p>
-            <span className="font-medium">
-              Total Guests:
-            </span>{" "}
-            {Number(travel.adults) +
-              Number(travel.children)}
+            <span className="font-medium">Total Guests:</span>{" "}
+            {Number(travel.adults) + Number(travel.children)}
           </p>
         </div>
       </div>
@@ -119,7 +80,7 @@ const BookingSummary = ({
             {selectedPackages.map((pkg) => (
               <div
                 key={pkg._id}
-                className="rounded-lg bg-cyan-50 px-3 py-2 text-sm"
+                className="rounded-lg bg-cyan-50 px-3 py-2 text-sm break-words"
               >
                 {pkg.title}
               </div>
@@ -148,7 +109,7 @@ const BookingSummary = ({
             {selectedServices.map((service) => (
               <div
                 key={service._id}
-                className="rounded-lg bg-gray-100 px-3 py-2 text-sm"
+                className="rounded-lg bg-gray-100 px-3 py-2 text-sm break-words"
               >
                 {service.title}
               </div>
@@ -169,7 +130,7 @@ const BookingSummary = ({
           Special Requests
         </h3>
 
-        <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
+        <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-600 break-words">
           {travel.specialRequests || "None"}
         </div>
       </div>
@@ -178,7 +139,7 @@ const BookingSummary = ({
       <button
         onClick={onBook}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 py-4 text-lg font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 py-3 md:py-4 text-base md:text-lg font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <FaWhatsapp />
 

@@ -222,92 +222,77 @@ ${
 
   return (
   <>
-    <div className="mx-auto max-w-7xl px-6 py-16">
-
+<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-16">
       {/* Heading */}
 
       <div className="mb-12 text-center">
-        <h1 className="text-5xl font-bold">
+       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
           BOOK YOUR GOA TRIP
         </h1>
-
-        <p className="mt-4 text-gray-600">
+       <p className="mt-3 text-sm md:text-base text-gray-600">
           Select packages and services and book directly on WhatsApp.
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         {/* LEFT SIDE */}
 
         <div className="space-y-8 lg:col-span-2">
 
           {/* Customer Details */}
 
-          <div className="rounded-xl bg-white p-6 shadow">
-            <h2 className="mb-4 text-2xl font-bold">
-              Customer Details
-            </h2>
+<div className="rounded-xl bg-white p-4 md:p-6 shadow">
+  <h2 className="mb-4 text-xl md:text-2xl font-bold">
+    Customer Details
+  </h2>
 
-            <CustomerDetails
-              customer={bookingData.customer}
-              updateCustomer={updateCustomer}
-            />
-          </div>
+  <CustomerDetails
+    customer={bookingData.customer}
+    updateCustomer={updateCustomer}
+  />
+</div>
+          <div className="rounded-xl bg-white p-4 md:p-6 shadow">
+  <h2 className="mb-4 text-xl md:text-2xl font-bold">
+    Travel Details
+  </h2>
 
-          {/* Travel Details */}
+  <TravelDetails
+    travel={bookingData.travel}
+    updateTravel={updateTravel}
+  />
+</div>
 
-          <div className="rounded-xl bg-white p-6 shadow">
-            <h2 className="mb-4 text-2xl font-bold">
-              Travel Details
-            </h2>
+          <div className="rounded-xl bg-white p-4 md:p-6 shadow">
+  <h2 className="mb-4 text-xl md:text-2xl font-bold">
+    Packages
+  </h2>
 
-            <TravelDetails
-              travel={bookingData.travel}
-              updateTravel={updateTravel}
-            />
-          </div>
+  <PackageSelector
+    packages={packages}
+    selectedPackages={bookingData.selectedPackages}
+    onChange={setSelectedPackages}
+  />
+</div>
+          <div className="rounded-xl bg-white p-4 md:p-6 shadow">
+  <h2 className="mb-4 text-xl md:text-2xl font-bold">
+    Services
+  </h2>
 
-          {/* Packages */}
-
-          <div className="rounded-xl bg-white p-6 shadow">
-            <h2 className="mb-6 text-2xl font-bold">
-              Packages
-            </h2>
-
-            <PackageSelector
-              packages={packages}
-              selectedPackages={
-                bookingData.selectedPackages
-              }
-              onChange={setSelectedPackages}
-            />
-          </div>
-
-          {/* Services */}
-
-          <div className="rounded-xl bg-white p-6 shadow">
-            <h2 className="mb-6 text-2xl font-bold">
-              Services
-            </h2>
-
-            <ServiceSelector
-              services={services}
-              selectedServices={
-                bookingData.selectedServices
-              }
-              toggleService={toggleService}
-            />
-          </div>
+  <ServiceSelector
+    services={services}
+    selectedServices={bookingData.selectedServices}
+    toggleService={toggleService}
+  />
+</div>
 
         </div>
 
         
-        {/* RIGHT SIDE */}
+       
 
 {/* RIGHT SIDE */}
 
-<div className="lg:sticky lg:top-24 h-fit">
+<div className="h-fit lg:sticky lg:top-24">
 
   <BookingSummary
     bookingData={bookingData}

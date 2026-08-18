@@ -1,10 +1,8 @@
 import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppButton = () => {
-  // Replace with your WhatsApp number
   const phoneNumber = "919175884119";
 
-  // Default message
   const message =
     "Hello Coastal Goa! I would like to know more about your tour packages.";
 
@@ -19,12 +17,12 @@ const WhatsAppButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-green-500 px-5 py-3 text-white shadow-xl transition-all duration-300 hover:scale-110 hover:bg-green-600"
       aria-label="Chat on WhatsApp"
+      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2 rounded-full bg-green-500 px-3 py-3 md:px-5 md:py-3 text-white shadow-xl transition-all duration-300 hover:scale-105 hover:bg-green-600"
     >
-      <FaWhatsapp size={28} />
+      <FaWhatsapp className="text-2xl md:text-3xl" />
 
-      <span className="hidden md:block font-medium">
+      <span className="hidden lg:block font-medium">
         Chat with us
       </span>
     </button>

@@ -23,7 +23,7 @@ const PackageSelector = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
 
       {packages.map((pkg) => {
 
@@ -35,7 +35,7 @@ const PackageSelector = ({
         return (
           <div
             key={pkg._id}
-            className={`flex items-center justify-between rounded-xl border p-3 transition
+            className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border p-4 transition
 
             ${
               selected
@@ -46,7 +46,7 @@ const PackageSelector = ({
 
             {/* Left Side */}
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
 
               <img
                 src={
@@ -55,13 +55,19 @@ const PackageSelector = ({
                   "https://placehold.co/100x100?text=Goa"
                 }
                 alt={pkg.title}
-                className="h-16 w-16 rounded-lg object-cover"
+                className="h-14 w-14 md:h-16 md:w-16 rounded-lg object-cover flex-shrink-0"
               />
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-base md:text-lg font-semibold text-gray-800">
                   {pkg.title}
                 </h3>
+
+                {pkg.price && (
+                  <p className="text-sm text-cyan-600 font-medium">
+                    ₹{pkg.price}
+                  </p>
+                )}
               </div>
 
             </div>
@@ -73,7 +79,7 @@ const PackageSelector = ({
               onClick={() =>
                 handleToggle(pkg)
               }
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition
+              className={`w-full sm:w-auto rounded-full px-4 md:px-5 py-2 text-sm font-semibold transition
 
               ${
                 selected

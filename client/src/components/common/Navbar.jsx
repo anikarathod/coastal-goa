@@ -16,27 +16,25 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
 
-      <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 md:h-20 lg:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
 
         {/* Logo */}
-
         <Link to="/" className="flex items-center">
           <img
             src="/logo.png"
             alt="Coastal Goa"
-            className="h-20 w-auto object-contain transition duration-300 hover:scale-105"
+            className="h-10 sm:h-12 md:h-14 lg:h-20 w-auto object-contain transition duration-300 hover:scale-105"
           />
         </Link>
 
         {/* Desktop Menu */}
-
-        <nav className="hidden items-center gap-10 lg:flex">
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `relative text-lg transition-all duration-300 ${
+                `relative text-base transition-all duration-300 ${
                   isActive
                     ? "font-semibold text-cyan-600 after:absolute after:-bottom-2 after:left-0 after:h-[3px] after:w-full after:rounded-full after:bg-cyan-600"
                     : "text-gray-700 hover:text-cyan-600"
@@ -48,22 +46,20 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Book Now */}
-
+        {/* Desktop Book Button */}
         <div className="hidden lg:block">
           <Link
             to="/booking"
-            className="rounded-xl bg-cyan-600 px-7 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-cyan-700"
+            className="rounded-xl bg-cyan-600 px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-cyan-700"
           >
             Book Now
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
-
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-3xl text-cyan-600 lg:hidden"
+          className="text-2xl sm:text-3xl text-cyan-600 lg:hidden"
         >
           {isOpen ? <HiX /> : <HiMenu />}
         </button>
@@ -71,10 +67,9 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-
       {isOpen && (
         <div className="border-t bg-white shadow-lg lg:hidden">
-          <div className="flex flex-col gap-5 px-6 py-6">
+          <div className="flex flex-col gap-4 px-4 py-5">
 
             {navLinks.map((link) => (
               <NavLink

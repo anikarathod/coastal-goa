@@ -9,8 +9,7 @@ const DeleteModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-96 rounded-lg bg-white p-6">
-        <h2 className="text-xl font-bold">
+<div className="w-full max-w-md rounded-lg bg-white p-6">        <h2 className="text-xl font-bold">
           {title}
         </h2>
 
