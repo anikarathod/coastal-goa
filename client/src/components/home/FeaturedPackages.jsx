@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
+import api from "../../services/api";
 import Loader from "../common/Loader";
 import PackageCard from "../packages/PackageCard";
 
@@ -17,9 +17,7 @@ const FeaturedPackages = () => {
     try {
       setLoading(true);
 
-      const res = await axios.get(
-        "http://localhost:5000/api/packages"
-      );
+      const res = await api.get("/packages");
 
       console.log("Packages Response:", res.data);
 
