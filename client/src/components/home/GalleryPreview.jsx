@@ -12,18 +12,61 @@ const GalleryPreview = () => {
   }, []);
 
   const fetchGallery = async () => {
-    try {
-      const res = await api.get("/gallery/featured");
+  try {
+    const res = await api.get("/gallery");
 
-      console.log("Featured Gallery:", res.data);
+    console.log("Gallery Response:", res.data);
 
-      setGallery(res.data.gallery || []);
-    } catch (err) {
-      console.error("Error fetching gallery:", err);
-      setGallery([]);
-    } finally {
-      setLoading(false);
+    setGallery(
+      res.data.gallery ||
+      res.data.images ||
+      res.data.data ||
+      []
+    );
+  } catch (err) {
+    console.error("Error fetching gallery:", err);
+    setGallery([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const getImageUrl = (item) => {
+    const image =
+      item.image ||
+      item.coverImage ||
+      item.url ||
+      item.secure_url ||
+      item.src ||
+      item.path ||
+      (item.images && item.images[0]);
+
+    if (!image) {
+      return "https://placehold.co/600x400?text=No+Image";
     }
+
+    if (typeof image === "object") {
+      return (
+        image.url ||
+        image.secure_url ||
+        image.path ||
+        image.src ||
+        "https://placehold.co/600x400?text=No+Image"
+      );
+    }
+
+    if (
+      image.startsWith("http://") ||
+      image.startsWith("https://")
+    ) {
+      return image;
+    }
+
+    if (image.startsWith("/")) {
+      return `http://localhost:5000${image}`;
+    }
+
+    return image;
   };
 
   if (loading) {
@@ -31,16 +74,16 @@ const GalleryPreview = () => {
   }
 
   return (
-    <section className="bg-gray-100 py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-gray-100 py-16">
+      <div className="mx-auto max-w-7xl px-4">
 
-        <div className="mb-14 text-center">
-          <h2 className="text-4xl font-bold">
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
             Explore Goa Through Our Gallery
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-            A glimpse of the unforgettable experiences waiting for you.
+          <p className="mt-3 text-gray-600">
+            A glimpse of unforgettable experiences.
           </p>
         </div>
 
@@ -49,32 +92,30 @@ const GalleryPreview = () => {
             No gallery images available.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-
-            {gallery.map((image) => (
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {gallery.slice(0, 8).map((item) => (
               <div
-                key={image._id}
-                className="group overflow-hidden rounded-2xl shadow-lg"
+                key={item._id}
+                className="overflow-hidden rounded-xl shadow-md"
               >
                 <img
-                  src={
-                    image.image ||
-                    image.coverImage ||
-                    "https://placehold.co/600x400?text=No+Image"
-                  }
-                  alt={image.title}
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
+                  src={getImageUrl(item)}
+                  alt={item.title || "Gallery"}
+                  className="h-40 w-full object-cover transition duration-500 hover:scale-110"
+                  onError={(e) => {
+                    e.target.src =
+                      "https://placehold.co/600x400?text=No+Image";
+                  }}
                 />
               </div>
             ))}
-
           </div>
         )}
 
-        <div className="mt-12 text-center">
+        <div className="mt-10 text-center">
           <Link
             to="/gallery"
-            className="rounded-lg bg-cyan-600 px-8 py-4 font-semibold text-white hover:bg-cyan-700"
+            className="rounded-lg bg-cyan-600 px-6 py-3 font-semibold text-white hover:bg-cyan-700"
           >
             View Full Gallery
           </Link>

@@ -34,25 +34,30 @@ const faqData = [
   },
 ];
 
-const FAQItem = ({ question, answer, isOpen, onClick }) => (
-  <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
+const FAQItem = ({
+  question,
+  answer,
+  isOpen,
+  onClick,
+}) => (
+  <div className="overflow-hidden rounded-xl border bg-white">
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between p-5 text-left"
+      className="flex w-full items-center justify-between p-4 md:p-5 text-left"
     >
-      <span className="text-lg font-semibold text-gray-800">
+      <span className="text-base md:text-lg font-semibold text-gray-800">
         {question}
       </span>
 
       {isOpen ? (
-        <FaChevronUp className="text-cyan-600" />
+        <FaChevronUp className="text-cyan-600 flex-shrink-0" />
       ) : (
-        <FaChevronDown className="text-cyan-600" />
+        <FaChevronDown className="text-cyan-600 flex-shrink-0" />
       )}
     </button>
 
     {isOpen && (
-      <div className="border-t bg-gray-50 px-5 py-4 text-gray-600">
+      <div className="border-t bg-gray-50 px-4 py-3 md:px-5 md:py-4 text-sm md:text-base text-gray-600">
         {answer}
       </div>
     )}
@@ -60,37 +65,48 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 );
 
 const FAQ = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] =
+    useState(null);
 
   const toggleFAQ = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
+    setActiveIndex(
+      activeIndex === index ? null : index
+    );
   };
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="mx-auto max-w-4xl px-6">
-        <div className="mb-10 text-center">
-          <h2 className="text-4xl font-bold text-gray-900">
+    <section className="bg-gray-50 py-10 md:py-16">
+      <div className="mx-auto max-w-4xl px-4 md:px-6">
+
+        <div className="mb-6 md:mb-10 text-center">
+
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
             Frequently Asked Questions
           </h2>
 
-          <p className="mt-4 text-gray-600">
-            Find answers to the most common questions about our Goa tour
-            packages and services.
+          <p className="mt-3 text-sm md:text-base text-gray-600">
+            Find answers to the most common questions
+            about our Goa tour packages and services.
           </p>
+
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
+
           {faqData.map((faq, index) => (
             <FAQItem
               key={index}
               question={faq.question}
               answer={faq.answer}
               isOpen={activeIndex === index}
-              onClick={() => toggleFAQ(index)}
+              onClick={() =>
+                toggleFAQ(index)
+              }
             />
           ))}
+
         </div>
+
       </div>
     </section>
   );

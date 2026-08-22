@@ -108,9 +108,9 @@ const Bookings = () => {
     <div className="space-y-8">
 
       <div>
-        <h1 className="text-3xl font-bold">
-          Bookings
-        </h1>
+<h1 className="text-2xl md:text-3xl font-bold">
+  Bookings
+</h1>
 
         <p className="text-gray-500">
           Manage customer bookings
@@ -119,8 +119,7 @@ const Bookings = () => {
 
       {/* Filters */}
 
-      <div className="grid gap-4 md:grid-cols-2">
-
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative">
 
           <FaSearch className="absolute left-4 top-4 text-gray-400" />
@@ -160,163 +159,161 @@ const Bookings = () => {
 
       </div>
 
-      {/* Table */}
+    {/* Table */}
 
-      <div className="overflow-x-auto rounded-xl bg-white shadow">
+<div className="overflow-x-auto rounded-xl bg-white shadow">
 
-        <table className="w-full">
+  <table className="min-w-[900px] w-full">
 
-          <thead className="bg-gray-100">
+    <thead className="bg-gray-100">
 
-            <tr>
+      <tr>
 
-              <th className="px-6 py-4 text-left">
-                Customer
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Customer
+        </th>
 
-              <th className="px-6 py-4 text-left">
-                Phone
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Phone
+        </th>
 
-              <th className="px-6 py-4 text-left">
-                Package
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Package
+        </th>
 
-              <th className="px-6 py-4 text-left">
-                Travel Date
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Travel Date
+        </th>
 
-              <th className="px-6 py-4 text-left">
-                Persons
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Persons
+        </th>
 
-              <th className="px-6 py-4 text-left">
-                Status
-              </th>
+        <th className="px-4 py-3 text-left text-sm font-semibold">
+          Status
+        </th>
 
-              <th className="px-6 py-4 text-center">
-                Actions
-              </th>
+        <th className="px-4 py-3 text-center text-sm font-semibold">
+          Actions
+        </th>
 
-            </tr>
+      </tr>
 
-          </thead>
+    </thead>
 
-          <tbody>
+    <tbody>
 
-            {bookings.length === 0 ? (
+      {bookings.length === 0 ? (
 
-              <tr>
+        <tr>
 
-                <td
-                  colSpan="7"
-                  className="py-10 text-center text-gray-500"
+          <td
+            colSpan="7"
+            className="py-10 text-center text-gray-500"
+          >
+            No bookings found.
+          </td>
+
+        </tr>
+
+      ) : (
+
+        bookings.map((booking) => (
+
+          <tr
+            key={booking._id}
+            className="border-b hover:bg-gray-50"
+          >
+
+            <td className="px-4 py-4">
+              {booking.name}
+            </td>
+
+            <td className="px-4 py-4">
+              {booking.phone}
+            </td>
+
+            <td className="px-4 py-4">
+              {booking.packageName}
+            </td>
+
+            <td className="px-4 py-4">
+              {booking.travelDate
+                ? new Date(
+                    booking.travelDate
+                  ).toLocaleDateString()
+                : "-"}
+            </td>
+
+            <td className="px-4 py-4">
+              {booking.adults || 1}
+            </td>
+
+            <td className="px-4 py-4">
+
+              <select
+                value={booking.status}
+                onChange={(e) =>
+                  updateStatus(
+                    booking._id,
+                    e.target.value
+                  )
+                }
+                className="rounded-lg border p-2 text-sm"
+              >
+                {statusOptions.map((item) => (
+                  <option
+                    key={item}
+                    value={item}
+                  >
+                    {item}
+                  </option>
+                ))}
+              </select>
+
+            </td>
+
+            <td className="px-4 py-4">
+
+              <div className="flex justify-center gap-2">
+
+                <button
+                  className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
                 >
-                  No bookings found.
-                </td>
+                  <FaEye />
+                </button>
 
-              </tr>
-
-            ) : (
-
-              bookings.map((booking) => (
-
-                <tr
-                  key={booking._id}
-                  className="border-b hover:bg-gray-50"
+                <a
+                  href={`tel:${booking.phone}`}
+                  className="rounded bg-green-500 p-2 text-white hover:bg-green-600"
                 >
+                  <FaPhone />
+                </a>
 
-                  <td className="px-6 py-4">
-                    {booking.name}
-                  </td>
+                <button
+                  onClick={() =>
+                    deleteBooking(booking._id)
+                  }
+                  className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
+                >
+                  <FaTrash />
+                </button>
 
-                  <td className="px-6 py-4">
-                    {booking.phone}
-                  </td>
+              </div>
 
-                  <td className="px-6 py-4">
-                    {booking.packageName}
-                  </td>
+            </td>
 
-                  <td className="px-6 py-4">
-                    {booking.travelDate
-                      ? new Date(
-                          booking.travelDate
-                        ).toLocaleDateString()
-                      : "-"}
-                  </td>
+          </tr>
 
-                  <td className="px-6 py-4">
-                    {booking.adults || 1}
-                  </td>
+        ))
 
-                  <td className="px-6 py-4">
+      )}
 
-                    <select
-                      value={booking.status}
-                      onChange={(e) =>
-                        updateStatus(
-                          booking._id,
-                          e.target.value
-                        )
-                      }
-                      className="rounded-lg border p-2"
-                    >
-                      {statusOptions.map((item) => (
-                        <option
-                          key={item}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ))}
-                    </select>
+    </tbody>
 
-                  </td>
+  </table>
 
-                  <td className="px-6 py-4">
-
-                    <div className="flex justify-center gap-2">
-
-                      <button
-                        className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
-                      >
-                        <FaEye />
-                      </button>
-
-                      <a
-                        href={`tel:${booking.phone}`}
-                        className="rounded bg-green-500 p-2 text-white hover:bg-green-600"
-                      >
-                        <FaPhone />
-                      </a>
-
-                      <button
-                        onClick={() =>
-                          deleteBooking(
-                            booking._id
-                          )
-                        }
-                        className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
-                      >
-                        <FaTrash />
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))
-
-            )}
-
-          </tbody>
-
-        </table>
-
-      </div>
+</div>
 
     </div>
   );
