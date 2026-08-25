@@ -89,7 +89,30 @@ export const getPackage = async (req, res) => {
     });
   }
 };
+export const getPackageById = async (req, res) => {
+  try {
+    const packageItem = await Package.findById(req.params.id);
 
+    if (!packageItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Package not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      package: packageItem,
+    });
+  } catch (error) {
+    console.error("Get Package By ID Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 // ==========================================
 // CREATE PACKAGE
 // ==========================================

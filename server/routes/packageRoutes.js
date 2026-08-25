@@ -3,6 +3,7 @@ import express from "express";
 import {
   getPackages,
   getPackage,
+  getPackageById,
   getFeaturedPackages,
   createPackage,
   updatePackage,
@@ -19,6 +20,8 @@ const router = express.Router();
 // ==========================================
 
 router.get("/featured", getFeaturedPackages);
+
+router.get("/id/:id", getPackageById);
 
 router.get("/", getPackages);
 
