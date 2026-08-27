@@ -8,23 +8,26 @@ const EditPackage = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [coverImageFile, setCoverImageFile] = useState(null);
+  const [galleryFiles, setGalleryFiles] = useState([]);
+
   const [form, setForm] = useState({
-  title: "",
-  shortDescription: "",
-  description: "",
-  location: "",
-  duration: "",
-  category: "",
-  price: "",
-  discountPrice: "",
-  coverImage: "",
-  images: "",
-  highlights: "",
-  inclusions: "",
-  exclusions: "",
-  featured: false,
-  isActive: true,
-});
+    title: "",
+    shortDescription: "",
+    description: "",
+    location: "",
+    duration: "",
+    category: "",
+    price: "",
+    discountPrice: "",
+    coverImage: "",
+    images: "",
+    highlights: "",
+    inclusions: "",
+    exclusions: "",
+    featured: false,
+    isActive: true,
+  });
 
   useEffect(() => {
     fetchPackage();
@@ -73,32 +76,77 @@ const fetchPackage = async () => {
     }));
   };
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    await api.put(`/packages/${id}`, {
-      ...form,
+    const formData = new FormData();
 
-      images: JSON.stringify(
-        form.images.split("\n").filter(Boolean)
-      ),
+    formData.append("title", form.title);
+    formData.append("shortDescription", form.shortDescription);
+    formData.append("description", form.description);
+    formData.append("location", form.location);
+    formData.append("duration", form.duration);
+    formData.append("category", form.category);
+    formData.append("price", form.price);
+    formData.append("discountPrice", form.discountPrice);
+    formData.append("featured", form.featured);
+    formData.append("isActive", form.isActive);
 
-      highlights: JSON.stringify(
-        form.highlights.split("\n").filter(Boolean)
-      ),
+    formData.append(
+      "highlights",
+      JSON.stringify(
+        form.highlights
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
 
-      inclusions: JSON.stringify(
-        form.inclusions.split("\n").filter(Boolean)
-      ),
+    formData.append(
+      "inclusions",
+      JSON.stringify(
+        form.inclusions
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
 
-      exclusions: JSON.stringify(
-        form.exclusions.split("\n").filter(Boolean)
-      ),
+    formData.append(
+      "exclusions",
+      JSON.stringify(
+        form.exclusions
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
+
+    // Cover image
+    if (coverImageFile) {
+      formData.append(
+        "coverImage",
+        coverImageFile
+      );
+    }
+
+    // Gallery images
+    galleryFiles.forEach((file) => {
+      formData.append("images", file);
     });
+
+    await api.put(
+      `/packages/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type":
+            "multipart/form-data",
+        },
+      }
+    );
 
     alert("Package updated successfully!");
     navigate("/admin/packages");
+
   } catch (err) {
     console.error(err);
 
@@ -240,32 +288,36 @@ const fetchPackage = async () => {
 {/* Cover Image */}
 <div>
   <label className="mb-2 block font-medium">
-    Cover Image URL
+    Cover Image
   </label>
 
   <input
-    name="coverImage"
-    value={form.coverImage}
-    onChange={handleChange}
+    type="file"
+    accept="image/*"
+    onChange={(e) =>
+      setCoverImageFile(e.target.files[0])
+    }
     className="w-full rounded-lg border p-3"
   />
 </div>
-
-{/* Gallery Images */}
+    {/* Gallery Images */}
 <div className="md:col-span-2">
   <label className="mb-2 block font-medium">
-    Gallery Images (One URL Per Line)
+    Gallery Images
   </label>
 
-  <textarea
-    rows={5}
-    name="images"
-    value={form.images}
-    onChange={handleChange}
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    onChange={(e) =>
+      setGalleryFiles(
+        Array.from(e.target.files)
+      )
+    }
     className="w-full rounded-lg border p-3"
   />
 </div>
-
 {/* Highlights */}
 <div className="md:col-span-2">
   <label className="mb-2 block font-medium">
