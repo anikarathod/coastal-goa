@@ -73,28 +73,28 @@ const fetchPackage = async () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    await api.put(`/packages/id/${id}`, {
+    await api.put(`/packages/${id}`, {
       ...form,
 
-      images: form.images
-        .split("\n")
-        .filter(Boolean),
+      images: JSON.stringify(
+        form.images.split("\n").filter(Boolean)
+      ),
 
-      highlights: form.highlights
-        .split("\n")
-        .filter(Boolean),
+      highlights: JSON.stringify(
+        form.highlights.split("\n").filter(Boolean)
+      ),
 
-      inclusions: form.inclusions
-        .split("\n")
-        .filter(Boolean),
+      inclusions: JSON.stringify(
+        form.inclusions.split("\n").filter(Boolean)
+      ),
 
-      exclusions: form.exclusions
-        .split("\n")
-        .filter(Boolean),
+      exclusions: JSON.stringify(
+        form.exclusions.split("\n").filter(Boolean)
+      ),
     });
 
     alert("Package updated successfully!");
@@ -108,7 +108,6 @@ const fetchPackage = async () => {
     );
   }
 };
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
