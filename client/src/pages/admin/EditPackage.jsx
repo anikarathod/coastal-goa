@@ -30,36 +30,36 @@ const EditPackage = () => {
     fetchPackage();
   }, []);
 
-  const fetchPackage = async () => {
-    try {
-      const res = await api.get(`/packages/${id}`);
+const fetchPackage = async () => {
+  try {
+    const res = await api.get(`/packages/id/${id}`);
 
-      const pkg = res.data.package;
+    const pkg = res.data.package;
 
-     setForm({
-  title: pkg.title || "",
-  shortDescription: pkg.shortDescription || "",
-  description: pkg.description || "",
-  location: pkg.location || "",
-  duration: pkg.duration || "",
-  category: pkg.category || "",
-  price: pkg.price || "",
-  discountPrice: pkg.discountPrice || "",
-  coverImage: pkg.coverImage || "",
-  images: pkg.images?.join("\n") || "",
-  highlights: pkg.highlights?.join("\n") || "",
-  inclusions: pkg.inclusions?.join("\n") || "",
-  exclusions: pkg.exclusions?.join("\n") || "",
-  featured: pkg.featured || false,
-  isActive: pkg.isActive ?? true,
-});
-    } catch (err) {
-      console.error(err);
-      alert("Failed to load package.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setForm({
+      title: pkg.title || "",
+      shortDescription: pkg.shortDescription || "",
+      description: pkg.description || "",
+      location: pkg.location || "",
+      duration: pkg.duration || "",
+      category: pkg.category || "",
+      price: pkg.price || "",
+      discountPrice: pkg.discountPrice || "",
+      coverImage: pkg.coverImage || "",
+      images: pkg.images?.join("\n") || "",
+      highlights: pkg.highlights?.join("\n") || "",
+      inclusions: pkg.inclusions?.join("\n") || "",
+      exclusions: pkg.exclusions?.join("\n") || "",
+      featured: pkg.featured || false,
+      isActive: pkg.isActive ?? true,
+    });
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load package.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -77,7 +77,7 @@ const EditPackage = () => {
   e.preventDefault();
 
   try {
-    await api.put(`/packages/${id}`, {
+    await api.put(`/packages/id/${id}`, {
       ...form,
 
       images: form.images
