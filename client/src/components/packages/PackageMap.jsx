@@ -3,16 +3,11 @@ import {
   FaDirections,
 } from "react-icons/fa";
 
-const PackageMap = ({ packageData }) => {
-  if (!packageData) return null;
-
-  const {
-    location,
-    latitude,
-    longitude,
-  } = packageData;
-
-  // No coordinates available
+const PackageMap = ({
+  location,
+  latitude,
+  longitude,
+}) => {
   if (!latitude || !longitude) {
     return (
       <section className="mt-12">
@@ -36,9 +31,7 @@ const PackageMap = ({ packageData }) => {
   return (
     <section className="mt-12">
 
-      {/* Heading */}
       <div className="mb-8">
-
         <h2 className="text-3xl font-bold">
           Tour Location
         </h2>
@@ -46,14 +39,12 @@ const PackageMap = ({ packageData }) => {
         <p className="mt-2 text-gray-600">
           Find the pickup point or destination before your trip.
         </p>
-
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
 
-        {/* Map */}
-
-        <div className="lg:col-span-2 overflow-hidden rounded-2xl shadow-lg">
+        {/* MAP */}
+        <div className="overflow-hidden rounded-2xl shadow-lg lg:col-span-2">
 
           <iframe
             title="Package Map"
@@ -67,51 +58,34 @@ const PackageMap = ({ packageData }) => {
 
         </div>
 
-        {/* Info Card */}
-
+        {/* INFO */}
         <div className="rounded-2xl border bg-white p-6 shadow-lg">
 
           <div className="flex items-center gap-3">
-
-            <FaMapMarkerAlt className="text-cyan-600 text-2xl" />
+            <FaMapMarkerAlt className="text-2xl text-cyan-600" />
 
             <h3 className="text-2xl font-bold">
               Meeting Point
             </h3>
-
           </div>
 
           <div className="mt-6 space-y-5">
 
             <div>
-
-              <h4 className="font-semibold text-gray-800">
+              <h4 className="font-semibold">
                 Location
               </h4>
 
               <p className="mt-2 text-gray-600">
                 {location}
               </p>
-
-            </div>
-
-            <div>
-
-              <h4 className="font-semibold text-gray-800">
-                Address
-              </h4>
-
-              <p className="mt-2 text-gray-600">
-                {address}
-              </p>
-
             </div>
 
             <a
               href={directionUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex items-center justify-center gap-3 rounded-xl bg-cyan-600 px-6 py-4 font-semibold text-white transition hover:bg-cyan-700"
+              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-6 py-4 font-semibold text-white hover:bg-cyan-700"
             >
               <FaDirections />
               Get Directions

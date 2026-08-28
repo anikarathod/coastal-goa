@@ -352,7 +352,11 @@ export const updatePackage = async (req, res) => {
         req.body.itinerary
       );
     }
-
+    if (req.body.sections) {
+  data.sections = JSON.parse(
+    req.body.sections
+  );
+}
     // --------------------------------------
     // New cover image
     // --------------------------------------

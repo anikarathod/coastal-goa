@@ -112,6 +112,20 @@ const packageSchema = new mongoose.Schema(
         trim: true,
       },
     ],
+    sections: [
+  {
+    title: {
+      type: String,
+      trim: true,
+    },
+    items: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+  },
+],
 
     // ==============================
     // ITINERARY

@@ -59,43 +59,153 @@ const PackageDetails = () => {
     );
   }
 
-  return (
-    <section className="bg-white">
+ return (
+  <section className="bg-gray-50 min-h-screen">
 
-      {/* Package Gallery */}
-      <PackageGallery
-  images={[
-    packageData.coverImage,
-    ...(packageData.images || []),
-  ]}
-/>
+    {/* Gallery */}
+    <PackageGallery
+      images={[
+        packageData.coverImage,
+        ...(packageData.images || []),
+      ].filter(Boolean)}
+    />
 
-      <div className="mx-auto max-w-7xl px-6 py-16">
+    <div className="mx-auto max-w-7xl px-6 py-12">
 
-        {/* Package Information */}
+      {/* Package Info */}
+      <div className="rounded-2xl bg-white p-8 shadow-sm">
+
         <PackageInfo packageData={packageData} />
 
-        {/* Package Map */}
-        {(packageData.latitude || packageData.longitude) && (
-          <div className="mt-16">
+        {/* Quick Stats */}
+        <div className="mt-8 grid gap-4 md:grid-cols-4">
+
+          <div className="rounded-xl border p-4">
+            <p className="text-sm text-gray-500">
+              Location
+            </p>
+            <p className="font-semibold">
+              {packageData.location || "N/A"}
+            </p>
+          </div>
+
+          <div className="rounded-xl border p-4">
+            <p className="text-sm text-gray-500">
+              Duration
+            </p>
+            <p className="font-semibold">
+              {packageData.duration || "N/A"}
+            </p>
+          </div>
+
+          <div className="rounded-xl border p-4">
+            <p className="text-sm text-gray-500">
+              Category
+            </p>
+            <p className="font-semibold">
+              {packageData.category || "N/A"}
+            </p>
+          </div>
+
+          <div className="rounded-xl border p-4">
+            <p className="text-sm text-gray-500">
+              Rating
+            </p>
+            <p className="font-semibold">
+              ⭐ {packageData.rating || "4.8"}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Highlights */}
+      {packageData.highlights?.length > 0 && (
+        <div className="mt-12 rounded-2xl bg-white p-8 shadow-sm">
+
+          <h2 className="mb-6 text-2xl font-bold">
+            Highlights
+          </h2>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+            {packageData.highlights.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-xl border p-4"
+              >
+                ✓ {item}
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+      )}
+
+      {/* Inclusions & Exclusions */}
+      <div className="mt-12 grid gap-8 md:grid-cols-2">
+
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+
+          <h2 className="mb-6 text-2xl font-bold text-green-600">
+            What's Included
+          </h2>
+
+          {(packageData.inclusions || []).map((item, index) => (
+            <p key={index} className="mb-3">
+              ✓ {item}
+            </p>
+          ))}
+
+        </div>
+
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+
+          <h2 className="mb-6 text-2xl font-bold text-red-600">
+            What's Excluded
+          </h2>
+
+          {(packageData.exclusions || []).map((item, index) => (
+            <p key={index} className="mb-3">
+              ✗ {item}
+            </p>
+          ))}
+
+        </div>
+
+      </div>
+
+      {/* Map */}
+      {packageData.latitude &&
+        packageData.longitude && (
+          <div className="mt-12 rounded-2xl bg-white p-8 shadow-sm">
+
+            <h2 className="mb-6 text-2xl font-bold">
+              Location
+            </h2>
+
             <PackageMap
               latitude={packageData.latitude}
               longitude={packageData.longitude}
               address={packageData.location}
             />
+
           </div>
         )}
 
-        {/* Related Packages */}
-        <section className="mt-20">
-          <RelatedPackages
-            packageId={packageData._id}
-          />
-        </section>
+      {/* Related Packages */}
+      <section className="mt-16">
+        <RelatedPackages
+          packageId={packageData._id}
+        />
+      </section>
 
-      </div>
-    </section>
-  );
+    </div>
+
+  </section>
+);
 };
 
 export default PackageDetails;

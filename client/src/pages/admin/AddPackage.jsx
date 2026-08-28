@@ -37,7 +37,12 @@ const [form, setForm] = useState({
   const [exclusions, setExclusions] = useState([
     "",
   ]);
-
+const [sections, setSections] = useState([
+  {
+    title: "",
+    items: [""],
+  },
+]);
   const [itinerary, setItinerary] = useState([
     {
       day: "Day 1",
@@ -149,7 +154,71 @@ const [form, setForm] = useState({
       )
     );
   };
+  // ==========================================
+// CUSTOM SECTIONS
+// ==========================================
 
+const addSection = () => {
+  setSections([
+    ...sections,
+    {
+      title: "",
+      items: [""],
+    },
+  ]);
+};
+
+const removeSection = (index) => {
+  setSections(
+    sections.filter((_, i) => i !== index)
+  );
+};
+
+const updateSectionTitle = (
+  index,
+  value
+) => {
+  const updated = [...sections];
+
+  updated[index].title = value;
+
+  setSections(updated);
+};
+
+const addItem = (sectionIndex) => {
+  const updated = [...sections];
+
+  updated[sectionIndex].items.push("");
+
+  setSections(updated);
+};
+
+const updateItem = (
+  sectionIndex,
+  itemIndex,
+  value
+) => {
+  const updated = [...sections];
+
+  updated[sectionIndex].items[itemIndex] =
+    value;
+
+  setSections(updated);
+};
+
+const removeItem = (
+  sectionIndex,
+  itemIndex
+) => {
+  const updated = [...sections];
+
+  updated[sectionIndex].items =
+    updated[sectionIndex].items.filter(
+      (_, i) => i !== itemIndex
+    );
+
+  setSections(updated);
+};
   // ==========================================
   // SUBMIT
   // ==========================================
@@ -210,7 +279,10 @@ const [form, setForm] = useState({
           )
         )
       );
-
+      formData.append(
+  "sections",
+  JSON.stringify(sections)
+);
       // Cover
       if (coverImage) {
         formData.append(
@@ -447,7 +519,113 @@ const [form, setForm] = useState({
           </p>
 
         </section>
+                <section className="rounded-2xl bg-white p-8 shadow">
 
+  <div className="mb-6 flex items-center justify-between">
+
+    <h2 className="text-2xl font-bold">
+      Custom Package Sections
+    </h2>
+
+    <button
+      type="button"
+      onClick={addSection}
+      className="rounded-lg bg-cyan-600 px-4 py-2 text-white"
+    >
+      + Add Section
+    </button>
+
+  </div>
+
+  {sections.map((section, sectionIndex) => (
+
+    <div
+      key={sectionIndex}
+      className="mb-8 rounded-xl border p-5"
+    >
+
+      <div className="mb-4 flex gap-3">
+
+        <input
+          type="text"
+          placeholder="Section Title"
+          value={section.title}
+          onChange={(e) =>
+            updateSectionTitle(
+              sectionIndex,
+              e.target.value
+            )
+          }
+          className="flex-1 rounded-lg border p-3"
+        />
+
+        <button
+          type="button"
+          onClick={() =>
+            removeSection(sectionIndex)
+          }
+          className="rounded-lg bg-red-500 px-4 text-white"
+        >
+          Delete
+        </button>
+
+      </div>
+
+      {section.items.map(
+        (item, itemIndex) => (
+
+          <div
+            key={itemIndex}
+            className="mb-3 flex gap-3"
+          >
+
+            <input
+              type="text"
+              placeholder="Item"
+              value={item}
+              onChange={(e) =>
+                updateItem(
+                  sectionIndex,
+                  itemIndex,
+                  e.target.value
+                )
+              }
+              className="flex-1 rounded-lg border p-3"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                removeItem(
+                  sectionIndex,
+                  itemIndex
+                )
+              }
+              className="rounded-lg bg-red-500 px-4 text-white"
+            >
+              ×
+            </button>
+
+          </div>
+
+        )
+      )}
+
+      <button
+        type="button"
+        onClick={() =>
+          addItem(sectionIndex)
+        }
+        className="rounded-lg bg-green-600 px-4 py-2 text-white"
+      >
+        + Add Item
+      </button>
+
+    </div>
+
+  ))}
+
+</section>
         {/* ================================= */}
         {/* IMAGES */}
         {/* ================================= */}

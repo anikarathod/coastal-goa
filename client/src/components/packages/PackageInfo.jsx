@@ -12,20 +12,21 @@ const PackageInfo = ({ packageData }) => {
   if (!packageData) return null;
 
   const {
-    title,
-    description,
-    location,
-    duration,
-    price,
-    discountPrice,
-    rating = 5,
-    reviews = 0,
-    highlights = [],
-    itinerary = [],
-    inclusions = [],
-    exclusions = [],
-    featured,
-  } = packageData;
+  title,
+  description,
+  location,
+  duration,
+  price,
+  discountPrice,
+  rating = 5,
+  reviews = 0,
+  highlights = [],
+  itinerary = [],
+  inclusions = [],
+  exclusions = [],
+  sections = [],
+  featured,
+} = packageData;
 
   const discount =
     discountPrice > 0
@@ -35,7 +36,10 @@ const PackageInfo = ({ packageData }) => {
       : 0;
 
   return (
-    <section className="space-y-8">
+  <section className="grid gap-10 lg:grid-cols-3">
+
+    {/* LEFT CONTENT */}
+    <div className="lg:col-span-2 space-y-10">
 
       {/* Header */}
       <div>
@@ -50,6 +54,7 @@ const PackageInfo = ({ packageData }) => {
         </h1>
 
         <div className="mt-5 flex flex-wrap gap-6 text-gray-600">
+
           {location && (
             <div className="flex items-center gap-2">
               <FaMapMarkerAlt className="text-cyan-600" />
@@ -69,81 +74,87 @@ const PackageInfo = ({ packageData }) => {
             {rating} Rating
           </div>
 
-          <div className="flex items-center gap-2">
-            <FaUsers className="text-cyan-600" />
-            {reviews} Reviews
-          </div>
         </div>
       </div>
 
       {/* Description */}
       {description && (
-        <div>
-          <h2 className="mb-3 text-2xl font-bold">
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+          <h2 className="mb-4 text-2xl font-bold">
             Description
           </h2>
 
-          <p className="leading-8 text-gray-600 whitespace-pre-wrap">
+          <p className="leading-8 whitespace-pre-wrap text-gray-600">
             {description}
           </p>
         </div>
       )}
 
-      {/* Price Card */}
-      <div className="rounded-2xl border bg-cyan-50 p-6">
-        <div className="flex flex-wrap items-center justify-between">
-          <div>
-            {discountPrice > 0 && (
-              <p className="text-lg text-gray-400 line-through">
-                ₹{price}
-              </p>
-            )}
+      {/* Highlights */}
+      {highlights.length > 0 && (
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
 
-            <h2 className="text-5xl font-bold text-cyan-700">
-              ₹{discountPrice > 0 ? discountPrice : price}
-            </h2>
+          <h2 className="mb-6 text-2xl font-bold">
+            Highlights
+          </h2>
 
-            <p className="mt-2 text-gray-600">
-              Per Person
-            </p>
-          </div>
+          <div className="grid gap-4 md:grid-cols-2">
 
-          <div className="text-right">
-            {discount > 0 && (
-              <p className="text-lg font-semibold text-green-600">
-                Save {discount}%
-              </p>
-            )}
+            {highlights.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-xl border p-4"
+              >
+                ✓ {item}
+              </div>
+            ))}
 
-            <Link
-              to="/booking"
-              state={{ packageData }}
-              className="mt-4 inline-block rounded-xl bg-cyan-600 px-8 py-4 font-semibold text-white transition hover:bg-cyan-700"
-            >
-              Book Now
-            </Link>
           </div>
         </div>
-      </div>
+      )}
+        {/* Dynamic Sections */}
+{sections.length > 0 &&
+  sections.map((section, index) => (
+    <div
+      key={index}
+      className="rounded-2xl bg-white p-8 shadow-sm"
+    >
+      <h2 className="mb-6 text-2xl font-bold">
+        {section.title}
+      </h2>
 
-      {/* Tour Itinerary */}
+      <div className="grid gap-3">
+        {section.items?.map((item, itemIndex) => (
+          <div
+            key={itemIndex}
+            className="rounded-xl border border-gray-200 p-4"
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+      {/* Itinerary */}
       {itinerary.length > 0 && (
-        <div>
-          <h2 className="mb-5 text-2xl font-bold">
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+
+          <h2 className="mb-6 text-2xl font-bold">
             Tour Itinerary
           </h2>
 
           <div className="space-y-4">
+
             {itinerary.map((item, index) => (
               <div
                 key={item._id || index}
-                className="rounded-xl bg-gray-50 p-4"
+                className="rounded-xl border p-4"
               >
                 <h4 className="font-semibold text-cyan-700">
                   {item.day}
                 </h4>
 
-                <h5 className="mt-1 font-medium">
+                <h5 className="mt-2 font-semibold">
                   {item.title}
                 </h5>
 
@@ -152,79 +163,94 @@ const PackageInfo = ({ packageData }) => {
                 </p>
               </div>
             ))}
+
           </div>
         </div>
       )}
 
-      {/* Inclusions & Exclusions */}
-      {(inclusions.length > 0 || exclusions.length > 0) && (
-        <div className="grid gap-8 lg:grid-cols-2">
+      {/* Inclusion / Exclusion */}
+      <div className="grid gap-6 md:grid-cols-2">
 
-          {inclusions.length > 0 && (
-            <div>
-              <h2 className="mb-4 text-2xl font-bold">
-                What's Included
-              </h2>
+        {inclusions.length > 0 && (
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
 
-              <div className="space-y-3">
-                {inclusions.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3"
-                  >
-                    <FaCheckCircle className="text-green-500" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            <h2 className="mb-4 text-xl font-bold text-green-600">
+              Included
+            </h2>
 
-          {exclusions.length > 0 && (
-            <div>
-              <h2 className="mb-4 text-2xl font-bold">
-                Not Included
-              </h2>
-
-              <div className="space-y-3">
-                {exclusions.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3"
-                  >
-                    <FaTimesCircle className="text-red-500" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-        </div>
-      )}
-
-      {/* Highlights */}
-      {highlights.length > 0 && (
-        <div>
-          <h2 className="mb-4 text-2xl font-bold">
-            Highlights
-          </h2>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            {highlights.map((item, index) => (
+            {inclusions.map((item, index) => (
               <div
                 key={index}
-                className="rounded-lg bg-cyan-50 p-3"
+                className="mb-3 flex items-center gap-3"
               >
-                ✓ {item}
+                <FaCheckCircle className="text-green-500" />
+                {item}
               </div>
             ))}
           </div>
-        </div>
-      )}
+        )}
 
-    </section>
-  );
+        {exclusions.length > 0 && (
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
+
+            <h2 className="mb-4 text-xl font-bold text-red-600">
+              Excluded
+            </h2>
+
+            {exclusions.map((item, index) => (
+              <div
+                key={index}
+                className="mb-3 flex items-center gap-3"
+              >
+                <FaTimesCircle className="text-red-500" />
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+
+    </div>
+
+    {/* RIGHT SIDEBAR */}
+    <div>
+
+      <div className="sticky top-24 rounded-3xl border bg-white p-8 shadow-lg">
+
+        {discountPrice > 0 && (
+          <p className="text-xl text-gray-400 line-through">
+            ₹{price}
+          </p>
+        )}
+
+        <h2 className="mt-2 text-5xl font-bold text-cyan-700">
+          ₹{discountPrice > 0 ? discountPrice : price}
+        </h2>
+
+        <p className="mt-2 text-gray-500">
+          Per Person
+        </p>
+
+        {discount > 0 && (
+          <div className="mt-4 rounded-lg bg-green-100 p-3 text-center font-semibold text-green-700">
+            Save {discount}%
+          </div>
+        )}
+
+        <Link
+          to="/booking"
+          state={{ packageData }}
+          className="mt-6 block rounded-xl bg-cyan-600 py-4 text-center font-semibold text-white hover:bg-cyan-700"
+        >
+          Book Now
+        </Link>
+
+      </div>
+
+    </div>
+  </section>
+);
 };
 
 export default PackageInfo;
