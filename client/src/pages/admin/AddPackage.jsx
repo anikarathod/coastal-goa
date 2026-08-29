@@ -263,6 +263,10 @@ const updateSectionContent = (
   "extraDetails",
   JSON.stringify(extraDetails)
 );
+formData.append(
+  "sections",
+  JSON.stringify(sections)
+);
       // Cover
       if (coverImage) {
         formData.append(
