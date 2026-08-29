@@ -112,18 +112,17 @@ const packageSchema = new mongoose.Schema(
         trim: true,
       },
     ],
-    sections: [
+   sections: [
   {
     title: {
       type: String,
       trim: true,
     },
-    items: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
+    content: {
+      type: String,
+      default: "",
+      trim: true,
+    },
   },
 ],
 
