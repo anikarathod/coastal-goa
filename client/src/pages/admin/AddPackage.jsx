@@ -4,6 +4,7 @@ import api from "../../services/api";
 
 const AddPackage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 const [form, setForm] = useState({
   title: "",
   slug: "",
