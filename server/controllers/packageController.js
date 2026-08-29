@@ -172,23 +172,29 @@ export const createPackage = async (req, res) => {
     // --------------------------------------
     // Parse arrays
     // --------------------------------------
+if (req.body.highlights) {
+  data.highlights = JSON.parse(req.body.highlights);
+}
 
-    if (req.body.highlights) {
-      data.highlights = JSON.parse(req.body.highlights);
-    }
+if (req.body.inclusions) {
+  data.inclusions = JSON.parse(req.body.inclusions);
+}
 
-    if (req.body.inclusions) {
-      data.inclusions = JSON.parse(req.body.inclusions);
-    }
+if (req.body.exclusions) {
+  data.exclusions = JSON.parse(req.body.exclusions);
+}
 
-    if (req.body.exclusions) {
-      data.exclusions = JSON.parse(req.body.exclusions);
-    }
+if (req.body.itinerary) {
+  data.itinerary = JSON.parse(req.body.itinerary);
+}
 
-    if (req.body.itinerary) {
-      data.itinerary = JSON.parse(req.body.itinerary);
-    }
+if (req.body.sections) {
+  data.sections = JSON.parse(req.body.sections);
+}
 
+if (req.body.extraDetails) {
+  data.extraDetails = JSON.parse(req.body.extraDetails);
+}
     // --------------------------------------
     // Cover image
     // --------------------------------------

@@ -87,32 +87,32 @@ const packageSchema = new mongoose.Schema(
         type: String,
       },
     ],
+// ==============================
+// PACKAGE CONTENT
+// ==============================
 
-    // ==============================
-    // PACKAGE CONTENT
-    // ==============================
+highlights: [
+  {
+    type: String,
+    trim: true,
+  },
+],
 
-    highlights: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
+inclusions: [
+  {
+    type: String,
+    trim: true,
+  },
+],
 
-    inclusions: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
+exclusions: [
+  {
+    type: String,
+    trim: true,
+  },
+],
 
-    exclusions: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-  extraDetails: [
+extraDetails: [
   {
     title: {
       type: String,
@@ -125,29 +125,41 @@ const packageSchema = new mongoose.Schema(
   },
 ],
 
-    // ==============================
-    // ITINERARY
-    // ==============================
+sections: [
+  {
+    title: {
+      type: String,
+      trim: true,
+    },
+    content: {
+      type: String,
+      trim: true,
+    },
+  },
+],
 
-    itinerary: [
-      {
-        day: {
-          type: String,
-          default: "",
-        },
+// ==============================
+// ITINERARY
+// ==============================
 
-        title: {
-          type: String,
-          default: "",
-        },
+itinerary: [
+  {
+    day: {
+      type: String,
+      default: "",
+    },
 
-        description: {
-          type: String,
-          default: "",
-        },
-      },
-    ],
+    title: {
+      type: String,
+      default: "",
+    },
 
+    description: {
+      type: String,
+      default: "",
+    },
+  },
+],
     // ==============================
     // LOCATION MAP
     // ==============================
