@@ -40,7 +40,7 @@ const [form, setForm] = useState({
 const [sections, setSections] = useState([
   {
     title: "",
-    items: [""],
+    content: "",
   },
 ]);
   const [itinerary, setItinerary] = useState([
@@ -154,7 +154,7 @@ const [sections, setSections] = useState([
       )
     );
   };
-  // ==========================================
+ // ==========================================
 // CUSTOM SECTIONS
 // ==========================================
 
@@ -163,7 +163,7 @@ const addSection = () => {
     ...sections,
     {
       title: "",
-      items: [""],
+      content: "",
     },
   ]);
 };
@@ -185,37 +185,13 @@ const updateSectionTitle = (
   setSections(updated);
 };
 
-const addItem = (sectionIndex) => {
-  const updated = [...sections];
-
-  updated[sectionIndex].items.push("");
-
-  setSections(updated);
-};
-
-const updateItem = (
-  sectionIndex,
-  itemIndex,
+const updateSectionContent = (
+  index,
   value
 ) => {
   const updated = [...sections];
 
-  updated[sectionIndex].items[itemIndex] =
-    value;
-
-  setSections(updated);
-};
-
-const removeItem = (
-  sectionIndex,
-  itemIndex
-) => {
-  const updated = [...sections];
-
-  updated[sectionIndex].items =
-    updated[sectionIndex].items.filter(
-      (_, i) => i !== itemIndex
-    );
+  updated[index].content = value;
 
   setSections(updated);
 };
@@ -537,94 +513,61 @@ const removeItem = (
 
   </div>
 
-  {sections.map((section, sectionIndex) => (
+  {sections.map((section, index) => (
 
-    <div
-      key={sectionIndex}
-      className="mb-8 rounded-xl border p-5"
-    >
+  <div
+    key={index}
+    className="mb-8 rounded-xl border p-5"
+  >
 
-      <div className="mb-4 flex gap-3">
+    <div className="mb-4 flex gap-3">
 
-        <input
-          type="text"
-          placeholder="Section Title"
-          value={section.title}
-          onChange={(e) =>
-            updateSectionTitle(
-              sectionIndex,
-              e.target.value
-            )
-          }
-          className="flex-1 rounded-lg border p-3"
-        />
-
-        <button
-          type="button"
-          onClick={() =>
-            removeSection(sectionIndex)
-          }
-          className="rounded-lg bg-red-500 px-4 text-white"
-        >
-          Delete
-        </button>
-
-      </div>
-
-      {section.items.map(
-        (item, itemIndex) => (
-
-          <div
-            key={itemIndex}
-            className="mb-3 flex gap-3"
-          >
-
-            <input
-              type="text"
-              placeholder="Item"
-              value={item}
-              onChange={(e) =>
-                updateItem(
-                  sectionIndex,
-                  itemIndex,
-                  e.target.value
-                )
-              }
-              className="flex-1 rounded-lg border p-3"
-            />
-
-            <button
-              type="button"
-              onClick={() =>
-                removeItem(
-                  sectionIndex,
-                  itemIndex
-                )
-              }
-              className="rounded-lg bg-red-500 px-4 text-white"
-            >
-              ×
-            </button>
-
-          </div>
-
-        )
-      )}
+      <input
+        type="text"
+        placeholder="Section Title"
+        value={section.title}
+        onChange={(e) =>
+          updateSectionTitle(
+            index,
+            e.target.value
+          )
+        }
+        className="flex-1 rounded-lg border p-3"
+      />
 
       <button
         type="button"
         onClick={() =>
-          addItem(sectionIndex)
+          removeSection(index)
         }
-        className="rounded-lg bg-green-600 px-4 py-2 text-white"
+        className="rounded-lg bg-red-500 px-4 text-white"
       >
-        + Add Item
+        Delete
       </button>
 
     </div>
 
-  ))}
+    <textarea
+      rows={8}
+      placeholder="Write anything here...
+Package details
+Pick-up Information
+Terms & Conditions
+Food Menu
+Important Notes"
+      value={section.content}
+      onChange={(e) =>
+        updateSectionContent(
+          index,
+          e.target.value
+        )
+      }
+      className="w-full rounded-lg border p-3"
+    />
 
+  </div>
+
+))}
 </section>
         {/* ================================= */}
         {/* IMAGES */}
