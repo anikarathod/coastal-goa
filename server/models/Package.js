@@ -112,15 +112,14 @@ const packageSchema = new mongoose.Schema(
         trim: true,
       },
     ],
-   sections: [
+  extraDetails: [
   {
     title: {
       type: String,
       trim: true,
     },
-    content: {
+    description: {
       type: String,
-      default: "",
       trim: true,
     },
   },

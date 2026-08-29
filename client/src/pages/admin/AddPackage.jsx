@@ -51,8 +51,12 @@ const [sections, setSections] = useState([
     },
   ]);
 
-  const [loading, setLoading] = useState(false);
-
+const [extraDetails, setExtraDetails] = useState([
+  {
+    title: "",
+    description: "",
+  },
+]);
   // ==========================================
   // BASIC FORM
   // ==========================================
@@ -255,9 +259,9 @@ const updateSectionContent = (
           )
         )
       );
-      formData.append(
-  "sections",
-  JSON.stringify(sections)
+     formData.append(
+  "extraDetails",
+  JSON.stringify(extraDetails)
 );
       // Cover
       if (coverImage) {
