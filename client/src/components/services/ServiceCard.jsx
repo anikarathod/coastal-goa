@@ -5,17 +5,18 @@ const ServiceCard = ({ service }) => {
   if (!service) return null;
 
   const {
-    _id,
-    title,
-    image,
-    category,
-    location,
-    price,
-    originalPrice,
-    rating = 5,
-    totalReviews = 0,
-    featured = false,
-  } = service;
+  _id,
+  title,
+  description,
+  image,
+  category,
+  location,
+  price,
+  originalPrice,
+  rating = 5,
+  totalReviews = 0,
+  featured = false,
+} = service;
 
   const discount =
     originalPrice && originalPrice > price
@@ -64,10 +65,15 @@ const ServiceCard = ({ service }) => {
             {category}
           </span>
         )}
+<h3 className="mt-2 truncate text-sm font-bold text-gray-900">
+  {title}
+</h3>
 
-        <h3 className="mt-2 truncate text-sm font-bold text-gray-900">
-          {title}
-        </h3>
+{description && (
+  <p className="mt-2 whitespace-pre-wrap text-xs text-gray-600 line-clamp-6">
+    {description}
+  </p>
+)}
 
         {location && (
           <div className="mt-1 flex items-center gap-1 text-[11px] text-gray-500">
