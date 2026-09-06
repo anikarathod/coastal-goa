@@ -120,31 +120,6 @@ const PackageDetails = () => {
 
       </div>
 
-      {/* Highlights */}
-      {packageData.highlights?.length > 0 && (
-        <div className="mt-12 rounded-2xl bg-white p-8 shadow-sm">
-
-          <h2 className="mb-6 text-2xl font-bold">
-            Highlights
-          </h2>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-
-            {packageData.highlights.map((item, index) => (
-              <div
-                key={index}
-                className="rounded-xl border p-4"
-              >
-                ✓ {item}
-              </div>
-            ))}
-
-          </div>
-
-        </div>
-      )}
-
-
       {/* Map */}
       {packageData.latitude &&
         packageData.longitude && (
