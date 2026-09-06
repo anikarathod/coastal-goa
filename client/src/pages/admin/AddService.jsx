@@ -44,58 +44,121 @@ const AddService = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const formData = new FormData();
+    const formData = new FormData();
 
-      Object.keys(form).forEach((key) => {
-        formData.append(key, form[key]);
-      });
+    formData.append("title", form.title);
+    formData.append("category", form.category);
+    formData.append(
+      "shortDescription",
+      form.shortDescription
+    );
+    formData.append(
+      "description",
+      form.description
+    );
+    formData.append(
+      "location",
+      form.location
+    );
+    formData.append(
+      "startingPrice",
+      form.startingPrice
+    );
+    formData.append(
+      "rating",
+      form.rating
+    );
+    formData.append(
+      "contactNumber",
+      form.contactNumber
+    );
+    formData.append(
+      "whatsappNumber",
+      form.whatsappNumber
+    );
 
-      if (coverImage) {
-        formData.append(
-          "coverImage",
-          coverImage
-        );
-      }
+    formData.append(
+      "features",
+      JSON.stringify(
+        form.features
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
 
-      galleryImages.forEach((file) => {
-        formData.append(
-          "galleryImages",
-          file
-        );
-      });
+    formData.append(
+      "amenities",
+      JSON.stringify(
+        form.amenities
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
 
-      await api.post(
-        "/services",
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
+    formData.append(
+      "highlights",
+      JSON.stringify(
+        form.highlights
+          .split("\n")
+          .filter(Boolean)
+      )
+    );
+
+    formData.append(
+      "featured",
+      form.featured
+    );
+
+    formData.append(
+      "isActive",
+      form.isActive
+    );
+
+    if (coverImage) {
+      formData.append(
+        "coverImage",
+        coverImage
       );
-
-      alert("Service Added");
-      navigate("/admin/services");
-
-    } catch (err) {
-      console.error(err);
-
-      alert(
-        err.response?.data?.message ||
-        "Failed to add service"
-      );
-    } finally {
-      setLoading(false);
     }
-  };
 
+    galleryImages.forEach((file) => {
+      formData.append(
+        "galleryImages",
+        file
+      );
+    });
+
+    await api.post(
+      "/services",
+      formData,
+      {
+        headers: {
+          "Content-Type":
+            "multipart/form-data",
+        },
+      }
+    );
+
+    alert("Service Added Successfully");
+    navigate("/admin/services");
+
+  } catch (err) {
+    console.error(err);
+
+    alert(
+      err.response?.data?.message ||
+      "Failed to add service"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="mx-auto max-w-6xl rounded-xl bg-white p-8 shadow">
 
@@ -117,12 +180,13 @@ const AddService = () => {
           className="rounded-lg border p-3"
         />
 
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          className="rounded-lg border p-3"
-        >
+       <select
+  name="category"
+  required
+  value={form.category}
+  onChange={handleChange}
+  className="rounded-lg border p-3"
+>
           <option value="">
             Select Category
           </option>
