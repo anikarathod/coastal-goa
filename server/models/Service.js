@@ -34,22 +34,32 @@ const serviceSchema = new mongoose.Schema(
       type: String,
       default: "Goa",
     },
+startingPrice: {
+  type: Number,
+  default: 0,
+},
 
-    duration: {
-      type: String,
-      default: "",
-    },
+contactNumber: {
+  type: String,
+  default: "",
+},
 
-    price: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
+whatsappNumber: {
+  type: String,
+  default: "",
+},
 
-    discountPrice: {
-      type: Number,
-      default: 0,
-    },
+amenities: [
+  {
+    type: String,
+  },
+],
+
+features: [
+  {
+    type: String,
+  },
+],
 
     // Changed from coverImage → image
     image: {
@@ -64,18 +74,6 @@ const serviceSchema = new mongoose.Schema(
     ],
 
     highlights: [
-      {
-        type: String,
-      },
-    ],
-
-    inclusions: [
-      {
-        type: String,
-      },
-    ],
-
-    exclusions: [
       {
         type: String,
       },
