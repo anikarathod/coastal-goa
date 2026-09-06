@@ -144,38 +144,6 @@ const PackageDetails = () => {
         </div>
       )}
 
-      {/* Inclusions & Exclusions */}
-      <div className="mt-12 grid gap-8 md:grid-cols-2">
-
-        <div className="rounded-2xl bg-white p-8 shadow-sm">
-
-          <h2 className="mb-6 text-2xl font-bold text-green-600">
-            What's Included
-          </h2>
-
-          {(packageData.inclusions || []).map((item, index) => (
-            <p key={index} className="mb-3">
-              ✓ {item}
-            </p>
-          ))}
-
-        </div>
-
-        <div className="rounded-2xl bg-white p-8 shadow-sm">
-
-          <h2 className="mb-6 text-2xl font-bold text-red-600">
-            What's Excluded
-          </h2>
-
-          {(packageData.exclusions || []).map((item, index) => (
-            <p key={index} className="mb-3">
-              ✗ {item}
-            </p>
-          ))}
-
-        </div>
-
-      </div>
 
       {/* Map */}
       {packageData.latitude &&
