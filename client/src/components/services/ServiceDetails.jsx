@@ -27,10 +27,9 @@ const ServiceDetails = ({ service }) => {
         </p>
       )}
 
-      <p className="mb-6 leading-7 text-gray-600">
-        {service.description}
-      </p>
-
+      <div className="mb-6 whitespace-pre-line rounded-xl bg-gray-50 p-6 leading-7 text-gray-600">
+  {service.description}
+</div>
       <div className="mb-8 grid gap-4 md:grid-cols-3">
 
         <div className="flex items-center gap-2 rounded-lg bg-gray-50 p-3">
