@@ -103,33 +103,53 @@ export const createService = async (req, res) => {
       strict: true,
     });
 
-    console.log("========== CREATE SERVICE ==========");
-    console.log("Body:", req.body);
-    console.log("File:", req.file);
-
-    if (req.file) {
-      console.log("Uploading to Cloudinary...");
-
-      const uploaded = await uploadToCloudinary(
-        req.file,
-        "coastal-goa/services"
-      );
-
-      console.log("Cloudinary Response:", uploaded);
-
-      // IMPORTANT
-      data.image = uploaded.secure_url;
-    } else {
-      console.log("❌ No file received");
+    if (req.body.features) {
+      data.features = JSON.parse(req.body.features);
     }
 
-    console.log("Final Data:", data);
+    if (req.body.amenities) {
+      data.amenities = JSON.parse(req.body.amenities);
+    }
 
-    const service = await Service.create(data);
+    if (req.body.highlights) {
+      data.highlights = JSON.parse(req.body.highlights);
+    }
+
+    const galleryUrls = [];
+
+    if (req.files?.coverImage?.[0]) {
+      const uploadedCover =
+        await uploadToCloudinary(
+          req.files.coverImage[0],
+          "coastal-goa/services"
+        );
+
+      data.image = uploadedCover.secure_url;
+    }
+
+    if (req.files?.galleryImages?.length) {
+      for (const file of req.files.galleryImages) {
+        const uploaded =
+          await uploadToCloudinary(
+            file,
+            "coastal-goa/services"
+          );
+
+        galleryUrls.push(
+          uploaded.secure_url
+        );
+      }
+
+      data.images = galleryUrls;
+    }
+
+    const service =
+      await Service.create(data);
 
     res.status(201).json({
       success: true,
-      message: "Service created successfully.",
+      message:
+        "Service created successfully.",
       service,
     });
   } catch (error) {
@@ -160,7 +180,17 @@ export const updateService = async (req, res) => {
     const data = {
       ...req.body,
     };
+    if (req.body.features) {
+  data.features = JSON.parse(req.body.features);
+}
 
+if (req.body.amenities) {
+  data.amenities = JSON.parse(req.body.amenities);
+}
+
+if (req.body.highlights) {
+  data.highlights = JSON.parse(req.body.highlights);
+}
     if (data.title) {
       data.slug = slugify(data.title, {
         lower: true,
@@ -168,14 +198,29 @@ export const updateService = async (req, res) => {
       });
     }
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file,
-        "coastal-goa/services"
-      );
+   const galleryUrls = [];
 
-      data.image = uploaded.secure_url;
-    }
+if (req.files?.coverImage?.[0]) {
+  const uploadedCover = await uploadToCloudinary(
+    req.files.coverImage[0],
+    "coastal-goa/services"
+  );
+
+  data.image = uploadedCover.secure_url;
+}
+
+if (req.files?.galleryImages?.length) {
+  for (const file of req.files.galleryImages) {
+    const uploaded = await uploadToCloudinary(
+      file,
+      "coastal-goa/services"
+    );
+
+    galleryUrls.push(uploaded.secure_url);
+  }
+
+  data.images = galleryUrls;
+}
 
     service = await Service.findByIdAndUpdate(
       req.params.id,

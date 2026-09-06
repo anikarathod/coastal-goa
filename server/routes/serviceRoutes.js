@@ -18,36 +18,48 @@ const router = express.Router();
    Public Routes
 =========================================== */
 
-// Featured Services
 router.get("/featured", getFeaturedServices);
 
-// All Services
 router.get("/", getServices);
 
-// Single Service (Slug)
 router.get("/:slug", getService);
 
 /* ===========================================
    Admin Routes
 =========================================== */
 
-// Create Service
 router.post(
   "/",
   authMiddleware,
-  upload.single("image"),
+  upload.fields([
+    {
+      name: "coverImage",
+      maxCount: 1,
+    },
+    {
+      name: "galleryImages",
+      maxCount: 20,
+    },
+  ]),
   createService
 );
 
-// Update Service
 router.put(
   "/:id",
   authMiddleware,
-  upload.single("image"),
+  upload.fields([
+    {
+      name: "coverImage",
+      maxCount: 1,
+    },
+    {
+      name: "galleryImages",
+      maxCount: 20,
+    },
+  ]),
   updateService
 );
 
-// Delete Service
 router.delete(
   "/:id",
   authMiddleware,
