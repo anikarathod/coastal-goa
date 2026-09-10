@@ -10,8 +10,7 @@ import { Link } from "react-router-dom";
 
 const PackageInfo = ({ packageData }) => {
   if (!packageData) return null;
-
-  const {
+const {
   title,
   description,
   location,
@@ -28,6 +27,7 @@ const PackageInfo = ({ packageData }) => {
   featured,
 } = packageData;
 
+console.log("Sections Data:", sections);
   const discount =
     discountPrice > 0
       ? Math.round(
@@ -112,8 +112,8 @@ const PackageInfo = ({ packageData }) => {
           </div>
         </div>
       )}
-        {/* Dynamic Sections */}
-{sections.length > 0 &&
+{/* Dynamic Sections */}
+{sections?.length > 0 &&
   sections.map((section, index) => (
     <div
       key={index}
@@ -123,15 +123,11 @@ const PackageInfo = ({ packageData }) => {
         {section.title}
       </h2>
 
-      <div className="grid gap-3">
-        {section.items?.map((item, itemIndex) => (
-          <div
-            key={itemIndex}
-            className="rounded-xl border border-gray-200 p-4"
-          >
-            {item}
-          </div>
-        ))}
+      <div className="whitespace-pre-wrap leading-8 text-gray-700">
+        {section.content ||
+          section.description ||
+          section.text ||
+          ""}
       </div>
     </div>
   ))}
