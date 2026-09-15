@@ -16,19 +16,16 @@ const GalleryPreview = () => {
       const res = await api.get("/gallery");
 
       console.log("Gallery Response:", res.data);
-      console.log(
-        "First Item:",
-        res.data.gallery?.[0] ||
-          res.data.images?.[0] ||
-          res.data.data?.[0]
-      );
 
-      setGallery(
+      const galleryData =
         res.data.gallery ||
         res.data.images ||
         res.data.data ||
-        []
-      );
+        [];
+
+      console.log("Gallery Data:", galleryData);
+
+      setGallery(galleryData);
     } catch (err) {
       console.error("Error fetching gallery:", err);
       setGallery([]);
@@ -39,6 +36,7 @@ const GalleryPreview = () => {
 
   const getImageUrl = (item) => {
     let image =
+      item.fileUrl ||
       item.image ||
       item.imageUrl ||
       item.coverImage ||
@@ -54,6 +52,7 @@ const GalleryPreview = () => {
 
     if (typeof image === "object") {
       image =
+        image.fileUrl ||
         image.url ||
         image.imageUrl ||
         image.secure_url ||
@@ -61,22 +60,7 @@ const GalleryPreview = () => {
         image.src;
     }
 
-    if (!image) {
-      return "https://placehold.co/600x400?text=No+Image";
-    }
-
-    if (
-      image.startsWith("http://") ||
-      image.startsWith("https://")
-    ) {
-      return image;
-    }
-
-    if (image.startsWith("/")) {
-      return `https://coastal-goa-api.onrender.com${image}`;
-    }
-
-    return image;
+    return image || "https://placehold.co/600x400?text=No+Image";
   };
 
   if (loading) {
