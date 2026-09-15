@@ -12,28 +12,35 @@ const GalleryPreview = () => {
   }, []);
 
   const fetchGallery = async () => {
-  try {
-    const res = await api.get("/gallery");
+    try {
+      const res = await api.get("/gallery");
 
-    console.log("Gallery Response:", res.data);
+      console.log("Gallery Response:", res.data);
+      console.log(
+        "First Item:",
+        res.data.gallery?.[0] ||
+          res.data.images?.[0] ||
+          res.data.data?.[0]
+      );
 
-    setGallery(
-      res.data.gallery ||
-      res.data.images ||
-      res.data.data ||
-      []
-    );
-  } catch (err) {
-    console.error("Error fetching gallery:", err);
-    setGallery([]);
-  } finally {
-    setLoading(false);
-  }
-};
+      setGallery(
+        res.data.gallery ||
+        res.data.images ||
+        res.data.data ||
+        []
+      );
+    } catch (err) {
+      console.error("Error fetching gallery:", err);
+      setGallery([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getImageUrl = (item) => {
-    const image =
+    let image =
       item.image ||
+      item.imageUrl ||
       item.coverImage ||
       item.url ||
       item.secure_url ||
@@ -46,13 +53,16 @@ const GalleryPreview = () => {
     }
 
     if (typeof image === "object") {
-      return (
+      image =
         image.url ||
+        image.imageUrl ||
         image.secure_url ||
         image.path ||
-        image.src ||
-        "https://placehold.co/600x400?text=No+Image"
-      );
+        image.src;
+    }
+
+    if (!image) {
+      return "https://placehold.co/600x400?text=No+Image";
     }
 
     if (
@@ -63,7 +73,7 @@ const GalleryPreview = () => {
     }
 
     if (image.startsWith("/")) {
-      return `http://localhost:5000${image}`;
+      return `https://coastal-goa-api.onrender.com${image}`;
     }
 
     return image;
@@ -76,7 +86,6 @@ const GalleryPreview = () => {
   return (
     <section className="bg-gray-100 py-16">
       <div className="mx-auto max-w-7xl px-4">
-
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
             Explore Goa Through Our Gallery
@@ -93,9 +102,9 @@ const GalleryPreview = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {gallery.slice(0, 8).map((item) => (
+            {gallery.slice(0, 8).map((item, index) => (
               <div
-                key={item._id}
+                key={item._id || index}
                 className="overflow-hidden rounded-xl shadow-md"
               >
                 <img
@@ -103,6 +112,7 @@ const GalleryPreview = () => {
                   alt={item.title || "Gallery"}
                   className="h-40 w-full object-cover transition duration-500 hover:scale-110"
                   onError={(e) => {
+                    console.log("Failed Image:", item);
                     e.target.src =
                       "https://placehold.co/600x400?text=No+Image";
                   }}
@@ -120,7 +130,6 @@ const GalleryPreview = () => {
             View Full Gallery
           </Link>
         </div>
-
       </div>
     </section>
   );
