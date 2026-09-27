@@ -6,7 +6,7 @@ import {
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[75vh] md:min-h-[85vh] lg:min-h-screen overflow-hidden">
+    <section className="relative overflow-hidden">
 
       {/* Background Image */}
       <div
@@ -18,61 +18,60 @@ const Hero = () => {
       />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />
+      <div className="absolute inset-0 bg-black/60" />
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[75vh] md:min-h-[85vh] lg:min-h-screen items-center">
+      <div className="relative z-10 flex min-h-[70vh] sm:min-h-[80vh] lg:min-h-screen items-center">
 
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12">
 
-          <div className="max-w-xl lg:max-w-4xl text-white">
+          <div className="max-w-4xl text-center lg:text-left">
 
             {/* Badge */}
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-md">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
 
               <FaMapMarkerAlt className="text-cyan-400" />
 
-              <span className="text-xs sm:text-sm">
+              <span className="text-xs font-medium text-white sm:text-sm">
                 Explore the Beauty of Goa
               </span>
 
             </div>
 
             {/* Heading */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight">
+            <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
 
               Experience
 
-              <br />
-
-              <span className="text-cyan-400">
+              <span className="block text-cyan-400">
                 Coastal Goa
               </span>
 
             </h1>
 
             {/* Description */}
-            <p className="mt-4 max-w-lg text-sm sm:text-lg md:text-xl leading-6 md:leading-8 text-gray-200">
+            <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-gray-200 sm:text-lg md:text-xl md:leading-8 lg:mx-0">
 
               Discover Goa with sightseeing tours,
-              water sports, cruises, hotels and
-              airport transfers.
+              water sports, cruises, hotels,
+              airport transfers, yacht rentals,
+              and unforgettable holiday experiences.
 
             </p>
 
             {/* Buttons */}
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-nowrap">
 
               <Link
                 to="/packages"
-                className="w-full sm:w-auto text-center rounded-xl bg-cyan-500 px-5 py-3 md:px-8 md:py-4 font-semibold text-white shadow-lg transition hover:bg-cyan-600"
+                className="w-full rounded-xl bg-cyan-500 px-6 py-3 text-center font-semibold text-white transition hover:bg-cyan-600 sm:w-auto"
               >
                 Explore Packages
               </Link>
 
               <Link
                 to="/contact"
-                className="w-full sm:w-auto text-center rounded-xl border-2 border-white px-5 py-3 md:px-8 md:py-4 font-semibold text-white transition hover:bg-white hover:text-black"
+                className="w-full rounded-xl border-2 border-white px-6 py-3 text-center font-semibold text-white transition hover:bg-white hover:text-black sm:w-auto"
               >
                 Contact Us
               </Link>
@@ -81,11 +80,46 @@ const Hero = () => {
                 href="https://wa.me/919175884119"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-green-500 px-5 py-3 md:px-8 md:py-4 font-semibold text-white shadow-lg transition hover:bg-green-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3 font-semibold text-white transition hover:bg-green-600 sm:w-auto"
               >
                 <FaWhatsapp />
                 WhatsApp
               </a>
+
+            </div>
+
+            {/* Stats */}
+            <div className="mt-8 grid grid-cols-3 gap-2 border-t border-white/20 pt-6 text-center lg:text-left">
+
+              <div>
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                  500+
+                </h3>
+
+                <p className="text-xs text-gray-300 sm:text-sm">
+                  Happy Travelers
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                  50+
+                </h3>
+
+                <p className="text-xs text-gray-300 sm:text-sm">
+                  Tour Packages
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                  24/7
+                </h3>
+
+                <p className="text-xs text-gray-300 sm:text-sm">
+                  Support
+                </p>
+              </div>
 
             </div>
 
@@ -96,11 +130,15 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 xl:block">
 
-        <div className="flex h-12 w-7 justify-center rounded-full border-2 border-white">
+        <div className="animate-bounce">
 
-          <div className="mt-2 h-3 w-1 rounded-full bg-white" />
+          <div className="flex h-12 w-7 justify-center rounded-full border-2 border-white">
+
+            <div className="mt-2 h-3 w-1 rounded-full bg-white" />
+
+          </div>
 
         </div>
 

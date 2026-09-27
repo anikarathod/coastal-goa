@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://coastal-goa-api.onrender.com/api",
+    "https://coastal-goa-production.up.railway.app/api",
 });
 
 api.interceptors.request.use(

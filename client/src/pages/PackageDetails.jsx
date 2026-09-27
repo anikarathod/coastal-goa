@@ -60,7 +60,7 @@ const PackageDetails = () => {
   }
 
  return (
-  <section className="bg-gray-50 min-h-screen">
+  <section className="min-h-screen bg-gray-50">
 
     {/* Gallery */}
     <PackageGallery
@@ -70,48 +70,52 @@ const PackageDetails = () => {
       ].filter(Boolean)}
     />
 
-    <div className="mx-auto max-w-7xl px-6 py-12">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
 
       {/* Package Info */}
-      <div className="rounded-2xl bg-white p-8 shadow-sm">
+      <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-6 lg:p-8">
 
         <PackageInfo packageData={packageData} />
 
         {/* Quick Stats */}
-        <div className="mt-8 grid gap-4 md:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
 
-          <div className="rounded-xl border p-4">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-xl border p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">
               Location
             </p>
-            <p className="font-semibold">
+
+            <p className="mt-1 text-sm font-semibold sm:text-base">
               {packageData.location || "N/A"}
             </p>
           </div>
 
-          <div className="rounded-xl border p-4">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-xl border p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">
               Duration
             </p>
-            <p className="font-semibold">
+
+            <p className="mt-1 text-sm font-semibold sm:text-base">
               {packageData.duration || "N/A"}
             </p>
           </div>
 
-          <div className="rounded-xl border p-4">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-xl border p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">
               Category
             </p>
-            <p className="font-semibold">
+
+            <p className="mt-1 text-sm font-semibold sm:text-base">
               {packageData.category || "N/A"}
             </p>
           </div>
 
-          <div className="rounded-xl border p-4">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-xl border p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">
               Rating
             </p>
-            <p className="font-semibold">
+
+            <p className="mt-1 text-sm font-semibold sm:text-base">
               ⭐ {packageData.rating || "4.8"}
             </p>
           </div>
@@ -121,25 +125,24 @@ const PackageDetails = () => {
       </div>
 
       {/* Map */}
-      {packageData.latitude &&
-        packageData.longitude && (
-          <div className="mt-12 rounded-2xl bg-white p-8 shadow-sm">
+      {packageData.latitude && packageData.longitude && (
+        <div className="mt-8 rounded-2xl bg-white p-4 shadow-sm sm:mt-10 sm:p-6 lg:mt-12 lg:p-8">
 
-            <h2 className="mb-6 text-2xl font-bold">
-              Location
-            </h2>
+          <h2 className="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">
+            Location
+          </h2>
 
-            <PackageMap
-              latitude={packageData.latitude}
-              longitude={packageData.longitude}
-              address={packageData.location}
-            />
+          <PackageMap
+            latitude={packageData.latitude}
+            longitude={packageData.longitude}
+            address={packageData.location}
+          />
 
-          </div>
-        )}
+        </div>
+      )}
 
-      {/* Related Packages */}
-      <section className="mt-16">
+         {/* Related Packages */}
+      <section className="mt-10 sm:mt-12 lg:mt-16">
         <RelatedPackages
           packageId={packageData._id}
         />

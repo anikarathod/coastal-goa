@@ -26,76 +26,81 @@ const PackageCard = ({ packageData }) => {
   return (
     <Link
       to={`/packages/${slug}`}
-      className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
     >
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative h-52 sm:h-56 md:h-64 overflow-hidden">
+
         <img
           src={
             coverImage ||
-            "https://placehold.co/400x400?text=Package"
+            "https://placehold.co/600x400?text=Package"
           }
           alt={title}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
           onError={(e) => {
             e.target.src =
-              "https://placehold.co/400x400?text=Package";
+              "https://placehold.co/600x400?text=Package";
           }}
         />
 
         {featured && (
-          <span className="absolute left-2 top-2 rounded-full bg-cyan-600 px-2 py-1 text-[9px] font-semibold text-white">
+          <span className="absolute left-3 top-3 rounded-full bg-cyan-600 px-3 py-1 text-xs font-semibold text-white">
             Featured
           </span>
         )}
 
         {discount > 0 && (
-          <span className="absolute right-2 top-2 rounded-full bg-red-500 px-2 py-1 text-[9px] font-semibold text-white">
+          <span className="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
             {discount}% OFF
           </span>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-3">
-        <h3 className="truncate text-sm font-bold text-gray-900">
+      <div className="p-4">
+
+        <h3 className="line-clamp-2 min-h-[56px] text-lg font-bold text-gray-900">
           {title}
         </h3>
 
         {location && (
-          <div className="mt-1 flex items-center gap-1 text-[11px] text-gray-500">
+          <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
             <FaMapMarkerAlt className="text-cyan-600" />
             <span>{location}</span>
           </div>
         )}
 
-        <div className="mt-1 flex items-center gap-1">
-          <FaStar className="text-[10px] text-yellow-400" />
-          <span className="text-[10px]">
+        <div className="mt-2 flex items-center gap-1">
+          <FaStar className="text-yellow-400" />
+          <span className="text-sm font-medium">
             {rating}
           </span>
-          <span className="text-[10px] text-gray-400">
-            ({reviews})
+          <span className="text-sm text-gray-500">
+            ({reviews} reviews)
           </span>
         </div>
 
-        <div className="mt-2 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
+
           <div>
             {originalPrice > price && (
-              <p className="text-[9px] text-gray-400 line-through">
+              <p className="text-sm text-gray-400 line-through">
                 ₹{originalPrice}
               </p>
             )}
 
-            <p className="text-lg font-bold text-cyan-600">
+            <p className="text-2xl font-bold text-cyan-600">
               ₹{price}
             </p>
           </div>
 
-          <span className="rounded-lg bg-cyan-600 px-2 py-1 text-[10px] font-semibold text-white">
-            View
+          <span className="rounded-xl bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700">
+            View Details
           </span>
+
         </div>
+
       </div>
     </Link>
   );

@@ -20,7 +20,7 @@ const Services = () => {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 9,
+    limit: 12,
     totalPages: 1,
     totalItems: 0,
   });
@@ -42,15 +42,16 @@ const Services = () => {
         },
       });
 
-      setServices(res.data.services || []);
+      setServices(res.data?.services || []);
 
       setPagination((prev) => ({
         ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
+        totalPages: res.data?.totalPages || 1,
+        totalItems: res.data?.totalItems || 0,
       }));
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching services:", err);
+      setServices([]);
     } finally {
       setLoading(false);
     }
@@ -72,25 +73,21 @@ const Services = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
-
-        <div className="mb-12 text-center">
-
-          <h1 className="text-4xl font-bold text-gray-900">
+        <div className="mb-8 text-center sm:mb-10 lg:mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
             Our Services
           </h1>
 
-          <p className="mt-4 text-gray-600">
+          <p className="mt-3 text-sm text-gray-600 sm:text-base">
             Everything you need for an unforgettable Goa trip.
           </p>
-
         </div>
 
         {/* Search */}
-
         <SearchBar
           value={search}
           onChange={setSearch}
@@ -98,8 +95,7 @@ const Services = () => {
         />
 
         {/* Filters */}
-
-        <div className="my-8 grid gap-4 md:grid-cols-4">
+        <div className="my-6 grid gap-4 md:grid-cols-4">
 
           <select
             value={filters.category}
@@ -112,11 +108,11 @@ const Services = () => {
             className="rounded-lg border p-3"
           >
             <option value="">All Categories</option>
-            <option>Transport</option>
-            <option>Adventure</option>
-            <option>Accommodation</option>
-            <option>Cruise</option>
-            <option>Rental</option>
+            <option value="Transport">Transport</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Accommodation">Accommodation</option>
+            <option value="Cruise">Cruise</option>
+            <option value="Rental">Rental</option>
           </select>
 
           <select
@@ -130,10 +126,10 @@ const Services = () => {
             className="rounded-lg border p-3"
           >
             <option value="">All Locations</option>
-            <option>North Goa</option>
-            <option>South Goa</option>
-            <option>Panjim</option>
-            <option>Calangute</option>
+            <option value="North Goa">North Goa</option>
+            <option value="South Goa">South Goa</option>
+            <option value="Panjim">Panjim</option>
+            <option value="Calangute">Calangute</option>
           </select>
 
           <select
@@ -147,42 +143,30 @@ const Services = () => {
             className="rounded-lg border p-3"
           >
             <option value="latest">Newest</option>
-            <option value="priceLow">
-              Price: Low to High
-            </option>
-            <option value="priceHigh">
-              Price: High to Low
-            </option>
-            <option value="rating">
-              Highest Rated
-            </option>
+            <option value="priceLow">Price: Low to High</option>
+            <option value="priceHigh">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
           </select>
 
           <button
             onClick={resetFilters}
-            className="rounded-lg bg-red-500 px-4 py-3 text-white hover:bg-red-600"
+            className="rounded-lg bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
           >
             Reset Filters
           </button>
 
         </div>
 
-        {/* Results */}
-
-        <div className="mb-6 flex items-center justify-between">
-
-          <h2 className="text-xl font-semibold">
-
+        {/* Results Count */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-900">
             {pagination.totalItems} Services Found
-
           </h2>
-
         </div>
 
-        {/* Grid */}
-
+        {/* Services Grid */}
         {loading ? (
-          <div className="flex justify-center py-24">
+          <div className="flex justify-center py-20">
             <Loader />
           </div>
         ) : (
@@ -190,10 +174,8 @@ const Services = () => {
         )}
 
         {/* Pagination */}
-
         {!loading && pagination.totalPages > 1 && (
-          <div className="mt-12 flex justify-center">
-
+          <div className="mt-10 flex justify-center">
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
@@ -204,9 +186,9 @@ const Services = () => {
                 }))
               }
             />
-
           </div>
         )}
+
       </div>
     </section>
   );

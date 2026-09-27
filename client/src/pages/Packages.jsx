@@ -24,7 +24,7 @@ const Packages = () => {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 9,
+    limit: 12,
     totalPages: 1,
     totalItems: 0,
   });
@@ -46,15 +46,16 @@ const Packages = () => {
         },
       });
 
-      setPackages(res.data.packages || []);
+      setPackages(res.data?.packages || []);
 
       setPagination((prev) => ({
         ...prev,
-        totalPages: res.data.totalPages,
-        totalItems: res.data.totalItems,
+        totalPages: res.data?.totalPages || 1,
+        totalItems: res.data?.totalItems || 0,
       }));
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching packages:", err);
+      setPackages([]);
     } finally {
       setLoading(false);
     }
@@ -79,95 +80,68 @@ const Packages = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-16">
+    <section className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-
-        <div className="mb-12 text-center">
-
-          <h1 className="text-4xl font-bold text-gray-900">
+        {/* Page Heading */}
+        <div className="mb-8 text-center sm:mb-10 lg:mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
             Goa Tour Packages
           </h1>
 
-          <p className="mt-4 text-gray-600">
-            Choose from our best-selling Goa tour packages.
+          <p className="mt-3 text-sm text-gray-600 sm:text-base">
+            Choose from our best-selling Goa tour packages and experiences.
           </p>
-
         </div>
 
         {/* Search */}
-
         <PackageSearch
           value={search}
           onChange={setSearch}
         />
 
         {/* Filters */}
-
-        <div className="my-8">
-
+        <div className="my-6 sm:my-8">
           <PackageFilter
             filters={filters}
             setFilters={setFilters}
             onReset={resetFilters}
           />
-
         </div>
 
-        {/* Results */}
-
-        <div className="mb-6 flex items-center justify-between">
-
-          <h2 className="text-xl font-semibold">
-
+        {/* Results Count */}
+        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">
             {pagination.totalItems} Packages Found
-
           </h2>
-
         </div>
 
-        {/* Grid */}
-
+        {/* Package Grid */}
         {loading ? (
-
-          <div className="flex justify-center py-24">
-
+          <div className="flex justify-center py-20">
             <Loader />
-
           </div>
-
         ) : (
-
           <PackageGrid packages={packages} />
-
         )}
 
         {/* Pagination */}
-
-        {!loading &&
-          pagination.totalPages > 1 && (
-
-            <div className="mt-12 flex justify-center">
-
-              <Pagination
-                currentPage={pagination.page}
-                totalPages={pagination.totalPages}
-                onPageChange={(page) =>
-                  setPagination((prev) => ({
-                    ...prev,
-                    page,
-                  }))
-                }
-              />
-
-            </div>
-
-          )}
+        {!loading && pagination.totalPages > 1 && (
+          <div className="mt-10 flex justify-center sm:mt-12">
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+              onPageChange={(page) =>
+                setPagination((prev) => ({
+                  ...prev,
+                  page,
+                }))
+              }
+            />
+          </div>
+        )}
 
       </div>
-
     </section>
   );
 };

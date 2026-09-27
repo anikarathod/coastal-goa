@@ -22,13 +22,13 @@ const Gallery = () => {
 
       const res = await api.get("/gallery");
 
-      console.log("Gallery Response:", res.data);
+      const galleryData =
+        res.data?.gallery ||
+        res.data?.images ||
+        res.data?.data ||
+        [];
 
-      setImages(
-        Array.isArray(res.data.gallery)
-          ? res.data.gallery
-          : []
-      );
+      setImages(Array.isArray(galleryData) ? galleryData : []);
     } catch (err) {
       console.error("Gallery Error:", err);
       setImages([]);
@@ -68,26 +68,21 @@ const Gallery = () => {
   }, [images, search, category]);
 
   return (
-    <section className="bg-gray-50 py-16">
-
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
-
-        <div className="mb-12 text-center">
-
-          <h1 className="text-4xl font-bold text-gray-900">
+        <div className="mb-8 text-center sm:mb-10 lg:mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
             Gallery
           </h1>
 
-          <p className="mt-4 text-gray-600">
+          <p className="mt-3 text-sm text-gray-600 sm:text-base">
             Explore beautiful memories captured during our Goa tours.
           </p>
-
         </div>
 
         {/* Search */}
-
         <SearchBar
           value={search}
           onChange={setSearch}
@@ -95,15 +90,13 @@ const Gallery = () => {
         />
 
         {/* Categories */}
-
-        <div className="my-8 flex flex-wrap justify-center gap-3">
+        <div className="my-6 flex flex-wrap justify-center gap-2 sm:gap-3">
 
           {categories.map((item) => (
-
             <button
               key={item}
               onClick={() => setCategory(item)}
-              className={`rounded-full px-5 py-2 transition ${
+              className={`rounded-full px-4 py-2 text-sm transition sm:px-5 ${
                 category === item
                   ? "bg-cyan-600 text-white"
                   : "bg-white text-gray-700 shadow hover:bg-cyan-100"
@@ -111,29 +104,20 @@ const Gallery = () => {
             >
               {item}
             </button>
-
           ))}
 
         </div>
 
-        {/* Gallery */}
-
+        {/* Gallery Grid */}
         {loading ? (
-
-          <div className="flex justify-center py-24">
+          <div className="flex justify-center py-20">
             <Loader />
           </div>
-
         ) : (
-
-          <GalleryGrid
-            images={filteredImages}
-          />
-
+          <GalleryGrid images={filteredImages} />
         )}
 
       </div>
-
     </section>
   );
 };

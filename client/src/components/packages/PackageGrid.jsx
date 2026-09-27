@@ -36,9 +36,11 @@ const PackageGrid = ({
 
   return (
     <section className="py-4">
-      {/* Package Count */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-900">
+
+      {/* Header */}
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+        <h2 className="text-2xl font-bold text-gray-900">
           Tour Packages
         </h2>
 
@@ -46,19 +48,23 @@ const PackageGrid = ({
           {packages.length} Package
           {packages.length !== 1 && "s"} Found
         </p>
+
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      {/* Responsive Grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
         {packages.map((pkg) => (
           <PackageCard
             key={pkg._id}
             packageData={pkg}
           />
         ))}
+
       </div>
+
     </section>
   );
 };
 
-export default PackageGrid; 
+export default PackageGrid;

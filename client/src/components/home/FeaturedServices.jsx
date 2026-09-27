@@ -15,16 +15,16 @@ const FeaturedServices = () => {
 
   const fetchServices = async () => {
     try {
+      setLoading(true);
+
       const res = await api.get("/services");
 
-      console.log("Services Response:", res.data);
-
       const servicesData =
-        res.data.services ||
-        res.data.data ||
+        res.data?.services ||
+        res.data?.data ||
         [];
 
-      setServices(servicesData.slice(0, 10));
+      setServices(servicesData.slice(0, 8));
     } catch (error) {
       console.error("Error fetching services:", error);
       setServices([]);
@@ -35,32 +35,37 @@ const FeaturedServices = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex justify-center py-16">
         <Loader />
       </div>
     );
   }
 
   return (
-    <section className="bg-gray-50 py-12">
-      <div className="mx-auto max-w-7xl px-4">
+    <section className="bg-gray-50 py-10 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+        {/* Heading */}
+        <div className="mb-10 text-center">
+
+          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
             Our Premium Services
           </h2>
 
-          <p className="mt-2 text-gray-600">
-            Everything you need for the perfect Goa vacation.
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600 sm:text-base">
+            Everything you need for the perfect Goa vacation — transport,
+            rentals, water sports, cruises, hotels and more.
           </p>
+
         </div>
 
+        {/* Services Grid */}
         {services.length === 0 ? (
-          <div className="py-10 text-center text-red-500">
+          <div className="py-16 text-center text-red-500">
             No services found.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((service) => (
               <ServiceCard
                 key={service._id}
@@ -70,10 +75,11 @@ const FeaturedServices = () => {
           </div>
         )}
 
-        <div className="mt-8 text-center">
+        {/* View All Button */}
+        <div className="mt-10 text-center">
           <Link
             to="/services"
-            className="inline-flex items-center rounded-lg bg-cyan-600 px-5 py-2 text-sm font-semibold text-white hover:bg-cyan-700"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-cyan-700 hover:shadow-xl"
           >
             View All Services
           </Link>

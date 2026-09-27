@@ -3,8 +3,16 @@ import ServiceCard from "./ServiceCard";
 const ServiceGrid = ({ services = [] }) => {
   if (!services.length) {
     return (
-      <div className="py-10 text-center text-gray-500">
-        No services found.
+      <div className="py-20 text-center">
+
+        <h2 className="text-xl font-bold text-gray-700">
+          No Services Found
+        </h2>
+
+        <p className="mt-2 text-gray-500">
+          Try adjusting your search or filters.
+        </p>
+
       </div>
     );
   }
@@ -12,9 +20,10 @@ const ServiceGrid = ({ services = [] }) => {
   return (
     <section className="py-4">
 
-      {/* Heading */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+      {/* Header */}
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+        <h2 className="text-2xl font-bold text-gray-900">
           Services
         </h2>
 
@@ -22,16 +31,19 @@ const ServiceGrid = ({ services = [] }) => {
           {services.length} Service
           {services.length !== 1 && "s"} Found
         </p>
+
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+      {/* Responsive Grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
         {services.map((service) => (
           <ServiceCard
             key={service._id}
             service={service}
           />
         ))}
+
       </div>
 
     </section>

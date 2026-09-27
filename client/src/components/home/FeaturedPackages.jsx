@@ -19,16 +19,12 @@ const FeaturedPackages = () => {
 
       const res = await api.get("/packages");
 
-      console.log("Packages Response:", res.data);
-
       const packagesData =
         res.data?.packages ||
         res.data?.data ||
         [];
 
-      console.log("Packages Array:", packagesData);
-
-      setPackages(packagesData.slice(0, 10));
+      setPackages(packagesData.slice(0, 8));
     } catch (err) {
       console.error("Error fetching packages:", err);
       setPackages([]);
@@ -39,34 +35,36 @@ const FeaturedPackages = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex justify-center py-16">
         <Loader />
       </div>
     );
   }
 
   return (
-    <section className="bg-gray-50 py-12">
-      <div className="mx-auto max-w-7xl px-4">
+    <section className="bg-gray-50 py-10 sm:py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+        <div className="mb-10 text-center">
+
+          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
             Popular Tour Packages
           </h2>
 
-          <p className="mt-2 text-gray-600">
-            Discover our most loved Goa experiences.
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600 sm:text-base">
+            Discover our most loved Goa experiences and create unforgettable memories.
           </p>
+
         </div>
 
-        {/* Packages */}
+        {/* Packages Grid */}
         {packages.length === 0 ? (
-          <div className="py-10 text-center text-red-500">
+          <div className="py-16 text-center text-red-500">
             No packages found.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {packages.map((pkg) => (
               <PackageCard
                 key={pkg._id}
@@ -76,11 +74,11 @@ const FeaturedPackages = () => {
           </div>
         )}
 
-        {/* View All */}
-        <div className="mt-8 text-center">
+        {/* View All Button */}
+        <div className="mt-10 text-center">
           <Link
             to="/packages"
-            className="inline-flex items-center rounded-lg bg-cyan-600 px-5 py-2 text-sm font-semibold text-white hover:bg-cyan-700"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-cyan-700 hover:shadow-xl"
           >
             View All Packages
           </Link>
