@@ -11,93 +11,95 @@ const features = [
   {
     id: 1,
     icon: <FaMapMarkedAlt />,
-    title: "Local Goa Experts",
-    description:
-      "Our experienced local team knows Goa inside out, helping you discover famous attractions and hidden gems.",
+    title: "Local Experts",
+    description: "Experienced Goa specialists.",
   },
   {
     id: 2,
     icon: <FaMoneyBillWave />,
-    title: "Best Price Guarantee",
-    description:
-      "Enjoy transparent pricing with no hidden charges and the best value for your Goa vacation.",
+    title: "Best Prices",
+    description: "No hidden charges.",
   },
   {
     id: 3,
     icon: <FaShieldAlt />,
-    title: "Safe & Secure",
-    description:
-      "Travel with confidence through verified partners, licensed operators, and secure online bookings.",
+    title: "Safe Booking",
+    description: "Verified operators only.",
   },
   {
     id: 4,
     icon: <FaHeadset />,
-    title: "24/7 Customer Support",
-    description:
-      "Our dedicated support team is always available to help you before, during, and after your trip.",
+    title: "24/7 Support",
+    description: "Always available.",
   },
   {
     id: 5,
     icon: <FaUsers />,
-    title: "5000+ Happy Travelers",
-    description:
-      "Thousands of customers have trusted Coastal Goa for unforgettable Goa experiences.",
+    title: "5000+ Travelers",
+    description: "Trusted by tourists.",
   },
   {
     id: 6,
     icon: <FaAward />,
-    title: "Top Rated Tours",
-    description:
-      "From sightseeing to luxury cruises, every experience is carefully selected for quality.",
+    title: "Top Rated",
+    description: "Premium experiences.",
   },
 ];
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="container mx-auto px-6">
+    <section className="bg-white py-12 lg:py-16">
 
-        {/* Section Header */}
-        <div className="mb-16 text-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        {/* Heading */}
+        <div className="mb-10 text-center">
+
           <span className="inline-block rounded-full bg-cyan-100 px-4 py-2 text-sm font-semibold text-cyan-700">
             WHY CHOOSE US
           </span>
 
-          <h2 className="mt-5 text-4xl font-bold text-gray-900 md:text-5xl">
+          <h2 className="mt-4 text-3xl font-bold text-gray-900 lg:text-4xl">
             Why Travelers Love
-            <span className="text-cyan-600"> Coastal Goa</span>
+            <span className="text-cyan-600">
+              {" "}Coastal Goa
+            </span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-3xl text-lg text-gray-600">
-            We are committed to making every Goa trip enjoyable,
-            affordable, safe, and unforgettable through premium tours
-            and personalized service.
+          <p className="mx-auto mt-3 max-w-2xl text-gray-600">
+            Affordable, safe and unforgettable Goa experiences.
           </p>
+
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Cards */}
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+
           {features.map((item) => (
             <div
               key={item.id}
-              className="group rounded-2xl bg-white p-8 shadow-lg transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl"
+              className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-cyan-100 text-3xl text-cyan-600 transition-all group-hover:bg-cyan-600 group-hover:text-white">
+
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-100 text-xl text-cyan-600">
                 {item.icon}
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-900">
+              <h3 className="text-sm font-bold text-gray-900 md:text-lg">
                 {item.title}
               </h3>
 
-              <p className="mt-4 leading-7 text-gray-600">
+              <p className="mt-2 text-xs text-gray-600 md:text-sm">
                 {item.description}
               </p>
+
             </div>
           ))}
+
         </div>
 
       </div>
+
     </section>
   );
 };

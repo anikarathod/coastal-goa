@@ -42,49 +42,92 @@ const FeaturedPackages = () => {
   }
 
   return (
-    <section className="bg-gray-50 py-10 sm:py-12 lg:py-16">
+    <section className="bg-white py-12 lg:py-16">
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
-        <div className="mb-10 text-center">
+        <div className="mb-8 flex items-center justify-between">
 
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
-            Popular Tour Packages
-          </h2>
+          <div>
 
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600 sm:text-base">
-            Discover our most loved Goa experiences and create unforgettable memories.
-          </p>
+            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
+              Popular Tour Packages
+            </h2>
+
+            <p className="mt-2 text-sm text-gray-600 sm:text-base">
+              Discover our most loved Goa experiences.
+            </p>
+
+          </div>
+
+          <Link
+            to="/packages"
+            className="hidden text-cyan-600 font-semibold hover:text-cyan-700 md:block"
+          >
+            View All →
+          </Link>
 
         </div>
 
-        {/* Packages Grid */}
+        {/* Packages */}
         {packages.length === 0 ? (
+
           <div className="py-16 text-center text-red-500">
             No packages found.
           </div>
+
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {packages.map((pkg) => (
-              <PackageCard
-                key={pkg._id}
-                packageData={pkg}
-              />
-            ))}
-          </div>
+
+          <>
+            {/* Mobile Horizontal Scroll */}
+            <div className="flex gap-4 overflow-x-auto pb-4 lg:hidden">
+
+              {packages.map((pkg) => (
+
+                <div
+                  key={pkg._id}
+                  className="min-w-[280px] max-w-[280px] flex-shrink-0"
+                >
+                  <PackageCard packageData={pkg} />
+                </div>
+
+              ))}
+
+            </div>
+
+            {/* Desktop Grid */}
+            <div className="hidden lg:grid lg:grid-cols-4 gap-6">
+
+              {packages.map((pkg) => (
+
+                <PackageCard
+                  key={pkg._id}
+                  packageData={pkg}
+                />
+
+              ))}
+
+            </div>
+
+          </>
+
         )}
 
-        {/* View All Button */}
-        <div className="mt-10 text-center">
+        {/* Mobile View All Button */}
+        <div className="mt-8 text-center md:hidden">
+
           <Link
             to="/packages"
-            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-cyan-700 hover:shadow-xl"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-cyan-700"
           >
             View All Packages
           </Link>
+
         </div>
 
       </div>
+
     </section>
   );
 };

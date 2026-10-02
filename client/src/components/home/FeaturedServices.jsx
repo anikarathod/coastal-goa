@@ -42,50 +42,90 @@ const FeaturedServices = () => {
   }
 
   return (
-    <section className="bg-gray-50 py-10 sm:py-12 lg:py-16">
+    <section className="bg-gray-50 py-12 lg:py-16">
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
-        <div className="mb-10 text-center">
+        <div className="mb-8 flex items-center justify-between">
 
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
-            Our Premium Services
-          </h2>
+          <div>
 
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600 sm:text-base">
-            Everything you need for the perfect Goa vacation — transport,
-            rentals, water sports, cruises, hotels and more.
-          </p>
+            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
+              Our Premium Services
+            </h2>
+
+            <p className="mt-2 text-sm text-gray-600 sm:text-base">
+              Everything you need for the perfect Goa vacation.
+            </p>
+
+          </div>
+
+          <Link
+            to="/services"
+            className="hidden font-semibold text-cyan-600 hover:text-cyan-700 md:block"
+          >
+            View All →
+          </Link>
 
         </div>
 
-        {/* Services Grid */}
+        {/* Services */}
         {services.length === 0 ? (
+
           <div className="py-16 text-center text-red-500">
             No services found.
           </div>
+
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {services.map((service) => (
-              <ServiceCard
-                key={service._id}
-                service={service}
-              />
-            ))}
-          </div>
+
+          <>
+            {/* Mobile */}
+            <div className="grid grid-cols-2 gap-4 lg:hidden">
+
+              {services.map((service) => (
+
+                <ServiceCard
+                  key={service._id}
+                  service={service}
+                />
+
+              ))}
+
+            </div>
+
+            {/* Desktop */}
+            <div className="hidden lg:grid lg:grid-cols-4 gap-6">
+
+              {services.map((service) => (
+
+                <ServiceCard
+                  key={service._id}
+                  service={service}
+                />
+
+              ))}
+
+            </div>
+
+          </>
+
         )}
 
-        {/* View All Button */}
-        <div className="mt-10 text-center">
+        {/* Mobile Button */}
+        <div className="mt-8 text-center md:hidden">
+
           <Link
             to="/services"
-            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-cyan-700 hover:shadow-xl"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-cyan-700"
           >
             View All Services
           </Link>
+
         </div>
 
       </div>
+
     </section>
   );
 };

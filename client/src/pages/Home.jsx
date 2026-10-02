@@ -6,7 +6,6 @@ import FeaturedPackages from "../components/home/FeaturedPackages";
 import FeaturedServices from "../components/home/FeaturedServices";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import GalleryPreview from "../components/home/GalleryPreview";
-import FAQ from "../components/home/FAQ";
 import CTASection from "../components/home/CTASection";
 import Footer from "../components/layout/Footer";
 import StickyContactButtons from "../components/common/StickyContactButtons";
@@ -16,7 +15,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   const [gallery, setGallery] = useState([]);
-  const [faqs, setFaqs] = useState([]);
 
   useEffect(() => {
     fetchHomeData();
@@ -33,7 +31,6 @@ const Home = () => {
 
       setServices(servicesRes.data.services || []);
       setGallery(galleryRes.data.gallery || []);
-      setFaqs([]);
     } catch (error) {
       console.error("Failed to load home page", error);
     } finally {
@@ -43,7 +40,7 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <Loader />
       </div>
     );
@@ -51,22 +48,28 @@ const Home = () => {
 
   return (
     <>
+      {/* Hero Banner */}
       <Hero />
 
+      {/* Why Choose Us */}
       <WhyChooseUs />
 
+      {/* Admin Added Packages */}
       <FeaturedPackages />
 
+      {/* Admin Added Services */}
       <FeaturedServices services={services} />
 
+      {/* Admin Added Gallery */}
       <GalleryPreview images={gallery} />
 
+      {/* CTA Banner */}
       <CTASection />
 
-      <FAQ faqs={faqs} />
-
+      {/* Footer */}
       <Footer />
 
+      {/* Sticky Mobile Buttons */}
       <StickyContactButtons />
     </>
   );

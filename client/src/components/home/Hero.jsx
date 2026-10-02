@@ -17,61 +17,61 @@ const Hero = () => {
         }}
       />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      {/* Dark Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[70vh] sm:min-h-[80vh] lg:min-h-screen items-center">
+      <div className="relative z-10 flex min-h-[60vh] sm:min-h-[75vh] lg:min-h-screen items-center">
 
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12">
 
           <div className="max-w-4xl text-center lg:text-left">
 
             {/* Badge */}
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-md">
 
               <FaMapMarkerAlt className="text-cyan-400" />
 
-              <span className="text-xs font-medium text-white sm:text-sm">
+              <span className="text-sm font-medium text-white">
                 Explore the Beauty of Goa
               </span>
 
             </div>
 
             {/* Heading */}
-            <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+            <h1 className="text-4xl font-extrabold leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl">
 
-              Experience
+              Your Perfect
 
               <span className="block text-cyan-400">
-                Coastal Goa
+                Goa Getaway
               </span>
 
             </h1>
 
             {/* Description */}
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-gray-200 sm:text-lg md:text-xl md:leading-8 lg:mx-0">
+            <p className="mx-auto mt-5 max-w-md text-base leading-7 text-gray-200 sm:max-w-2xl sm:text-lg md:text-xl lg:mx-0">
 
-              Discover Goa with sightseeing tours,
-              water sports, cruises, hotels,
-              airport transfers, yacht rentals,
-              and unforgettable holiday experiences.
+              Sightseeing tours, water sports,
+              cruises, hotels, airport transfers,
+              yacht rentals and unforgettable
+              holiday experiences.
 
             </p>
 
             {/* Buttons */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-nowrap">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
 
               <Link
                 to="/packages"
-                className="w-full rounded-xl bg-cyan-500 px-6 py-3 text-center font-semibold text-white transition hover:bg-cyan-600 sm:w-auto"
+                className="w-full rounded-xl bg-cyan-500 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-cyan-600 sm:w-auto"
               >
-                Explore Packages
+                Explore Packages →
               </Link>
 
               <Link
                 to="/contact"
-                className="w-full rounded-xl border-2 border-white px-6 py-3 text-center font-semibold text-white transition hover:bg-white hover:text-black sm:w-auto"
+                className="w-full rounded-xl border-2 border-white px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white hover:text-black sm:w-auto"
               >
                 Contact Us
               </Link>
@@ -80,7 +80,7 @@ const Hero = () => {
                 href="https://wa.me/919175884119"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3 font-semibold text-white transition hover:bg-green-600 sm:w-auto"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-green-600 sm:w-auto"
               >
                 <FaWhatsapp />
                 WhatsApp
@@ -88,35 +88,72 @@ const Hero = () => {
 
             </div>
 
-            {/* Stats */}
-            <div className="mt-8 grid grid-cols-3 gap-2 border-t border-white/20 pt-6 text-center lg:text-left">
+            {/* Happy Travelers */}
+            <div className="mt-8 flex items-center justify-center gap-3 lg:justify-start">
+
+              <div className="flex -space-x-3">
+
+                <img
+                  src="https://i.pravatar.cc/50?img=1"
+                  alt=""
+                  className="h-10 w-10 rounded-full border-2 border-white"
+                />
+
+                <img
+                  src="https://i.pravatar.cc/50?img=2"
+                  alt=""
+                  className="h-10 w-10 rounded-full border-2 border-white"
+                />
+
+                <img
+                  src="https://i.pravatar.cc/50?img=3"
+                  alt=""
+                  className="h-10 w-10 rounded-full border-2 border-white"
+                />
+
+              </div>
 
               <div>
-                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                <h4 className="font-bold text-white">
+                  500+
+                </h4>
+
+                <p className="text-sm text-gray-300">
+                  Happy Travelers
+                </p>
+              </div>
+
+            </div>
+
+            {/* Stats - Desktop Only */}
+            <div className="hidden md:grid mt-10 grid-cols-3 gap-6 border-t border-white/20 pt-8">
+
+              <div>
+                <h3 className="text-3xl font-bold text-white">
                   500+
                 </h3>
 
-                <p className="text-xs text-gray-300 sm:text-sm">
+                <p className="text-gray-300">
                   Happy Travelers
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                <h3 className="text-3xl font-bold text-white">
                   50+
                 </h3>
 
-                <p className="text-xs text-gray-300 sm:text-sm">
+                <p className="text-gray-300">
                   Tour Packages
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
+                <h3 className="text-3xl font-bold text-white">
                   24/7
                 </h3>
 
-                <p className="text-xs text-gray-300 sm:text-sm">
+                <p className="text-gray-300">
                   Support
                 </p>
               </div>
