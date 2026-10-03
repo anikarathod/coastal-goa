@@ -18,28 +18,28 @@ const Hero = () => {
       />
 
       {/* Dark Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-black/80" />
 
-      {/* Content */}
-      <div className="relative z-10 flex min-h-[60vh] sm:min-h-[75vh] lg:min-h-screen items-center">
+      {/* Hero Content */}
+      <div className="relative z-10 flex min-h-[72vh] items-center sm:min-h-[78vh] lg:min-h-screen">
 
-        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-12">
 
-          <div className="max-w-4xl text-center lg:text-left">
+          <div className="mx-auto max-w-4xl text-center lg:mx-0 lg:text-left">
 
             {/* Badge */}
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-md">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md sm:mb-5 sm:px-5">
 
               <FaMapMarkerAlt className="text-cyan-400" />
 
-              <span className="text-sm font-medium text-white">
+              <span className="text-xs font-medium text-white sm:text-sm">
                 Explore the Beauty of Goa
               </span>
 
             </div>
 
             {/* Heading */}
-            <h1 className="text-4xl font-extrabold leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
 
               Your Perfect
 
@@ -50,28 +50,27 @@ const Hero = () => {
             </h1>
 
             {/* Description */}
-            <p className="mx-auto mt-5 max-w-md text-base leading-7 text-gray-200 sm:max-w-2xl sm:text-lg md:text-xl lg:mx-0">
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-gray-200 sm:mt-5 sm:text-base sm:leading-7 md:max-w-2xl md:text-lg lg:mx-0 lg:text-xl">
 
-              Sightseeing tours, water sports,
-              cruises, hotels, airport transfers,
-              yacht rentals and unforgettable
+              Sightseeing tours, water sports, cruises, hotels,
+              airport transfers, yacht rentals and unforgettable
               holiday experiences.
 
             </p>
 
             {/* Buttons */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap lg:flex-nowrap">
 
               <Link
                 to="/packages"
-                className="w-full rounded-xl bg-cyan-500 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-cyan-600 sm:w-auto"
+                className="w-full rounded-xl bg-cyan-500 px-6 py-3.5 text-center text-sm font-semibold text-white shadow-lg transition duration-300 hover:bg-cyan-600 sm:w-auto sm:text-base"
               >
                 Explore Packages →
               </Link>
 
               <Link
                 to="/contact"
-                className="w-full rounded-xl border-2 border-white px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white hover:text-black sm:w-auto"
+                className="w-full rounded-xl border-2 border-white bg-white/10 px-6 py-3.5 text-center text-sm font-semibold text-white backdrop-blur-sm transition duration-300 hover:bg-white hover:text-gray-900 sm:w-auto sm:text-base"
               >
                 Contact Us
               </Link>
@@ -80,82 +79,72 @@ const Hero = () => {
                 href="https://wa.me/919175884119"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-green-600 sm:w-auto"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition duration-300 hover:bg-green-600 sm:w-auto sm:text-base"
               >
-                <FaWhatsapp />
+                <FaWhatsapp className="text-lg" />
                 WhatsApp
               </a>
 
             </div>
 
-            {/* Happy Travelers */}
-            <div className="mt-8 flex items-center justify-center gap-3 lg:justify-start">
+            {/* Quick Tags */}
+            <div className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
 
-              <div className="flex -space-x-3">
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs text-white backdrop-blur-md sm:px-4 sm:text-sm">
+                🏖 Goa Tours
+              </span>
 
-                <img
-                  src="https://i.pravatar.cc/50?img=1"
-                  alt=""
-                  className="h-10 w-10 rounded-full border-2 border-white"
-                />
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs text-white backdrop-blur-md sm:px-4 sm:text-sm">
+                🚤 Water Sports
+              </span>
 
-                <img
-                  src="https://i.pravatar.cc/50?img=2"
-                  alt=""
-                  className="h-10 w-10 rounded-full border-2 border-white"
-                />
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs text-white backdrop-blur-md sm:px-4 sm:text-sm">
+                🛥 Cruises
+              </span>
 
-                <img
-                  src="https://i.pravatar.cc/50?img=3"
-                  alt=""
-                  className="h-10 w-10 rounded-full border-2 border-white"
-                />
-
-              </div>
-
-              <div>
-                <h4 className="font-bold text-white">
-                  500+
-                </h4>
-
-                <p className="text-sm text-gray-300">
-                  Happy Travelers
-                </p>
-              </div>
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs text-white backdrop-blur-md sm:px-4 sm:text-sm">
+                🚕 Transfers
+              </span>
 
             </div>
 
-            {/* Stats - Desktop Only */}
-            <div className="hidden md:grid mt-10 grid-cols-3 gap-6 border-t border-white/20 pt-8">
+            {/* Stats */}
+            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-white/20 pt-6 sm:mt-10 sm:gap-6 sm:pt-8">
 
-              <div>
-                <h3 className="text-3xl font-bold text-white">
+              <div className="text-center lg:text-left">
+
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
                   500+
                 </h3>
 
-                <p className="text-gray-300">
+                <p className="mt-1 text-[11px] text-gray-300 sm:text-sm">
                   Happy Travelers
                 </p>
+
               </div>
 
-              <div>
-                <h3 className="text-3xl font-bold text-white">
+              <div className="text-center lg:text-left">
+
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
                   50+
                 </h3>
 
-                <p className="text-gray-300">
+                <p className="mt-1 text-[11px] text-gray-300 sm:text-sm">
                   Tour Packages
                 </p>
+
               </div>
 
-              <div>
-                <h3 className="text-3xl font-bold text-white">
+              <div className="text-center lg:text-left">
+
+                <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
                   24/7
                 </h3>
 
-                <p className="text-gray-300">
+                <p className="mt-1 text-[11px] text-gray-300 sm:text-sm">
                   Support
                 </p>
+
               </div>
 
             </div>

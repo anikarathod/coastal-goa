@@ -6,7 +6,7 @@ import FeaturedPackages from "../components/home/FeaturedPackages";
 import FeaturedServices from "../components/home/FeaturedServices";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import GalleryPreview from "../components/home/GalleryPreview";
-import CTASection from "../components/home/CTASection";
+import FAQ from "../components/home/FAQ";
 import Footer from "../components/layout/Footer";
 import StickyContactButtons from "../components/common/StickyContactButtons";
 import Loader from "../components/common/Loader";
@@ -29,8 +29,8 @@ const Home = () => {
         api.get("/gallery/featured"),
       ]);
 
-      setServices(servicesRes.data.services || []);
-      setGallery(galleryRes.data.gallery || []);
+      setServices(servicesRes.data?.services || []);
+      setGallery(galleryRes.data?.gallery || []);
     } catch (error) {
       console.error("Failed to load home page", error);
     } finally {
@@ -48,28 +48,28 @@ const Home = () => {
 
   return (
     <>
-      {/* Hero Banner */}
+      {/* Hero Section */}
       <Hero />
 
       {/* Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Admin Added Packages */}
+      {/* Packages Added By Admin */}
       <FeaturedPackages />
 
-      {/* Admin Added Services */}
+      {/* Services Added By Admin */}
       <FeaturedServices services={services} />
 
-      {/* Admin Added Gallery */}
+      {/* Gallery Added By Admin */}
       <GalleryPreview images={gallery} />
 
-      {/* CTA Banner */}
-      <CTASection />
+      {/* FAQ */}
+      <FAQ />
 
       {/* Footer */}
       <Footer />
 
-      {/* Sticky Mobile Buttons */}
+      {/* Sticky Buttons */}
       <StickyContactButtons />
     </>
   );
