@@ -7,8 +7,6 @@ import FeaturedServices from "../components/home/FeaturedServices";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import GalleryPreview from "../components/home/GalleryPreview";
 import FAQ from "../components/home/FAQ";
-import Footer from "../components/layout/Footer";
-import StickyContactButtons from "../components/common/StickyContactButtons";
 import Loader from "../components/common/Loader";
 
 const Home = () => {
@@ -32,7 +30,7 @@ const Home = () => {
       setServices(servicesRes.data?.services || []);
       setGallery(galleryRes.data?.gallery || []);
     } catch (error) {
-      console.error("Failed to load home page", error);
+      console.error("Failed to load home page:", error);
     } finally {
       setLoading(false);
     }
@@ -54,23 +52,17 @@ const Home = () => {
       {/* Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Packages Added By Admin */}
+      {/* Featured Packages */}
       <FeaturedPackages />
 
-      {/* Services Added By Admin */}
+      {/* Featured Services */}
       <FeaturedServices services={services} />
 
-      {/* Gallery Added By Admin */}
+      {/* Gallery Preview */}
       <GalleryPreview images={gallery} />
 
-      {/* FAQ */}
+      {/* FAQ Section */}
       <FAQ />
-
-      {/* Footer */}
-      <Footer />
-
-      {/* Sticky Buttons */}
-      <StickyContactButtons />
     </>
   );
 };
