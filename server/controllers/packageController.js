@@ -3,18 +3,16 @@ import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 import slugify from "slugify";
 
 // ==========================================
-// GET ALL PACKAGES
+// GET ALL ACTIVE PACKAGES
 // ==========================================
 
 export const getPackages = async (req, res) => {
   try {
     const packages = await Package.find({
       isActive: true,
-    }).sort({
-      createdAt: -1,
-    });
+    }).sort({ createdAt: -1 });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: packages.length,
       packages,
@@ -22,7 +20,7 @@ export const getPackages = async (req, res) => {
   } catch (error) {
     console.error("Get Packages Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -30,28 +28,27 @@ export const getPackages = async (req, res) => {
 };
 
 // ==========================================
-// GET FEATURED PACKAGES
+// GET HOMEPAGE PACKAGES
+// Latest 6 active packages posted by admin
 // ==========================================
 
 export const getFeaturedPackages = async (req, res) => {
   try {
     const packages = await Package.find({
       isActive: true,
-      featured: true,
     })
-      .sort({
-        createdAt: -1,
-      })
+      .sort({ createdAt: -1 })
       .limit(6);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
+      count: packages.length,
       packages,
     });
   } catch (error) {
-    console.error("Featured Packages Error:", error);
+    console.error("Get Featured Packages Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -76,19 +73,24 @@ export const getPackage = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       package: packageItem,
     });
   } catch (error) {
     console.error("Get Package Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
+// ==========================================
+// GET SINGLE PACKAGE BY ID
+// ==========================================
+
 export const getPackageById = async (req, res) => {
   try {
     const packageItem = await Package.findById(req.params.id);
@@ -100,19 +102,75 @@ export const getPackageById = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       package: packageItem,
     });
   } catch (error) {
     console.error("Get Package By ID Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
+// ==========================================
+// HELPER: PARSE JSON FIELDS
+// ==========================================
+
+const parseJsonFields = (body, data) => {
+  const fields = [
+    "highlights",
+    "inclusions",
+    "exclusions",
+    "itinerary",
+    "sections",
+    "extraDetails",
+  ];
+
+  for (const field of fields) {
+    if (body[field] !== undefined) {
+      if (typeof body[field] === "string") {
+        data[field] = JSON.parse(body[field]);
+      } else {
+        data[field] = body[field];
+      }
+    }
+  }
+};
+
+// ==========================================
+// HELPER: UPLOAD PACKAGE IMAGES
+// ==========================================
+
+const uploadPackageImages = async (files, data) => {
+  if (files?.coverImage?.[0]) {
+    const image = await uploadToCloudinary(
+      files.coverImage[0],
+      "coastal-goa/packages"
+    );
+
+    data.coverImage = image.secure_url;
+  }
+
+  if (files?.images?.length) {
+    const uploadedImages = [];
+
+    for (const file of files.images) {
+      const image = await uploadToCloudinary(
+        file,
+        "coastal-goa/packages"
+      );
+
+      uploadedImages.push(image.secure_url);
+    }
+
+    data.images = uploadedImages;
+  }
+};
+
 // ==========================================
 // CREATE PACKAGE
 // ==========================================
@@ -123,14 +181,9 @@ export const createPackage = async (req, res) => {
     console.log("Body:", req.body);
     console.log("Files:", req.files);
 
-    const data = {
-      ...req.body,
-    };
+    const data = { ...req.body };
 
-    // --------------------------------------
-    // Convert boolean values
-    // --------------------------------------
-
+    // Convert boolean fields
     data.featured =
       req.body.featured === "true" ||
       req.body.featured === true;
@@ -139,182 +192,17 @@ export const createPackage = async (req, res) => {
       req.body.isActive !== "false" &&
       req.body.isActive !== false;
 
-    // --------------------------------------
-    // Convert numbers
-    // --------------------------------------
-
+    // Convert numeric fields
     if (req.body.price !== undefined) {
-      data.price = Number(req.body.price);
+      data.price =
+        req.body.price === "" ? 0 : Number(req.body.price);
     }
 
     if (req.body.discountPrice !== undefined) {
       data.discountPrice =
-        Number(req.body.discountPrice) || 0;
-    }
-
-    if (req.body.latitude) {
-      data.latitude = Number(req.body.latitude);
-    }
-
-    if (req.body.longitude) {
-      data.longitude = Number(req.body.longitude);
-    }
-
-    // --------------------------------------
-    // Generate slug
-    // --------------------------------------
-
-    data.slug = slugify(data.title, {
-      lower: true,
-      strict: true,
-    });
-
-    // --------------------------------------
-    // Parse arrays
-    // --------------------------------------
-if (req.body.highlights) {
-  data.highlights = JSON.parse(req.body.highlights);
-}
-
-if (req.body.inclusions) {
-  data.inclusions = JSON.parse(req.body.inclusions);
-}
-
-if (req.body.exclusions) {
-  data.exclusions = JSON.parse(req.body.exclusions);
-}
-
-if (req.body.itinerary) {
-  data.itinerary = JSON.parse(req.body.itinerary);
-}
-
-if (req.body.sections) {
-  data.sections = JSON.parse(req.body.sections);
-}
-
-if (req.body.extraDetails) {
-  data.extraDetails = JSON.parse(req.body.extraDetails);
-}
-    // --------------------------------------
-    // Cover image
-    // --------------------------------------
-
-    if (
-      req.files &&
-      req.files.coverImage &&
-      req.files.coverImage[0]
-    ) {
-      const image = await uploadToCloudinary(
-        req.files.coverImage[0],
-        "coastal-goa/packages"
-      );
-
-      data.coverImage = image.secure_url;
-    }
-
-    // --------------------------------------
-    // Gallery images
-    // --------------------------------------
-
-    if (
-      req.files &&
-      req.files.images &&
-      req.files.images.length
-    ) {
-      const uploadedImages = [];
-
-      for (const file of req.files.images) {
-        const image = await uploadToCloudinary(
-          file,
-          "coastal-goa/packages"
-        );
-
-        uploadedImages.push(image.secure_url);
-      }
-
-      data.images = uploadedImages;
-    }
-
-    // --------------------------------------
-    // Create
-    // --------------------------------------
-
-    const newPackage = await Package.create(data);
-
-    res.status(201).json({
-      success: true,
-      message: "Package created successfully.",
-      package: newPackage,
-    });
-  } catch (error) {
-    console.error("Create Package Error:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-// ==========================================
-// UPDATE PACKAGE
-// ==========================================
-
-export const updatePackage = async (req, res) => {
-  try {
-    let packageItem = await Package.findById(
-      req.params.id
-    );
-
-    if (!packageItem) {
-      return res.status(404).json({
-        success: false,
-        message: "Package not found.",
-      });
-    }
-
-    const data = {
-      ...req.body,
-    };
-
-    // --------------------------------------
-    // Slug
-    // --------------------------------------
-
-    if (data.title) {
-      data.slug = slugify(data.title, {
-        lower: true,
-        strict: true,
-      });
-    }
-
-    // --------------------------------------
-    // Boolean
-    // --------------------------------------
-
-    if (req.body.featured !== undefined) {
-      data.featured =
-        req.body.featured === "true" ||
-        req.body.featured === true;
-    }
-
-    if (req.body.isActive !== undefined) {
-      data.isActive =
-        req.body.isActive === "true" ||
-        req.body.isActive === true;
-    }
-
-    // --------------------------------------
-    // Numbers
-    // --------------------------------------
-
-    if (req.body.price !== undefined) {
-      data.price = Number(req.body.price);
-    }
-
-    if (req.body.discountPrice !== undefined) {
-      data.discountPrice =
-        Number(req.body.discountPrice) || 0;
+        req.body.discountPrice === ""
+          ? 0
+          : Number(req.body.discountPrice);
     }
 
     if (req.body.latitude !== undefined) {
@@ -331,96 +219,132 @@ export const updatePackage = async (req, res) => {
           : Number(req.body.longitude);
     }
 
-    // --------------------------------------
-    // Arrays
-    // --------------------------------------
-
-    if (req.body.highlights) {
-      data.highlights = JSON.parse(
-        req.body.highlights
-      );
+    // Generate slug
+    if (!data.title) {
+      return res.status(400).json({
+        success: false,
+        message: "Package title is required.",
+      });
     }
 
-    if (req.body.inclusions) {
-      data.inclusions = JSON.parse(
-        req.body.inclusions
-      );
+    data.slug = slugify(data.title, {
+      lower: true,
+      strict: true,
+    });
+
+    // Parse JSON fields
+    parseJsonFields(req.body, data);
+
+    // Upload images
+    await uploadPackageImages(req.files, data);
+
+    // Save package
+    const newPackage = await Package.create(data);
+
+    return res.status(201).json({
+      success: true,
+      message: "Package created successfully.",
+      package: newPackage,
+    });
+  } catch (error) {
+    console.error("Create Package Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// ==========================================
+// UPDATE PACKAGE
+// ==========================================
+
+export const updatePackage = async (req, res) => {
+  try {
+    let packageItem = await Package.findById(req.params.id);
+
+    if (!packageItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Package not found.",
+      });
     }
 
-    if (req.body.exclusions) {
-      data.exclusions = JSON.parse(
-        req.body.exclusions
-      );
+    const data = { ...req.body };
+
+    // Update slug when title changes
+    if (data.title) {
+      data.slug = slugify(data.title, {
+        lower: true,
+        strict: true,
+      });
     }
 
-    if (req.body.itinerary) {
-  data.itinerary = JSON.parse(req.body.itinerary);
-}
-if (req.body.sections) {
-  data.sections = JSON.parse(req.body.sections);
-}
-if (req.body.extraDetails) {
-  data.extraDetails = JSON.parse(req.body.extraDetails);
-}
-    // --------------------------------------
-    // New cover image
-    // --------------------------------------
-
-    if (
-      req.files &&
-      req.files.coverImage &&
-      req.files.coverImage[0]
-    ) {
-      const image = await uploadToCloudinary(
-        req.files.coverImage[0],
-        "coastal-goa/packages"
-      );
-
-      data.coverImage = image.secure_url;
+    // Convert boolean fields
+    if (req.body.featured !== undefined) {
+      data.featured =
+        req.body.featured === "true" ||
+        req.body.featured === true;
     }
 
-    // --------------------------------------
-    // New gallery images
-    // --------------------------------------
+    if (req.body.isActive !== undefined) {
+      data.isActive =
+        req.body.isActive === "true" ||
+        req.body.isActive === true;
+    }
 
-    if (
-      req.files &&
-      req.files.images &&
-      req.files.images.length
-    ) {
-      const uploadedImages = [];
+    // Convert numeric fields
+    if (req.body.price !== undefined) {
+      data.price =
+        req.body.price === "" ? 0 : Number(req.body.price);
+    }
 
-      for (const file of req.files.images) {
-        const image = await uploadToCloudinary(
-          file,
-          "coastal-goa/packages"
-        );
+    if (req.body.discountPrice !== undefined) {
+      data.discountPrice =
+        req.body.discountPrice === ""
+          ? 0
+          : Number(req.body.discountPrice);
+    }
 
-        uploadedImages.push(image.secure_url);
-      }
+    if (req.body.latitude !== undefined) {
+      data.latitude =
+        req.body.latitude === ""
+          ? null
+          : Number(req.body.latitude);
+    }
 
-      // Add new images to existing gallery
+    if (req.body.longitude !== undefined) {
+      data.longitude =
+        req.body.longitude === ""
+          ? null
+          : Number(req.body.longitude);
+    }
+
+    // Parse JSON fields
+    parseJsonFields(req.body, data);
+
+    // Upload replacement cover image and/or new gallery images
+    await uploadPackageImages(req.files, data);
+
+    // Keep existing gallery images when no new images are uploaded
+    if (req.files?.images?.length) {
       data.images = [
         ...(packageItem.images || []),
-        ...uploadedImages,
+        ...(data.images || []),
       ];
     }
 
-    // --------------------------------------
-    // Update
-    // --------------------------------------
+    packageItem = await Package.findByIdAndUpdate(
+      req.params.id,
+      data,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
-    packageItem =
-      await Package.findByIdAndUpdate(
-        req.params.id,
-        data,
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Package updated successfully.",
       package: packageItem,
@@ -428,7 +352,7 @@ if (req.body.extraDetails) {
   } catch (error) {
     console.error("Update Package Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -441,9 +365,7 @@ if (req.body.extraDetails) {
 
 export const deletePackage = async (req, res) => {
   try {
-    const packageItem = await Package.findById(
-      req.params.id
-    );
+    const packageItem = await Package.findById(req.params.id);
 
     if (!packageItem) {
       return res.status(404).json({
@@ -452,18 +374,16 @@ export const deletePackage = async (req, res) => {
       });
     }
 
-    await Package.findByIdAndDelete(
-      req.params.id
-    );
+    await Package.findByIdAndDelete(req.params.id);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Package deleted successfully.",
     });
   } catch (error) {
     console.error("Delete Package Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
