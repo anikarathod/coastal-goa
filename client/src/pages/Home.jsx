@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -15,55 +16,77 @@ const Home = () => {
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
+    let active = true;
+
+    const fetchHomeData = async () => {
+      try {
+        setLoading(true);
+
+        const [servicesRes, galleryRes] = await Promise.all([
+          api.get("/services/featured"),
+          api.get("/gallery/featured"),
+        ]);
+
+        if (!active) return;
+
+        const servicesData =
+          servicesRes.data?.services ??
+          servicesRes.data?.data?.services ??
+          [];
+
+        const galleryData =
+          galleryRes.data?.gallery ??
+          galleryRes.data?.data?.gallery ??
+          [];
+
+        setServices(Array.isArray(servicesData) ? servicesData : []);
+        setGallery(Array.isArray(galleryData) ? galleryData : []);
+      } catch (error) {
+        console.error("Failed to load homepage content:", error);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
     fetchHomeData();
+
+    return () => {
+      active = false;
+    };
   }, []);
-
-  const fetchHomeData = async () => {
-    try {
-      setLoading(true);
-
-      const [servicesRes, galleryRes] = await Promise.all([
-        api.get("/services/featured"),
-        api.get("/gallery/featured"),
-      ]);
-
-      setServices(servicesRes.data?.services || []);
-      setGallery(galleryRes.data?.gallery || []);
-    } catch (error) {
-      console.error("Failed to load home page:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-[50vh] items-center justify-center">
         <Loader />
       </div>
     );
   }
 
   return (
-    <>
-      {/* Hero Section */}
+    <main className="min-h-screen w-full overflow-x-hidden bg-white">
+      {/* Beach hero banner */}
       <Hero />
 
-      {/* Why Choose Us */}
+      {/* Benefits */}
       <WhyChooseUs />
 
-      {/* Featured Packages */}
+      {/* Only packages provided by the existing component/API */}
       <FeaturedPackages />
 
-      {/* Featured Services */}
-      <FeaturedServices services={services} />
+      {/* Only services returned by the backend */}
+      {services.length > 0 && (
+        <FeaturedServices services={services} />
+      )}
 
-      {/* Gallery Preview */}
-      <GalleryPreview images={gallery} />
+      {/* Only gallery images returned by the backend */}
+      {gallery.length > 0 && (
+        <GalleryPreview images={gallery} />
+      )}
 
-      {/* FAQ Section */}
+      {/* Frequently asked questions */}
       <FAQ />
-    </>
+    </main>
   );
 };
 
