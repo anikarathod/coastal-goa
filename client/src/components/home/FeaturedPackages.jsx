@@ -1,13 +1,17 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaMapMarkerAlt } from "react-icons/fa";
 import api from "../../services/api";
 
 const FeaturedPackages = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchPackages = async () => {
       try {
         const response = await api.get("/packages/featured");
@@ -19,121 +23,183 @@ const FeaturedPackages = () => {
           data?.data ??
           [];
 
-        setPackages(
-          Array.isArray(fetchedPackages)
-            ? fetchedPackages.slice(0, 4)
-            : []
-        );
-      } catch (error) {
-        console.error("Failed to load featured packages:", error);
-        setPackages([]);
+        if (isMounted) {
+          setPackages(
+            Array.isArray(fetchedPackages)
+              ? fetchedPackages.slice(0, 4)
+              : []
+          );
+        }
+      } catch (err) {
+        console.error("Failed to load packages:", err);
+        if (isMounted) setError(true);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchPackages();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
     <section
       id="packages"
-      className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-12"
+      className="bg-slate-50 px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
     >
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-600">
+        {/* Section heading */}
+        <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-12">
+          <span className="inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+            <FaMapMarkerAlt />
             Discover Goa
-          </p>
+          </span>
 
-          <h2 className="mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
             Explore Our Tour Packages
           </h2>
 
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-600">
-            Discover our sightseeing tours, cruises, water sports and
-            unforgettable Goa experiences.
+          <p className="mt-4 text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+            From beautiful beaches to breathtaking waterfalls,
+            discover Goa with experiences designed for you.
           </p>
+
+          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-teal-600" />
         </div>
 
+        {/* Loading skeleton */}
         {loading && (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[1, 2, 3, 4].map((item) => (
               <div
                 key={item}
-                className="animate-pulse overflow-hidden rounded-2xl bg-white shadow-sm"
+                className="animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white"
               >
-                <div className="h-48 bg-slate-200" />
-                <div className="space-y-3 p-5">
+                <div className="aspect-[16/10] bg-slate-200" />
+                <div className="space-y-4 p-5">
                   <div className="h-5 w-3/4 rounded bg-slate-200" />
-                  <div className="h-4 w-full rounded bg-slate-200" />
-                  <div className="h-5 w-1/3 rounded bg-slate-200" />
+                  <div className="h-4 rounded bg-slate-200" />
+                  <div className="h-4 w-2/3 rounded bg-slate-200" />
+                  <div className="h-10 rounded-lg bg-slate-200" />
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {!loading && packages.length > 0 && (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Package cards */}
+        {!loading && !error && packages.length > 0 && (
+          <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5 xl:gap-6">
             {packages.map((pkg, index) => {
               const name =
-                pkg.name ?? pkg.title ?? "Goa Tour Package";
+                pkg.title ?? pkg.name ?? "Goa Tour Package";
 
               const image =
+                pkg.coverImage ??
                 pkg.image ??
                 pkg.imageUrl ??
-                pkg.coverImage ??
                 pkg.thumbnail;
 
-              const price = pkg.price ?? pkg.offerPrice;
+              const originalPrice = Number(pkg.price);
+              const discountedPrice = Number(pkg.discountPrice);
+
+              const hasDiscount =
+                Number.isFinite(originalPrice) &&
+                Number.isFinite(discountedPrice) &&
+                originalPrice > 0 &&
+                discountedPrice > 0 &&
+                discountedPrice < originalPrice;
+
+              const price = hasDiscount
+                ? discountedPrice
+                : pkg.price ?? pkg.offerPrice;
+
+              const description =
+                pkg.description ??
+                pkg.shortDescription ??
+                "Discover an unforgettable Goa experience with Coastal Goa Tours.";
+
+              const packageLink = pkg.slug
+                ? `/packages/${pkg.slug}`
+                : "/packages";
 
               return (
                 <article
                   key={pkg._id ?? pkg.id ?? `${name}-${index}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-[0_14px_35px_rgba(15,23,42,0.12)]"
                 >
-                  <div className="relative h-48 overflow-hidden bg-slate-200">
+                  {/* Image */}
+                  <Link
+                    to={packageLink}
+                    aria-label={`View ${name}`}
+                    className="relative block aspect-[16/10] overflow-hidden bg-slate-100"
+                  >
                     {image ? (
                       <img
                         src={image}
                         alt={name}
                         loading="lazy"
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(event) => {
+                          event.currentTarget.style.visibility = "hidden";
+                        }}
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-sm text-slate-500">
-                        Package image unavailable
+                      <div className="flex h-full items-center justify-center px-4 text-center text-sm text-slate-500">
+                        Image coming soon
                       </div>
                     )}
-                  </div>
 
-                  <div className="flex flex-1 flex-col p-5">
-                    <h3 className="text-lg font-bold text-slate-900">
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent" />
+                  </Link>
+
+                  {/* Details */}
+                  <div className="flex flex-1 flex-col p-5 sm:p-5">
+                    <h3 className="line-clamp-2 min-h-[3.5rem] text-lg font-bold leading-7 text-slate-900 transition-colors group-hover:text-teal-700">
                       {name}
                     </h3>
 
-                    {pkg.description && (
-                      <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
-                        {pkg.description}
-                      </p>
-                    )}
+                    <p className="mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-slate-600">
+                      {description}
+                    </p>
 
-                    <div className="mt-auto pt-5">
-                      {price != null && (
-                        <p className="text-xl font-extrabold text-cyan-700">
-                          ₹{price}
-                          <span className="ml-1 text-sm font-normal text-slate-500">
-                            onwards
+                    {/* Price */}
+                    <div className="mt-auto border-t border-slate-100 pt-4">
+                      <div className="min-h-[3.25rem]">
+                        {price != null &&
+                        Number.isFinite(Number(price)) ? (
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                            <span className="text-2xl font-extrabold tracking-tight text-teal-700">
+                              ₹{Number(price).toLocaleString("en-IN")}
+                            </span>
+
+                            {hasDiscount && (
+                              <span className="text-sm text-slate-400 line-through">
+                                ₹{originalPrice.toLocaleString("en-IN")}
+                              </span>
+                            )}
+
+                            <span className="text-sm text-slate-500">
+                              onwards
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-sm font-semibold text-slate-600">
+                            Contact for price
                           </span>
-                        </p>
-                      )}
+                        )}
+                      </div>
 
+                      {/* Details button */}
                       <Link
-                        to="/packages"
-                        className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-cyan-700 transition hover:text-cyan-900"
+                        to={packageLink}
+                        className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-teal-700 px-4 py-3 text-sm font-bold text-teal-800 transition-colors hover:bg-teal-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                       >
-                        View Details <FaArrowRight />
+                        View Details
+                        <FaArrowRight className="transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>
                   </div>
@@ -143,20 +209,43 @@ const FeaturedPackages = () => {
           </div>
         )}
 
-        {!loading && packages.length === 0 && (
-          <p className="py-8 text-center text-slate-500">
-            No packages are available right now. Please check back soon.
-          </p>
+        {/* Empty and error states */}
+        {!loading && (error || packages.length === 0) && (
+          <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center">
+            <h3 className="text-lg font-bold text-slate-900">
+              {error
+                ? "Packages couldn't be loaded"
+                : "New experiences are coming soon"}
+            </h3>
+
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+              {error
+                ? "Please try again later or explore our available tours."
+                : "We're preparing more amazing Goa experiences for you."}
+            </p>
+
+            <Link
+              to="/packages"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-teal-800"
+            >
+              Explore Packages <FaArrowRight />
+            </Link>
+          </div>
         )}
 
-        <div className="mt-10 text-center">
+        {/* View more */}
+        <div className="mt-9 text-center sm:mt-12">
           <Link
             to="/packages"
-            className="inline-flex items-center justify-center gap-3 rounded-xl bg-cyan-600 px-8 py-4 font-bold text-white shadow-md transition hover:bg-cyan-700"
+            className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-teal-700 px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-teal-900/10 transition hover:-translate-y-0.5 hover:bg-teal-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:px-8 sm:text-base"
           >
             View More Packages
             <FaArrowRight />
           </Link>
+
+          <p className="mt-3 text-xs text-slate-500">
+            Find the perfect Goa experience for your trip
+          </p>
         </div>
       </div>
     </section>
