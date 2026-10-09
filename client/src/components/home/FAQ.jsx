@@ -80,7 +80,7 @@ const FAQ = () => {
           </h2>
 
           <p className="mt-3 text-gray-600">
-            Everything you need to know about our Goa tours and services.
+            Everything you need to know about our  and services.
           </p>
         </div>
 

@@ -11,7 +11,7 @@ import {
 
 const ContactInfo = () => {
   const contact = {
-    company: "Coastal Goa Tours",
+    company: "Coastal ",
     address:
       "Near candolim Beach, Bardez, Goa - 403516",
     phone: "+91 91758 84119",
