@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
+import { useSettings } from "../../context/SettingsContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { settings } = useSettings();
+
+  const websiteName = settings.websiteName || "Coastal Goa";
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -14,45 +18,42 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
-
-      <div className="mx-auto flex h-16 md:h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 bg-white/95 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
 
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img
             src="/logo.png"
-            alt="Coastal Goa"
-            className="h-10 sm:h-12 md:h-14 w-auto object-contain"
+            alt={websiteName}
+            className="h-10 w-auto object-contain sm:h-12 md:h-14"
           />
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-
+        <nav className="hidden items-center gap-6 md:flex lg:gap-8">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `relative text-sm lg:text-base font-medium transition ${
+                `relative text-sm font-medium transition lg:text-base ${
                   isActive
-                    ? "text-cyan-600"
-                    : "text-gray-700 hover:text-cyan-600"
+                    ? "text-teal-600"
+                    : "text-gray-700 hover:text-teal-600"
                 }`
               }
             >
               {link.name}
             </NavLink>
           ))}
-
         </nav>
 
         {/* Desktop Button */}
         <div className="hidden md:block">
           <Link
             to="/booking"
-            className="rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-cyan-700"
+            className="rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
           >
             Book Now
           </Link>
@@ -61,7 +62,8 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-3xl text-cyan-600 md:hidden"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          className="text-3xl text-teal-600 md:hidden"
         >
           {isOpen ? <HiX /> : <HiMenu />}
         </button>
@@ -70,14 +72,11 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          isOpen
-            ? "max-h-[500px] border-t"
-            : "max-h-0"
+        className={`overflow-hidden transition-all duration-300 md:hidden ${
+          isOpen ? "max-h-[500px] border-t" : "max-h-0"
         }`}
       >
         <div className="bg-white px-5 py-4">
-
           <div className="flex flex-col gap-4">
 
             {navLinks.map((link) => (
@@ -88,7 +87,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `rounded-lg px-3 py-2 text-base ${
                     isActive
-                      ? "bg-cyan-50 text-cyan-600 font-semibold"
+                      ? "bg-teal-50 font-semibold text-teal-600"
                       : "text-gray-700"
                   }`
                 }
@@ -100,16 +99,13 @@ const Navbar = () => {
             <Link
               to="/booking"
               onClick={() => setIsOpen(false)}
-              className="mt-2 rounded-xl bg-cyan-600 py-3 text-center font-semibold text-white"
+              className="mt-2 rounded-xl bg-teal-600 py-3 text-center font-semibold text-white"
             >
               Book Now
             </Link>
-
           </div>
-
         </div>
       </div>
-
     </header>
   );
 };

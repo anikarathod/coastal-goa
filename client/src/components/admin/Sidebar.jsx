@@ -10,8 +10,12 @@ import {
   FaCog,
   FaChartBar,
 } from "react-icons/fa";
+import { useSettings } from "../../context/SettingsContext";
 
 const Sidebar = () => {
+  const { settings } = useSettings();
+  const websiteName = settings.websiteName || "Coastal Goa";
+
   const menu = [
     {
       name: "Dashboard",
@@ -64,8 +68,8 @@ const Sidebar = () => {
     <aside className="flex h-full w-64 flex-col bg-slate-900 text-white">
       {/* Logo */}
       <div className="border-b border-slate-700 p-6">
-        <h1 className="text-2xl font-bold text-cyan-400">
-          Coastal Goa
+        <h1 className="text-2xl font-bold text-teal-400">
+          {websiteName}
         </h1>
 
         <p className="mt-1 text-sm text-slate-400">
@@ -83,15 +87,12 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `mx-3 mb-2 flex items-center gap-3 rounded-lg px-4 py-3 transition ${
                 isActive
-                  ? "bg-cyan-600 text-white"
+                  ? "bg-teal-600 text-white"
                   : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`
             }
           >
-            <span className="text-lg">
-              {item.icon}
-            </span>
-
+            <span className="text-lg">{item.icon}</span>
             <span>{item.name}</span>
           </NavLink>
         ))}
@@ -99,7 +100,7 @@ const Sidebar = () => {
 
       {/* Footer */}
       <div className="border-t border-slate-700 p-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Coastal Goa
+        © {new Date().getFullYear()} {websiteName}
       </div>
     </aside>
   );

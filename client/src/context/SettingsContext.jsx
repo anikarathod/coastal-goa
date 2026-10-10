@@ -8,6 +8,7 @@ import api from "../services/api";
 
 const SettingsContext = createContext(null);
 
+/* Default fallbacks — shown while loading or if API fails */
 const DEFAULT_SETTINGS = {
   websiteName: "Coastal Goa",
   email: "",
@@ -25,6 +26,7 @@ const DEFAULT_SETTINGS = {
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -36,9 +38,11 @@ export const SettingsProvider = ({ children }) => {
 
         if (active && fetched) {
           setSettings({ ...DEFAULT_SETTINGS, ...fetched });
+          setError(false);
         }
       } catch (err) {
         console.error("Settings fetch failed:", err.message);
+        if (active) setError(true);
       } finally {
         if (active) setLoading(false);
       }
@@ -50,11 +54,13 @@ export const SettingsProvider = ({ children }) => {
     };
   }, []);
 
+  /* Manually refresh after admin saves settings */
   const refreshSettings = async () => {
     try {
       const res = await api.get("/settings");
       if (res.data?.settings) {
         setSettings({ ...DEFAULT_SETTINGS, ...res.data.settings });
+        setError(false);
       }
     } catch (err) {
       console.error("Settings refresh failed:", err.message);
@@ -62,7 +68,9 @@ export const SettingsProvider = ({ children }) => {
   };
 
   return (
-    <SettingsContext.Provider value={{ settings, loading, refreshSettings }}>
+    <SettingsContext.Provider
+      value={{ settings, loading, error, refreshSettings }}
+    >
       {children}
     </SettingsContext.Provider>
   );
