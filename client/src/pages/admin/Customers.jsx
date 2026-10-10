@@ -52,18 +52,28 @@ const Customers = () => {
       setLoading(false);
     }
   };
+const deleteCustomer = async (id) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this customer?"
+  );
 
-  const deleteCustomer = async (id) => {
-    if (!window.confirm("Delete this customer?")) return;
+  if (!confirmed) return;
 
-    try {
-      await api.delete(`/admin/customers/${id}`);
-      fetchCustomers();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  try {
+    await api.delete(`/admin/customers/${id}`);
 
+    alert("Customer deleted successfully.");
+
+    await fetchCustomers();
+  } catch (err) {
+    console.error("DELETE CUSTOMER ERROR:", err);
+
+    alert(
+      err.response?.data?.message ||
+      "Failed to delete customer. Please try again."
+    );
+  }
+};
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">

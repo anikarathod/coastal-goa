@@ -79,10 +79,9 @@ const Login = () => {
       // Go to Admin Dashboard
       // ========================================
 
-      navigate("/admin", {
-        replace: true,
-      });
-
+      navigate("/pearlrathod", {
+  replace: true,
+});
     } catch (err) {
       console.error("LOGIN ERROR:", err);
 

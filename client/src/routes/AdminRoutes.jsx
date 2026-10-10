@@ -33,131 +33,41 @@ import Settings from "../pages/admin/Settings";
 const AdminRoutes = () => {
   return (
     <Routes>
-
       {/* Admin authentication */}
       <Route element={<ProtectedRoute adminOnly />}>
-
-        {/* Admin Layout */}
         <Route element={<AdminLayout />}>
+          {/* Dashboard */}
+          <Route index element={<Dashboard />} />
 
-          {/* =========================
-              DASHBOARD
-          ========================== */}
+          {/* Packages */}
+          <Route path="packages" element={<Packages />} />
+          <Route path="packages/new" element={<AddPackage />} />
+          <Route path="packages/edit/:id" element={<EditPackage />} />
 
-          <Route
-            index
-            element={<Dashboard />}
-          />
+          {/* Services */}
+          <Route path="services" element={<Services />} />
+          <Route path="services/new" element={<AddService />} />
+          <Route path="services/edit/:id" element={<EditService />} />
 
+          {/* Gallery */}
+          <Route path="gallery" element={<Gallery />} />
+          <Route path="gallery/new" element={<AddGallery />} />
+          <Route path="gallery/edit/:id" element={<EditGallery />} />
 
-          {/* =========================
-              PACKAGES
-          ========================== */}
+          {/* Bookings */}
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="bookings/:id" element={<BookingDetails />} />
 
-          <Route
-            path="packages"
-            element={<Packages />}
-          />
+          {/* Customers */}
+          <Route path="customers" element={<Customers />} />
 
-          <Route
-            path="packages/new"
-            element={<AddPackage />}
-          />
+          {/* Contacts */}
+          <Route path="contacts" element={<Contacts />} />
 
-          <Route
-            path="packages/edit/:id"
-            element={<EditPackage />}
-          />
-
-
-          {/* =========================
-              SERVICES
-          ========================== */}
-
-          <Route
-            path="services"
-            element={<Services />}
-          />
-
-          <Route
-            path="services/new"
-            element={<AddService />}
-          />
-
-          <Route
-            path="services/edit/:id"
-            element={<EditService />}
-          />
-
-
-          {/* =========================
-              GALLERY
-          ========================== */}
-
-          <Route
-            path="gallery"
-            element={<Gallery />}
-          />
-
-          <Route
-            path="gallery/new"
-            element={<AddGallery />}
-          />
-
-          <Route
-            path="gallery/edit/:id"
-            element={<EditGallery />}
-          />
-
-
-          {/* =========================
-              BOOKINGS
-          ========================== */}
-
-          <Route
-            path="bookings"
-            element={<Bookings />}
-          />
-
-          <Route
-            path="bookings/:id"
-            element={<BookingDetails />}
-          />
-
-
-          {/* =========================
-              CUSTOMERS
-          ========================== */}
-
-          <Route
-            path="customers"
-            element={<Customers />}
-          />
-
-
-          {/* =========================
-              CONTACTS
-          ========================== */}
-
-          <Route
-            path="contacts"
-            element={<Contacts />}
-          />
-
-
-          {/* =========================
-              SETTINGS
-          ========================== */}
-
-          <Route
-            path="settings"
-            element={<Settings />}
-          />
-
+          {/* Settings */}
+          <Route path="settings" element={<Settings />} />
         </Route>
-
       </Route>
-
     </Routes>
   );
 };

@@ -146,7 +146,7 @@ const handleSubmit = async (e) => {
     );
 
     alert("Service Added Successfully");
-    navigate("/admin/services");
+   navigate("/pearlrathod/services");
 
   } catch (err) {
     console.error(err);

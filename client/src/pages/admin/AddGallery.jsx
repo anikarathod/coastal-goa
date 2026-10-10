@@ -41,7 +41,6 @@ const AddGallery = () => {
       formData.append("category", form.category);
       formData.append("location", form.location);
       formData.append("featured", form.featured);
-
       formData.append("file", file);
 
       await api.post("/gallery", formData, {
@@ -52,7 +51,7 @@ const AddGallery = () => {
 
       alert("Media uploaded successfully!");
 
-      navigate("/admin/gallery");
+      navigate("/pearlrathod/gallery");
     } catch (err) {
       console.error(err);
 
@@ -71,7 +70,6 @@ const AddGallery = () => {
 
   return (
     <div className="mx-auto max-w-5xl rounded-xl bg-white p-8 shadow">
-
       <h1 className="mb-8 text-3xl font-bold">
         Upload Gallery Media
       </h1>
@@ -80,7 +78,6 @@ const AddGallery = () => {
         onSubmit={handleSubmit}
         className="grid gap-6 md:grid-cols-2"
       >
-
         <div>
           <label className="mb-2 block font-medium">
             Title
@@ -134,7 +131,7 @@ const AddGallery = () => {
             type="file"
             accept="image/*,video/*"
             onChange={(e) =>
-              setFile(e.target.files[0])
+              setFile(e.target.files[0] || null)
             }
             required
             className="w-full rounded-lg border p-3"
@@ -142,10 +139,8 @@ const AddGallery = () => {
         </div>
 
         {/* Preview */}
-
         {file && (
           <div className="md:col-span-2">
-
             <label className="mb-3 block font-medium">
               Preview
             </label>
@@ -153,69 +148,56 @@ const AddGallery = () => {
             {file.type.startsWith("image/") && (
               <img
                 src={previewUrl}
-                alt="preview"
-                className="h-72 rounded-lg border object-cover"
+                alt="Gallery preview"
+                className="h-72 max-w-full rounded-lg border object-cover"
               />
             )}
 
             {file.type.startsWith("video/") && (
               <video
                 controls
-                className="h-72 rounded-lg border"
+                className="h-72 max-w-full rounded-lg border"
               >
                 <source
                   src={previewUrl}
                   type={file.type}
                 />
+                Your browser does not support video playback.
               </video>
             )}
-
           </div>
         )}
 
         <div className="md:col-span-2">
-
           <label className="flex items-center gap-2">
-
             <input
               type="checkbox"
               name="featured"
               checked={form.featured}
               onChange={handleChange}
             />
-
             Featured Media
-
           </label>
-
         </div>
 
-        <div className="flex gap-4 md:col-span-2">
-
+        <div className="flex flex-wrap gap-4 md:col-span-2">
           <button
             type="submit"
             disabled={loading}
-            className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700"
+            className="rounded-lg bg-cyan-600 px-8 py-3 text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading
-              ? "Uploading..."
-              : "Upload Media"}
+            {loading ? "Uploading..." : "Upload Media"}
           </button>
 
           <button
             type="button"
-            onClick={() =>
-              navigate("/admin/gallery")
-            }
-            className="rounded-lg border px-8 py-3"
+            onClick={() => navigate("/pearlrathod/gallery")}
+            className="rounded-lg border px-8 py-3 transition hover:bg-gray-100"
           >
             Cancel
           </button>
-
         </div>
-
       </form>
-
     </div>
   );
 };

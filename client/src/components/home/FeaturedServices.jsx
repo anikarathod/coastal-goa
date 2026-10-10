@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
@@ -18,16 +17,11 @@ const FeaturedServices = () => {
         const data = response.data;
 
         const fetchedServices =
-          data?.services ??
-          data?.data?.services ??
-          data?.data ??
-          [];
+          data?.services ?? data?.data?.services ?? data?.data ?? [];
 
         if (isMounted) {
           setServices(
-            Array.isArray(fetchedServices)
-              ? fetchedServices.slice(0, 4)
-              : []
+            Array.isArray(fetchedServices) ? fetchedServices.slice(0, 4) : []
           );
         }
       } catch (err) {
@@ -45,10 +39,12 @@ const FeaturedServices = () => {
     };
   }, []);
 
+  const formatPrice = (price) => `₹${Number(price).toLocaleString("en-IN")}`;
+
   return (
     <section
       id="services"
-      className="bg-white px-3 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
+      className="bg-white px-3 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20"
     >
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
@@ -60,9 +56,14 @@ const FeaturedServices = () => {
           <h2 className="mt-2 text-xl font-extrabold text-slate-900 sm:text-3xl lg:text-4xl">
             Our Travel Services
           </h2>
+
+          <p className="mx-auto mt-3 max-w-xl text-sm text-slate-500 sm:text-base">
+            Hotels, taxis, water sports and more — book everything for your Goa
+            trip in one place.
+          </p>
         </div>
 
-        {/* Loading */}
+        {/* Loading skeletons */}
         {loading && (
           <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {[1, 2, 3, 4].map((item) => (
@@ -81,14 +82,21 @@ const FeaturedServices = () => {
           </div>
         )}
 
-        {/* Service cards */}
+        {/* Service cards — grid auto-fits to actual item count */}
         {!loading && !error && services.length > 0 && (
-          <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
+          <div
+            className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 lg:gap-6"
+            style={{
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
+              maxWidth: services.length < 4 ? "900px" : undefined,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
             {services.map((service, index) => {
               const name =
-                service.title ??
-                service.name ??
-                "Goa Travel Service";
+                service.title ?? service.name ?? "Goa Travel Service";
 
               const image =
                 service.coverImage ??
@@ -97,18 +105,19 @@ const FeaturedServices = () => {
                 service.thumbnail ??
                 service.coverImageUrl;
 
+              const price =
+                service.price ?? service.startingPrice ?? service.fromPrice ?? null;
+
+              const description = service.shortDescription ?? service.tagline ?? null;
+
               const serviceLink = service.slug
                 ? `/services/${service.slug}`
                 : "/services";
 
               return (
                 <article
-                  key={
-                    service._id ??
-                    service.id ??
-                    `${name}-${index}`
-                  }
-                  className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-lg sm:rounded-2xl"
+                  key={service._id ?? service.id ?? `${name}-${index}`}
+                  className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:rounded-2xl"
                 >
                   {/* Image */}
                   <Link
@@ -121,7 +130,7 @@ const FeaturedServices = () => {
                         src={image}
                         alt={name}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={(event) => {
                           event.currentTarget.onerror = null;
                           event.currentTarget.style.display = "none";
@@ -134,13 +143,37 @@ const FeaturedServices = () => {
                     )}
                   </Link>
 
-                  {/* Name and buttons */}
-                  <div className="flex flex-1 flex-col gap-3 p-2.5 sm:gap-4 sm:p-4">
-                    <h3 className="line-clamp-2 min-h-10 text-sm font-bold leading-5 text-slate-900 sm:min-h-14 sm:text-lg sm:leading-7">
+                  {/* Name, description, price, buttons */}
+                  <div className="flex flex-1 flex-col gap-2 p-2.5 sm:gap-3 sm:p-4">
+                    <h3 className="line-clamp-2 min-h-10 text-sm font-bold capitalize leading-5 text-slate-900 sm:min-h-12 sm:text-base sm:leading-6">
                       {name}
                     </h3>
 
-                    <div className="mt-auto flex flex-col gap-2">
+                    {description && (
+                      <p className="line-clamp-2 min-h-8 text-[11px] leading-4 text-slate-500 sm:text-xs sm:leading-5">
+                        {description}
+                      </p>
+                    )}
+
+                    {/* Price row */}
+                    <div className="flex min-h-6 items-center">
+                      {price ? (
+                        <>
+                          <span className="text-sm font-extrabold text-teal-700 sm:text-lg">
+                            {formatPrice(price)}
+                          </span>
+                          <span className="ml-1.5 text-[10px] text-slate-400 sm:text-xs">
+                            onwards
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-[11px] font-semibold text-slate-400 sm:text-xs">
+                          Best rates guaranteed
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-auto flex flex-col gap-2 pt-1">
                       <Link
                         to={serviceLink}
                         className="flex min-h-9 items-center justify-center gap-1 rounded-lg border border-teal-700 px-1.5 py-2 text-center text-[10px] font-bold leading-4 text-teal-800 transition hover:bg-teal-50 min-[380px]:text-xs sm:min-h-11 sm:px-3 sm:text-sm"

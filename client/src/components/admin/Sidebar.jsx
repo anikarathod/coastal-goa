@@ -14,49 +14,48 @@ const Sidebar = () => {
   const menu = [
     {
       name: "Dashboard",
-      path: "/admin",
+      path: "/pearlrathod",
       icon: <FaTachometerAlt />,
     },
     {
       name: "Packages",
-      path: "/admin/packages",
+      path: "/pearlrathod/packages",
       icon: <FaBoxOpen />,
     },
     {
       name: "Services",
-      path: "/admin/services",
+      path: "/pearlrathod/services",
       icon: <FaConciergeBell />,
     },
     {
       name: "Bookings",
-      path: "/admin/bookings",
+      path: "/pearlrathod/bookings",
       icon: <FaCalendarCheck />,
     },
     {
       name: "Customers",
-      path: "/admin/customers",
+      path: "/pearlrathod/customers",
       icon: <FaUsers />,
     },
     {
       name: "Gallery",
-      path: "/admin/gallery",
+      path: "/pearlrathod/gallery",
       icon: <FaImages />,
     },
     {
       name: "Contacts",
-      path: "/admin/contacts",
+      path: "/pearlrathod/contacts",
       icon: <FaEnvelope />,
     },
     {
       name: "Settings",
-      path: "/admin/settings",
+      path: "/pearlrathod/settings",
       icon: <FaCog />,
     },
   ];
 
   return (
     <aside className="flex h-full w-64 flex-col bg-slate-900 text-white">
-
       {/* Logo */}
       <div className="border-b border-slate-700 p-6">
         <h1 className="text-2xl font-bold text-cyan-400">
@@ -70,12 +69,11 @@ const Sidebar = () => {
 
       {/* Menu */}
       <nav className="flex-1 py-4">
-
         {menu.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
-            end={item.path === "/admin"}
+            end={item.name === "Dashboard"}
             className={({ isActive }) =>
               `mx-3 mb-2 flex items-center gap-3 rounded-lg px-4 py-3 transition ${
                 isActive
@@ -91,14 +89,12 @@ const Sidebar = () => {
             <span>{item.name}</span>
           </NavLink>
         ))}
-
       </nav>
 
       {/* Footer */}
       <div className="border-t border-slate-700 p-4 text-center text-xs text-slate-500">
         © {new Date().getFullYear()} Coastal Goa
       </div>
-
     </aside>
   );
 };
