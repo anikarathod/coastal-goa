@@ -7,11 +7,10 @@ import {
   FaEyeSlash,
   FaSpinner,
   FaShieldAlt,
-  FaPalmtree,
+  FaTree,
   FaCheck,
   FaTimes,
   FaArrowLeft,
-  FaKey,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
@@ -108,7 +107,7 @@ const Login = () => {
         <div className="relative hidden flex-col justify-between bg-gradient-to-br from-teal-700 to-teal-900 p-10 text-white lg:flex">
           <div>
             <div className="flex items-center gap-2 text-2xl font-bold">
-              <FaPalmtree />
+              <FaTree />
               Coastal Goa
             </div>
 
@@ -153,7 +152,7 @@ const Login = () => {
 
           {/* Mobile logo */}
           <div className="mb-6 flex items-center justify-center gap-2 text-xl font-bold text-teal-700 lg:hidden">
-            <FaPalmtree />
+            <FaTree />
             Coastal Goa
           </div>
 
@@ -281,7 +280,7 @@ const Login = () => {
             Back to Coastal Goa
           </Link>
 
-          {/* REGISTER LINK (if you want public users to also use this) */}
+          {/* REGISTER LINK */}
           <div className="mt-6 text-center text-sm text-gray-500">
             Need admin access?{" "}
             <Link

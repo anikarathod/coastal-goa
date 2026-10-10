@@ -11,7 +11,7 @@ import {
   FaTimes,
   FaSpinner,
   FaShieldAlt,
-  FaPalmtree,
+  FaTree,
 } from "react-icons/fa";
 
 import api from "../services/api";
@@ -129,11 +129,11 @@ const Register = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl lg:grid-cols-2">
 
-        {/* LEFT: BRANDING PANEL (hidden on mobile) */}
+        {/* LEFT: BRANDING PANEL */}
         <div className="relative hidden flex-col justify-between bg-gradient-to-br from-teal-600 to-teal-800 p-10 text-white lg:flex">
           <div>
             <div className="flex items-center gap-2 text-2xl font-bold">
-              <FaPalmtree />
+              <FaTree />
               Coastal Goa
             </div>
             <h2 className="mt-12 text-3xl font-extrabold leading-tight">
@@ -177,7 +177,7 @@ const Register = () => {
 
           {/* Mobile logo */}
           <div className="mb-6 flex items-center justify-center gap-2 text-xl font-bold text-teal-700 lg:hidden">
-            <FaPalmtree />
+            <FaTree />
             Coastal Goa
           </div>
 
