@@ -1,88 +1,77 @@
-import { FaFilter } from "react-icons/fa";
+import { FaFilter, FaUndo } from "react-icons/fa";
 
-const PackageFilter = ({
-  filters,
-  onChange,
-  onReset,
-  locations = [],
-  categories = [],
-}) => {
+const PackageFilter = ({ filters, setFilters, onReset }) => {
+  const handleChange = (key, value) => {
+    setFilters({
+      ...filters,
+      [key]: value,
+    });
+  };
+
   return (
     <div className="rounded-2xl bg-white p-6 shadow-lg">
 
       {/* Heading */}
       <div className="mb-6 flex items-center gap-3">
-        <FaFilter className="text-cyan-600 text-xl" />
-        <h2 className="text-2xl font-bold">
+        <FaFilter className="text-teal-600 text-xl" />
+        <h2 className="text-2xl font-bold text-gray-900">
           Filters
         </h2>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
 
-        {/* Location */}
+        {/* LOCATION */}
         <div>
-          <label className="mb-2 block font-semibold">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
             Location
           </label>
-
           <select
             name="location"
             value={filters.location}
-            onChange={onChange}
-            className="w-full rounded-lg border p-3 focus:border-cyan-500 focus:outline-none"
+            onChange={(e) => handleChange("location", e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
           >
             <option value="">All Locations</option>
-
-            {locations.map((location) => (
-              <option key={location} value={location}>
-                {location}
-              </option>
-            ))}
-
+            <option value="North Goa">North Goa</option>
+            <option value="South Goa">South Goa</option>
+            <option value="Panjim">Panjim</option>
+            <option value="Calangute">Calangute</option>
+            <option value="Candolim">Candolim</option>
+            <option value="Baga">Baga</option>
           </select>
         </div>
 
-        {/* Category */}
+        {/* CATEGORY */}
         <div>
-
-          <label className="mb-2 block font-semibold">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
             Category
           </label>
-
           <select
             name="category"
             value={filters.category}
-            onChange={onChange}
-            className="w-full rounded-lg border p-3 focus:border-cyan-500 focus:outline-none"
+            onChange={(e) => handleChange("category", e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
           >
             <option value="">All Categories</option>
-
-            {categories.map((category) => (
-              <option
-                key={category}
-                value={category}
-              >
-                {category}
-              </option>
-            ))}
-
+            <option value="Tour">Tour</option>
+            <option value="Cruise">Cruise</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Sightseeing">Sightseeing</option>
+            <option value="Water Sports">Water Sports</option>
           </select>
-
         </div>
 
-        {/* Duration */}
+        {/* DURATION */}
         <div>
-
-          <label className="mb-2 block font-semibold">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
             Duration
           </label>
-
           <select
             name="duration"
             value={filters.duration}
-            onChange={onChange}
-            className="w-full rounded-lg border p-3 focus:border-cyan-500 focus:outline-none"
+            onChange={(e) => handleChange("duration", e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
           >
             <option value="">Any</option>
             <option value="Half Day">Half Day</option>
@@ -90,70 +79,54 @@ const PackageFilter = ({
             <option value="2 Days">2 Days</option>
             <option value="3 Days">3 Days</option>
           </select>
-
         </div>
 
-        {/* Price */}
+        {/* MAX PRICE */}
         <div>
-
-          <label className="mb-2 block font-semibold">
-            Max Price
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
+            Max Price (₹)
           </label>
-
           <input
             type="number"
-            name="price"
-            value={filters.price}
-            onChange={onChange}
-            placeholder="₹5000"
-            className="w-full rounded-lg border p-3 focus:border-cyan-500 focus:outline-none"
+            name="maxPrice"
+            value={filters.maxPrice}
+            onChange={(e) => handleChange("maxPrice", e.target.value)}
+            placeholder="5000"
+            min="0"
+            className="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
           />
-
         </div>
 
-        {/* Sort */}
+        {/* SORT */}
         <div>
-
-          <label className="mb-2 block font-semibold">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
             Sort By
           </label>
-
           <select
             name="sort"
             value={filters.sort}
-            onChange={onChange}
-            className="w-full rounded-lg border p-3 focus:border-cyan-500 focus:outline-none"
+            onChange={(e) => handleChange("sort", e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
           >
-            <option value="">Default</option>
-            <option value="priceLow">
-              Price: Low to High
-            </option>
-            <option value="priceHigh">
-              Price: High to Low
-            </option>
-            <option value="rating">
-              Highest Rated
-            </option>
-            <option value="newest">
-              Newest
-            </option>
+            <option value="latest">Default</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating">Top Rated</option>
           </select>
-
         </div>
 
       </div>
 
-      {/* Buttons */}
-
-      <div className="mt-8 flex flex-wrap gap-4">
-
+      {/* BUTTONS */}
+      <div className="mt-8 flex flex-wrap gap-3">
         <button
+          type="button"
           onClick={onReset}
-          className="rounded-lg border border-gray-300 px-6 py-3 font-semibold transition hover:bg-gray-100"
+          className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
         >
+          <FaUndo className="text-xs" />
           Reset Filters
         </button>
-
       </div>
 
     </div>
