@@ -26,8 +26,6 @@ const Gallery = () => {
 
       const res = await api.get("/gallery");
 
-      console.log("Gallery:", res.data);
-
       setImages(res.data.gallery || []);
     } catch (err) {
       console.error("Failed to load gallery:", err);
@@ -87,7 +85,7 @@ const Gallery = () => {
         </div>
 
         <Link
-          to="/admin/gallery/new"
+          to="/pearlrathod/gallery/new"
           className="flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-3 text-white transition hover:bg-cyan-700"
         >
           <FaPlus />
@@ -133,72 +131,72 @@ const Gallery = () => {
       ) : (
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-  {filteredImages.map((item) => (
-    <div
-      key={item._id}
-      className="overflow-hidden rounded-xl bg-white shadow"
-    >
-      {/* IMAGE */}
-      {item.mediaType === "image" && (
-        <img
-          src={item.fileUrl}
-          alt={item.title}
-          className="h-56 w-full object-cover"
-        />
-      )}
-
-      {/* VIDEO */}
-      {item.mediaType === "video" && (
-        <video
-          src={item.fileUrl}
-          controls
-          className="h-56 w-full object-cover"
-        />
-      )}
-
-      <div className="space-y-2 p-5">
-        <h3 className="font-semibold">
-          {item.title}
-        </h3>
-
-        <p className="text-sm text-gray-500">
-          {item.category}
-        </p>
-
-        <p className="text-sm text-gray-400">
-          {item.location}
-        </p>
-
-        <div className="flex items-center justify-between pt-3">
-          <span
-  className={`rounded-full px-3 py-1 text-xs font-medium ${
-    item.mediaType === "image"
-      ? "bg-blue-100 text-blue-600"
-      : "bg-green-100 text-green-600"
-  }`}
->
-  {item.mediaType?.toUpperCase()}
-</span>
-          <div className="flex gap-2">
-            <Link
-              to={`/admin/gallery/edit/${item._id}`}
-              className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
+          {filteredImages.map((item) => (
+            <div
+              key={item._id}
+              className="overflow-hidden rounded-xl bg-white shadow"
             >
-              <FaEdit />
-            </Link>
+              {/* IMAGE */}
+              {item.mediaType === "image" && (
+                <img
+                  src={item.fileUrl}
+                  alt={item.title}
+                  className="h-56 w-full object-cover"
+                />
+              )}
 
-            <button
-              onClick={() => deleteImage(item._id)}
-              className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
-            >
-              <FaTrash />
-            </button>
-          </div>
+              {/* VIDEO */}
+              {item.mediaType === "video" && (
+                <video
+                  src={item.fileUrl}
+                  controls
+                  className="h-56 w-full object-cover"
+                />
+              )}
+
+              <div className="space-y-2 p-5">
+                <h3 className="font-semibold">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                  {item.category}
+                </p>
+
+                <p className="text-sm text-gray-400">
+                  {item.location}
+                </p>
+
+                <div className="flex items-center justify-between pt-3">
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      item.mediaType === "image"
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-green-100 text-green-600"
+                    }`}
+                  >
+                    {item.mediaType?.toUpperCase()}
+                  </span>
+                  <div className="flex gap-2">
+                    <Link
+                      to={`/pearlrathod/gallery/edit/${item._id}`}
+                      className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
+                    >
+                      <FaEdit />
+                    </Link>
+
+                    <button
+                      onClick={() => deleteImage(item._id)}
+                      className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  ))}
-</div>
 
       )}
 

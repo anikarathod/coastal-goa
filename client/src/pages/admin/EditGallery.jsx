@@ -21,29 +21,23 @@ const EditGallery = () => {
 
   useEffect(() => {
     fetchGallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchGallery = async () => {
     try {
       const res = await api.get(`/gallery/${id}`);
 
-      const gallery =
-        res.data.item || res.data.image;
+      const gallery = res.data.item || res.data.image;
 
       setForm({
         title: gallery.title || "",
-        description:
-          gallery.description || "",
+        description: gallery.description || "",
         category: gallery.category || "",
         location: gallery.location || "",
-        featured:
-          gallery.featured || false,
-        fileUrl:
-          gallery.fileUrl ||
-          gallery.image ||
-          "",
-        fileType:
-          gallery.fileType || "image",
+        featured: gallery.featured || false,
+        fileUrl: gallery.fileUrl || gallery.image || "",
+        fileType: gallery.fileType || "image",
       });
     } catch (err) {
       console.error(err);
@@ -52,19 +46,11 @@ const EditGallery = () => {
   };
 
   const handleChange = (e) => {
-    const {
-      name,
-      value,
-      checked,
-      type,
-    } = e.target;
+    const { name, value, checked, type } = e.target;
 
     setForm((prev) => ({
       ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -74,57 +60,28 @@ const EditGallery = () => {
     try {
       setLoading(true);
 
-      const formData =
-        new FormData();
+      const formData = new FormData();
 
-      formData.append(
-        "title",
-        form.title
-      );
-
-      formData.append(
-        "description",
-        form.description
-      );
-
-      formData.append(
-        "category",
-        form.category
-      );
-
-      formData.append(
-        "location",
-        form.location
-      );
-
-      formData.append(
-        "featured",
-        form.featured
-      );
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("category", form.category);
+      formData.append("location", form.location);
+      formData.append("featured", form.featured);
 
       if (file) {
-        formData.append(
-          "file",
-          file
-        );
+        formData.append("file", file);
       }
 
-      await api.put(
-        `/gallery/${id}`,
-        formData
-      );
+      await api.put(`/gallery/${id}`, formData);
 
-      alert(
-        "Gallery updated successfully!"
-      );
+      alert("Gallery updated successfully!");
 
-      navigate("/admin/gallery");
+      navigate("/pearlrathod/gallery");
     } catch (err) {
       console.error(err);
 
       alert(
-        err.response?.data?.message ||
-          "Failed to update gallery."
+        err.response?.data?.message || "Failed to update gallery."
       );
     } finally {
       setLoading(false);
@@ -142,7 +99,6 @@ const EditGallery = () => {
         className="grid gap-6 md:grid-cols-2"
       >
         {/* Title */}
-
         <div>
           <label className="mb-2 block font-medium">
             Title
@@ -159,7 +115,6 @@ const EditGallery = () => {
         </div>
 
         {/* Category */}
-
         <div>
           <label className="mb-2 block font-medium">
             Category
@@ -175,7 +130,6 @@ const EditGallery = () => {
         </div>
 
         {/* Location */}
-
         <div>
           <label className="mb-2 block font-medium">
             Location
@@ -191,7 +145,6 @@ const EditGallery = () => {
         </div>
 
         {/* File Upload */}
-
         <div>
           <label className="mb-2 block font-medium">
             Replace File
@@ -200,17 +153,12 @@ const EditGallery = () => {
           <input
             type="file"
             accept="image/*,video/*,.pdf"
-            onChange={(e) =>
-              setFile(
-                e.target.files[0]
-              )
-            }
+            onChange={(e) => setFile(e.target.files[0])}
             className="w-full rounded-lg border p-3"
           />
         </div>
 
         {/* Description */}
-
         <div className="md:col-span-2">
           <label className="mb-2 block font-medium">
             Description
@@ -226,15 +174,13 @@ const EditGallery = () => {
         </div>
 
         {/* Current File */}
-
         {form.fileUrl && (
           <div className="md:col-span-2">
             <label className="mb-2 block font-medium">
               Current File
             </label>
 
-            {form.fileType ===
-              "image" && (
+            {form.fileType === "image" && (
               <img
                 src={form.fileUrl}
                 alt={form.title}
@@ -242,20 +188,13 @@ const EditGallery = () => {
               />
             )}
 
-            {form.fileType ===
-              "video" && (
-              <video
-                controls
-                className="h-64 rounded-lg border"
-              >
-                <source
-                  src={form.fileUrl}
-                />
+            {form.fileType === "video" && (
+              <video controls className="h-64 rounded-lg border">
+                <source src={form.fileUrl} />
               </video>
             )}
 
-            {form.fileType ===
-              "pdf" && (
+            {form.fileType === "pdf" && (
               <a
                 href={form.fileUrl}
                 target="_blank"
@@ -269,44 +208,31 @@ const EditGallery = () => {
         )}
 
         {/* Featured */}
-
         <div className="md:col-span-2">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
               name="featured"
-              checked={
-                form.featured
-              }
-              onChange={
-                handleChange
-              }
+              checked={form.featured}
+              onChange={handleChange}
             />
-
             Featured Item
           </label>
         </div>
 
         {/* Buttons */}
-
         <div className="flex gap-4 md:col-span-2">
           <button
             type="submit"
             disabled={loading}
             className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700"
           >
-            {loading
-              ? "Updating..."
-              : "Update Gallery"}
+            {loading ? "Updating..." : "Update Gallery"}
           </button>
 
           <button
             type="button"
-            onClick={() =>
-              navigate(
-                "/admin/gallery"
-              )
-            }
+            onClick={() => navigate("/pearlrathod/gallery")}
             className="rounded-lg border px-8 py-3"
           >
             Cancel

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import api from "../services/api";
 
 import Hero from "../components/home/Hero";
@@ -7,10 +8,8 @@ import FeaturedServices from "../components/home/FeaturedServices";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import GalleryPreview from "../components/home/GalleryPreview";
 import FAQ from "../components/home/FAQ";
-import Loader from "../components/common/Loader";
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -27,18 +26,10 @@ const Home = () => {
           response.data?.data?.services ??
           [];
 
-        setServices(
-          Array.isArray(servicesData) ? servicesData : []
-        );
+        setServices(Array.isArray(servicesData) ? servicesData : []);
       } catch (error) {
-        console.error(
-          "Failed to load homepage services:",
-          error
-        );
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
+        console.error("Failed to load homepage services:", error.message);
+        if (active) setServices([]);
       }
     };
 
@@ -49,36 +40,47 @@ const Home = () => {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-white">
-      {/* 1. Hero Banner */}
-      <Hero />
+    <>
+      {/* SEO */}
+      <Helmet>
+        <title>Coastal Goa | Best Tours, Packages & Travel Services</title>
+        <meta
+          name="description"
+          content="Discover the best of Goa with our handpicked tour packages, luxury stays, cruises, and travel services. Book your unforgettable Goa trip today."
+        />
+        <meta
+          name="keywords"
+          content="Goa tours, Goa packages, Goa travel, Dudhsagar Falls, North Goa, South Goa"
+        />
+        <meta property="og:title" content="Coastal Goa | Best Tours & Packages" />
+        <meta
+          property="og:description"
+          content="Handpicked Goa tour packages, services, and experiences at the best prices."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
 
-      {/* 2. Tour Packages */}
-      <FeaturedPackages />
+      <main className="min-h-screen w-full overflow-x-hidden bg-white">
+        {/* 1. Hero Banner */}
+        <Hero />
 
-      {/* 3. Travel Services */}
-      {services.length > 0 && (
-        <FeaturedServices services={services} />
-      )}
+        {/* 2. Tour Packages */}
+        <FeaturedPackages />
 
-      {/* 4. Why Choose Us */}
-      <WhyChooseUs />
+        {/* 3. Travel Services — only if we have data */}
+        {services.length > 0 && <FeaturedServices services={services} />}
 
-      {/* 5. Gallery */}
-      <GalleryPreview />
+        {/* 4. Why Choose Us */}
+        <WhyChooseUs />
 
-      {/* 6. Frequently Asked Questions */}
-      <FAQ />
-    </main>
+        {/* 5. Gallery */}
+        <GalleryPreview />
+
+        {/* 6. Frequently Asked Questions */}
+        <FAQ />
+      </main>
+    </>
   );
 };
 

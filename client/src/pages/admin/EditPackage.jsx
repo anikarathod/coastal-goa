@@ -31,131 +31,108 @@ const EditPackage = () => {
 
   useEffect(() => {
     fetchPackage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-const fetchPackage = async () => {
-  try {
-    const res = await api.get(`/packages/id/${id}`);
+  const fetchPackage = async () => {
+    try {
+      const res = await api.get(`/packages/id/${id}`);
 
-    const pkg = res.data.package;
+      const pkg = res.data.package;
 
-    setForm({
-      title: pkg.title || "",
-      shortDescription: pkg.shortDescription || "",
-      description: pkg.description || "",
-      location: pkg.location || "",
-      duration: pkg.duration || "",
-      category: pkg.category || "",
-      price: pkg.price || "",
-      discountPrice: pkg.discountPrice || "",
-      coverImage: pkg.coverImage || "",
-      images: pkg.images?.join("\n") || "",
-      highlights: pkg.highlights?.join("\n") || "",
-      inclusions: pkg.inclusions?.join("\n") || "",
-      exclusions: pkg.exclusions?.join("\n") || "",
-      featured: pkg.featured || false,
-      isActive: pkg.isActive ?? true,
-    });
-  } catch (err) {
-    console.error(err);
-    alert("Failed to load package.");
-  } finally {
-    setLoading(false);
-  }
-};
+      setForm({
+        title: pkg.title || "",
+        shortDescription: pkg.shortDescription || "",
+        description: pkg.description || "",
+        location: pkg.location || "",
+        duration: pkg.duration || "",
+        category: pkg.category || "",
+        price: pkg.price || "",
+        discountPrice: pkg.discountPrice || "",
+        coverImage: pkg.coverImage || "",
+        images: pkg.images?.join("\n") || "",
+        highlights: pkg.highlights?.join("\n") || "",
+        inclusions: pkg.inclusions?.join("\n") || "",
+        exclusions: pkg.exclusions?.join("\n") || "",
+        featured: pkg.featured || false,
+        isActive: pkg.isActive ?? true,
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load package.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
 
     setForm((prev) => ({
       ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
 
-    formData.append("title", form.title);
-    formData.append("shortDescription", form.shortDescription);
-    formData.append("description", form.description);
-    formData.append("location", form.location);
-    formData.append("duration", form.duration);
-    formData.append("category", form.category);
-    formData.append("price", form.price);
-    formData.append("discountPrice", form.discountPrice);
-    formData.append("featured", form.featured);
-    formData.append("isActive", form.isActive);
+      formData.append("title", form.title);
+      formData.append("shortDescription", form.shortDescription);
+      formData.append("description", form.description);
+      formData.append("location", form.location);
+      formData.append("duration", form.duration);
+      formData.append("category", form.category);
+      formData.append("price", form.price);
+      formData.append("discountPrice", form.discountPrice);
+      formData.append("featured", form.featured);
+      formData.append("isActive", form.isActive);
 
-    formData.append(
-      "highlights",
-      JSON.stringify(
-        form.highlights
-          .split("\n")
-          .filter(Boolean)
-      )
-    );
-
-    formData.append(
-      "inclusions",
-      JSON.stringify(
-        form.inclusions
-          .split("\n")
-          .filter(Boolean)
-      )
-    );
-
-    formData.append(
-      "exclusions",
-      JSON.stringify(
-        form.exclusions
-          .split("\n")
-          .filter(Boolean)
-      )
-    );
-
-    // Cover image
-    if (coverImageFile) {
       formData.append(
-        "coverImage",
-        coverImageFile
+        "highlights",
+        JSON.stringify(form.highlights.split("\n").filter(Boolean))
+      );
+
+      formData.append(
+        "inclusions",
+        JSON.stringify(form.inclusions.split("\n").filter(Boolean))
+      );
+
+      formData.append(
+        "exclusions",
+        JSON.stringify(form.exclusions.split("\n").filter(Boolean))
+      );
+
+      // Cover image
+      if (coverImageFile) {
+        formData.append("coverImage", coverImageFile);
+      }
+
+      // Gallery images
+      galleryFiles.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      await api.put(`/packages/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Package updated successfully!");
+      navigate("/pearlrathod/packages");
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        err.response?.data?.message || "Failed to update package."
       );
     }
+  };
 
-    // Gallery images
-    galleryFiles.forEach((file) => {
-      formData.append("images", file);
-    });
-
-    await api.put(
-      `/packages/${id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type":
-            "multipart/form-data",
-        },
-      }
-    );
-
-    alert("Package updated successfully!");
-    navigate("/admin/packages");
-
-  } catch (err) {
-    console.error(err);
-
-    alert(
-      err.response?.data?.message ||
-      "Failed to update package."
-    );
-  }
-};
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -242,152 +219,148 @@ const handleSubmit = async (e) => {
             className="w-full rounded-lg border p-3"
           />
         </div>
+
         <div className="md:col-span-2">
-  <label className="mb-2 block font-medium">
-    Description
-  </label>
+          <label className="mb-2 block font-medium">
+            Description
+          </label>
 
-  <textarea
-    rows={6}
-    name="description"
-    value={form.description}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <textarea
+            rows={6}
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
+
         {/* Short Description */}
-<div className="md:col-span-2">
-  <label className="mb-2 block font-medium">
-    Short Description
-  </label>
+        <div className="md:col-span-2">
+          <label className="mb-2 block font-medium">
+            Short Description
+          </label>
 
-  <textarea
-    rows={3}
-    name="shortDescription"
-    value={form.shortDescription}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <textarea
+            rows={3}
+            name="shortDescription"
+            value={form.shortDescription}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
-{/* Discount Price */}
-<div>
-  <label className="mb-2 block font-medium">
-    Discount Price
-  </label>
+        {/* Discount Price */}
+        <div>
+          <label className="mb-2 block font-medium">
+            Discount Price
+          </label>
 
-  <input
-    type="number"
-    name="discountPrice"
-    value={form.discountPrice}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <input
+            type="number"
+            name="discountPrice"
+            value={form.discountPrice}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
-{/* Cover Image */}
-<div>
-  <label className="mb-2 block font-medium">
-    Cover Image
-  </label>
+        {/* Cover Image */}
+        <div>
+          <label className="mb-2 block font-medium">
+            Cover Image
+          </label>
 
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) =>
-      setCoverImageFile(e.target.files[0])
-    }
-    className="w-full rounded-lg border p-3"
-  />
-</div>
-    {/* Gallery Images */}
-<div className="md:col-span-2">
-  <label className="mb-2 block font-medium">
-    Gallery Images
-  </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setCoverImageFile(e.target.files[0])}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
-  <input
-    type="file"
-    multiple
-    accept="image/*"
-    onChange={(e) =>
-      setGalleryFiles(
-        Array.from(e.target.files)
-      )
-    }
-    className="w-full rounded-lg border p-3"
-  />
-</div>
-{/* Highlights */}
-<div className="md:col-span-2">
-  <label className="mb-2 block font-medium">
-    Highlights (One Per Line)
-  </label>
+        {/* Gallery Images */}
+        <div className="md:col-span-2">
+          <label className="mb-2 block font-medium">
+            Gallery Images
+          </label>
 
-  <textarea
-    rows={5}
-    name="highlights"
-    value={form.highlights}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) => setGalleryFiles(Array.from(e.target.files))}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
-{/* Inclusions */}
-<div>
-  <label className="mb-2 block font-medium">
-    Inclusions
-  </label>
+        {/* Highlights */}
+        <div className="md:col-span-2">
+          <label className="mb-2 block font-medium">
+            Highlights (One Per Line)
+          </label>
 
-  <textarea
-    rows={6}
-    name="inclusions"
-    value={form.inclusions}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <textarea
+            rows={5}
+            name="highlights"
+            value={form.highlights}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
-{/* Exclusions */}
-<div>
-  <label className="mb-2 block font-medium">
-    Exclusions
-  </label>
+        {/* Inclusions */}
+        <div>
+          <label className="mb-2 block font-medium">
+            Inclusions
+          </label>
 
-  <textarea
-    rows={6}
-    name="exclusions"
-    value={form.exclusions}
-    onChange={handleChange}
-    className="w-full rounded-lg border p-3"
-  />
-</div>
+          <textarea
+            rows={6}
+            name="inclusions"
+            value={form.inclusions}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
+
+        {/* Exclusions */}
+        <div>
+          <label className="mb-2 block font-medium">
+            Exclusions
+          </label>
+
+          <textarea
+            rows={6}
+            name="exclusions"
+            value={form.exclusions}
+            onChange={handleChange}
+            className="w-full rounded-lg border p-3"
+          />
+        </div>
 
         <div className="flex gap-6 md:col-span-2">
-<label className="flex items-center gap-2">
-  <input
-    type="checkbox"
-    name="featured"
-    checked={form.featured}
-    onChange={handleChange}
-  />
-  Featured
-</label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="featured"
+              checked={form.featured}
+              onChange={handleChange}
+            />
+            Featured
+          </label>
 
-<label className="flex items-center gap-2">
-  <input
-    type="checkbox"
-    name="isActive"
-    checked={form.isActive}
-    onChange={handleChange}
-  />
-  Active
-</label>
-
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={form.isActive}
+              onChange={handleChange}
+            />
+            Active
+          </label>
         </div>
 
         <div className="md:col-span-2 flex gap-4">
-
           <button
             type="submit"
             className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700"
@@ -397,12 +370,11 @@ const handleSubmit = async (e) => {
 
           <button
             type="button"
-            onClick={() => navigate("/admin/packages")}
+            onClick={() => navigate("/pearlrathod/packages")}
             className="rounded-lg border px-8 py-3"
           >
             Cancel
           </button>
-
         </div>
 
       </form>

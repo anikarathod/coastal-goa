@@ -85,7 +85,7 @@ const Packages = () => {
         </div>
 
         <Link
-          to="/admin/packages/new"
+          to="/pearlrathod/packages/new"
           className="flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-3 text-white hover:bg-cyan-700"
         >
           <FaPlus />
@@ -218,7 +218,7 @@ const Packages = () => {
                     <div className="flex justify-center gap-3">
 
                       <Link
-                        to={`/admin/packages/edit/${pkg._id}`}
+                        to={`/pearlrathod/packages/edit/${pkg._id}`}
                         className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
                       >
                         <FaEdit />

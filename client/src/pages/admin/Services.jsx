@@ -25,8 +25,6 @@ const Services = () => {
 
       const res = await api.get("/services");
 
-      console.log("Services:", res.data.services);
-
       setServices(res.data.services || []);
     } catch (err) {
       console.error("Error loading services:", err);
@@ -87,7 +85,7 @@ const Services = () => {
         </div>
 
         <Link
-          to="/admin/services/new"
+          to="/pearlrathod/services/new"
           className="flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-3 text-white hover:bg-cyan-700"
         >
           <FaPlus />
@@ -200,7 +198,7 @@ const Services = () => {
                     <div className="flex justify-center gap-3">
 
                       <Link
-                        to={`/admin/services/edit/${service._id}`}
+                        to={`/pearlrathod/services/edit/${service._id}`}
                         className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
                       >
                         <FaEdit />

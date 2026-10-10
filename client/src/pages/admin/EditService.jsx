@@ -23,6 +23,7 @@ const EditService = () => {
 
   useEffect(() => {
     fetchService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchService = async () => {
@@ -80,7 +81,7 @@ const EditService = () => {
 
       alert("Service updated successfully.");
 
-      navigate("/admin/services");
+      navigate("/pearlrathod/services");
     } catch (err) {
       console.error(err);
 
@@ -165,9 +166,7 @@ const EditService = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) =>
-              setImage(e.target.files[0])
-            }
+            onChange={(e) => setImage(e.target.files[0])}
             className="w-full rounded-lg border p-3"
           />
         </div>
@@ -247,7 +246,7 @@ const EditService = () => {
 
           <button
             type="button"
-            onClick={() => navigate("/admin/services")}
+            onClick={() => navigate("/pearlrathod/services")}
             className="rounded-lg border px-8 py-3"
           >
             Cancel

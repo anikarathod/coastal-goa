@@ -25,6 +25,7 @@ const BookingDetails = () => {
 
   useEffect(() => {
     fetchBooking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchBooking = async () => {
@@ -34,7 +35,7 @@ const BookingDetails = () => {
     } catch (err) {
       console.error(err);
       alert("Booking not found.");
-      navigate("/admin/bookings");
+      navigate("/pearlrathod/bookings");
     } finally {
       setLoading(false);
     }
@@ -66,7 +67,7 @@ const BookingDetails = () => {
 
       alert("Booking deleted.");
 
-      navigate("/admin/bookings");
+      navigate("/pearlrathod/bookings");
     } catch (err) {
       console.error(err);
       alert("Failed to delete booking.");
@@ -139,9 +140,7 @@ const BookingDetails = () => {
           </p>
           <h2>
             {booking.travelDate
-              ? new Date(
-                  booking.travelDate
-                ).toLocaleDateString()
+              ? new Date(booking.travelDate).toLocaleDateString()
               : "-"}
           </h2>
         </div>
@@ -189,16 +188,11 @@ const BookingDetails = () => {
 
         <select
           value={booking.status}
-          onChange={(e) =>
-            updateStatus(e.target.value)
-          }
+          onChange={(e) => updateStatus(e.target.value)}
           className="mt-2 w-full rounded-lg border p-3"
         >
           {statusOptions.map((status) => (
-            <option
-              key={status}
-              value={status}
-            >
+            <option key={status} value={status}>
               {status}
             </option>
           ))}

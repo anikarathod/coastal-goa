@@ -23,6 +23,7 @@
     "mongoose": "^8.24.2",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
+    "nodemailer": "^10.1.0",
     "slugify": "^1.6.9",
     "streamifier": "^0.1.1"
   },
