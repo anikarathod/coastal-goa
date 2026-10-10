@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -13,38 +12,33 @@ import Loader from "../components/common/Loader";
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
-  const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
     let active = true;
 
     const fetchHomeData = async () => {
       try {
-        setLoading(true);
-
-        const [servicesRes, galleryRes] = await Promise.all([
-          api.get("/services/featured"),
-          api.get("/gallery/featured"),
-        ]);
+        const response = await api.get("/services/featured");
 
         if (!active) return;
 
         const servicesData =
-          servicesRes.data?.services ??
-          servicesRes.data?.data?.services ??
+          response.data?.services ??
+          response.data?.data?.services ??
           [];
 
-        const galleryData =
-          galleryRes.data?.gallery ??
-          galleryRes.data?.data?.gallery ??
-          [];
-
-        setServices(Array.isArray(servicesData) ? servicesData : []);
-        setGallery(Array.isArray(galleryData) ? galleryData : []);
+        setServices(
+          Array.isArray(servicesData) ? servicesData : []
+        );
       } catch (error) {
-        console.error("Failed to load homepage content:", error);
+        console.error(
+          "Failed to load homepage services:",
+          error
+        );
       } finally {
-        if (active) setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     };
 
@@ -65,26 +59,24 @@ const Home = () => {
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-white">
-      {/* Beach hero banner */}
+      {/* 1. Hero Banner */}
       <Hero />
 
-      {/* Benefits */}
-      <WhyChooseUs />
-
-      {/* Only packages provided by the existing component/API */}
+      {/* 2. Tour Packages */}
       <FeaturedPackages />
 
-      {/* Only services returned by the backend */}
+      {/* 3. Travel Services */}
       {services.length > 0 && (
         <FeaturedServices services={services} />
       )}
 
-      {/* Only gallery images returned by the backend */}
-      {gallery.length > 0 && (
-        <GalleryPreview images={gallery} />
-      )}
+      {/* 4. Why Choose Us */}
+      <WhyChooseUs />
 
-      {/* Frequently asked questions */}
+      {/* 5. Gallery */}
+      <GalleryPreview />
+
+      {/* 6. Frequently Asked Questions */}
       <FAQ />
     </main>
   );
