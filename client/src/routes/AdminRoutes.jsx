@@ -30,6 +30,9 @@ import Customers from "../pages/admin/Customers";
 import Contacts from "../pages/admin/Contacts";
 import Settings from "../pages/admin/Settings";
 
+// Analytics (NEW)
+import Analytics from "../pages/admin/Analytics";
+
 const AdminRoutes = () => {
   return (
     <Routes>
@@ -38,6 +41,9 @@ const AdminRoutes = () => {
         <Route element={<AdminLayout />}>
           {/* Dashboard */}
           <Route index element={<Dashboard />} />
+
+          {/* Analytics (NEW) */}
+          <Route path="analytics" element={<Analytics />} />
 
           {/* Packages */}
           <Route path="packages" element={<Packages />} />

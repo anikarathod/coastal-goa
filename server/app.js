@@ -12,7 +12,7 @@ import contactRoutes from "./routes/contactRoutes.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
-
+import analyticsRoutes from "./routes/analyticsRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -52,6 +52,8 @@ app.use("/api/hotels", hotelRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use("/api/settings", settingsRoutes);
+
+app.use("/api/analytics", analyticsRoutes);
 
 /* ===========================================
    Root

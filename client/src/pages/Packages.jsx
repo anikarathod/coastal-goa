@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { FaSlidersH, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useEffect, useState, useCallback } from "react";
+import {
+  FaSlidersH,
+  FaChevronDown,
+  FaChevronUp,
+  FaTimes,
+  FaSearch,
+} from "react-icons/fa";
 
 import api from "../services/api";
 
@@ -12,7 +18,8 @@ import PackageSearch from "../components/packages/PackageSearch";
 const Packages = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState(""); // live input
+  const [search, setSearch] = useState(""); // debounced search value
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const [filters, setFilters] = useState({
@@ -31,10 +38,28 @@ const Packages = () => {
     totalItems: 0,
   });
 
+  // ---- DEBOUNCE SEARCH (wait 500ms after typing stops) ----
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+      setPagination((prev) => ({ ...prev, page: 1 }));
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // ---- FETCH PACKAGES ----
   useEffect(() => {
     fetchPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, filters, pagination.page]);
+
+  // ---- SCROLL TO TOP ON PAGE CHANGE ----
+  useEffect(() => {
+    if (pagination.page > 1) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pagination.page]);
 
   const fetchPackages = async () => {
     try {
@@ -70,7 +95,8 @@ const Packages = () => {
     }
   };
 
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
+    setSearchInput("");
     setSearch("");
 
     setFilters({
@@ -86,153 +112,203 @@ const Packages = () => {
       ...prev,
       page: 1,
     }));
-  };
+  }, []);
 
+  // Counts search + filters + sort
   const activeFiltersCount = [
+    search,
     filters.category,
     filters.location,
     filters.duration,
     filters.minPrice,
     filters.maxPrice,
+    filters.sort !== "latest" ? filters.sort : "",
   ].filter(Boolean).length;
 
+  const hasActiveFilters = activeFiltersCount > 0;
+
   return (
-    <section className="min-h-screen bg-gray-50 py-5 sm:py-10 lg:py-14">
+    <section className="min-h-screen bg-gray-50 py-6 sm:py-10 lg:py-14">
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
 
-        {/* Page Heading */}
-        <div className="mb-5 text-center sm:mb-8 lg:mb-10">
-          <h1 className="text-2xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl">
+        {/* PAGE HEADING */}
+        <div className="mb-6 text-center sm:mb-10">
+          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
             Goa Tour Packages
           </h1>
-
           <p className="mx-auto mt-2 max-w-2xl text-sm text-gray-600 sm:mt-3 sm:text-base">
-            Choose from our best-selling Goa tour packages and experiences.
+            Handpicked experiences at the best prices — no hidden costs.
           </p>
         </div>
 
-        {/* Search */}
-        <div className="mb-3 sm:mb-5">
-          <PackageSearch
-            value={search}
-            onChange={(value) => {
-              setSearch(value);
-              setPagination((prev) => ({ ...prev, page: 1 }));
-            }}
-          />
-        </div>
+        {/* SEARCH + FILTER TOOLBAR */}
+        <div className="mb-5 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4">
 
-        {/* Filters */}
-        <div className="mb-5 sm:mb-7">
-          {/* Mobile Filter Toggle */}
-          <button
-            type="button"
-            onClick={() => setFiltersOpen((prev) => !prev)}
-            aria-expanded={filtersOpen}
-            aria-controls="package-filters"
-            className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3.5 shadow-sm transition hover:border-teal-600 sm:py-4 lg:hidden"
-          >
-            <span className="flex items-center gap-3">
-              <FaSlidersH className="text-teal-700" />
+          {/* SEARCH ROW */}
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
 
-              <span className="font-semibold text-gray-900">
-                Filter Packages
-              </span>
-
-              {activeFiltersCount > 0 && (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-teal-700 px-1.5 text-xs font-bold text-white">
-                  {activeFiltersCount}
-                </span>
+            {/* SEARCH INPUT */}
+            <div className="relative flex-1">
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search packages by name or location..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-10 text-sm shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100 sm:text-base"
+              />
+              {searchInput && (
+                <button
+                  type="button"
+                  onClick={() => setSearchInput("")}
+                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                >
+                  <FaTimes className="text-xs" />
+                </button>
               )}
-            </span>
+            </div>
 
-            {filtersOpen ? (
-              <FaChevronUp className="text-gray-500" />
-            ) : (
-              <FaChevronDown className="text-gray-500" />
-            )}
-          </button>
+            {/* SORT DROPDOWN (desktop always visible) */}
+            <div className="hidden lg:block">
+              <select
+                value={filters.sort}
+                onChange={(e) => {
+                  setFilters((prev) => ({ ...prev, sort: e.target.value }));
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="rounded-xl border border-gray-200 bg-white py-3.5 pl-4 pr-10 text-sm font-medium text-gray-700 shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+              >
+                <option value="latest">Sort: Latest</option>
+                <option value="price-asc">Price: Low → High</option>
+                <option value="price-desc">Price: High → Low</option>
+                <option value="rating">Top Rated</option>
+                <option value="popular">Most Popular</option>
+              </select>
+            </div>
 
-          {/* Desktop: Always visible | Mobile: Collapsible */}
+            {/* MOBILE FILTER TOGGLE */}
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((prev) => !prev)}
+              aria-expanded={filtersOpen}
+              aria-controls="package-filters"
+              className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3.5 shadow-sm transition hover:border-teal-500 lg:hidden"
+            >
+              <span className="flex items-center gap-3">
+                <FaSlidersH className="text-teal-700" />
+                <span className="font-semibold text-gray-900">
+                  Filters & Sort
+                </span>
+                {activeFiltersCount > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-teal-600 px-1.5 text-xs font-bold text-white">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </span>
+              {filtersOpen ? (
+                <FaChevronUp className="text-gray-500" />
+              ) : (
+                <FaChevronDown className="text-gray-500" />
+              )}
+            </button>
+          </div>
+
+          {/* FILTER PANEL (Mobile: Collapsible | Desktop: Always visible below search) */}
           <div
             id="package-filters"
-            className={`mt-3 ${
+            className={`mt-3 border-t border-gray-100 pt-3 lg:mt-3 lg:block ${
               filtersOpen ? "block" : "hidden"
-            } lg:mt-0 lg:block`}
+            }`}
           >
             <PackageFilter
               filters={filters}
               setFilters={(updatedFilters) => {
                 setFilters(updatedFilters);
-                setPagination((prev) => ({
-                  ...prev,
-                  page: 1,
-                }));
+                setPagination((prev) => ({ ...prev, page: 1 }));
               }}
               onReset={resetFilters}
             />
           </div>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-4 flex items-center justify-between gap-3 sm:mb-6">
+        {/* RESULTS HEADER */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
           <h2 className="text-base font-bold text-gray-900 sm:text-xl">
-            {loading ? "Loading packages..." : `${pagination.totalItems} Packages Found`}
+            {loading ? (
+              <span className="text-gray-400">Loading packages...</span>
+            ) : (
+              <>
+                {pagination.totalItems}{" "}
+                {pagination.totalItems === 1 ? "Package" : "Packages"} Found
+              </>
+            )}
           </h2>
 
-          {activeFiltersCount > 0 && (
+          {hasActiveFilters && (
             <button
               type="button"
               onClick={resetFilters}
-              className="shrink-0 text-sm font-semibold text-teal-700 hover:text-teal-900"
+              className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1.5 text-xs font-semibold text-teal-700 transition hover:bg-teal-100 sm:text-sm"
             >
-              Clear filters
+              <FaTimes className="text-[10px]" />
+              Clear all ({activeFiltersCount})
             </button>
           )}
         </div>
 
-        {/* Package Grid */}
+        {/* PACKAGE GRID / LOADING / EMPTY */}
         {loading ? (
-          <div className="flex justify-center py-16 sm:py-20">
-            <Loader />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="animate-pulse overflow-hidden rounded-2xl border border-gray-100 bg-white"
+              >
+                <div className="h-52 bg-gray-200" />
+                <div className="space-y-3 p-5">
+                  <div className="h-5 w-3/4 rounded bg-gray-200" />
+                  <div className="h-4 w-1/2 rounded bg-gray-200" />
+                  <div className="h-10 w-full rounded-lg bg-gray-200" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : packages.length > 0 ? (
           <PackageGrid packages={packages} />
         ) : (
-          <div className="rounded-2xl border border-gray-200 bg-white px-4 py-10 text-center sm:py-14">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-50">
-              <FaSlidersH className="text-xl text-teal-700" />
+          <div className="rounded-2xl border border-gray-200 bg-white px-4 py-12 text-center sm:py-16">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
+              <FaSlidersH className="text-2xl text-teal-700" />
             </div>
 
-            <h3 className="mt-4 text-lg font-bold text-gray-900">
-              No packages found
+            <h3 className="mt-4 text-lg font-bold text-gray-900 sm:text-xl">
+              No packages match your search
             </h3>
 
-            <p className="mt-2 text-sm text-gray-600">
-              Try changing your search or filters to find available Goa tours.
+            <p className="mx-auto mt-2 max-w-md text-sm text-gray-600">
+              Try adjusting your filters or searching for something else.
+              We've got plenty more Goa experiences waiting for you!
             </p>
 
             <button
               type="button"
               onClick={resetFilters}
-              className="mt-5 rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-teal-800"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-teal-700"
             >
-              Reset Filters
+              <FaTimes /> Clear All Filters
             </button>
           </div>
         )}
 
-        {/* Pagination */}
+        {/* PAGINATION */}
         {!loading && pagination.totalPages > 1 && (
-          <div className="mt-8 flex justify-center sm:mt-12">
+          <div className="mt-10 flex justify-center sm:mt-14">
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
               onPageChange={(page) =>
-                setPagination((prev) => ({
-                  ...prev,
-                  page,
-                }))
+                setPagination((prev) => ({ ...prev, page }))
               }
             />
           </div>

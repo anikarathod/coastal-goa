@@ -8,6 +8,7 @@ import {
   FaImages,
   FaEnvelope,
   FaCog,
+  FaChartBar,
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -16,6 +17,11 @@ const Sidebar = () => {
       name: "Dashboard",
       path: "/pearlrathod",
       icon: <FaTachometerAlt />,
+    },
+    {
+      name: "Analytics",
+      path: "/pearlrathod/analytics",
+      icon: <FaChartBar />,
     },
     {
       name: "Packages",
@@ -68,7 +74,7 @@ const Sidebar = () => {
       </div>
 
       {/* Menu */}
-      <nav className="flex-1 py-4">
+      <nav className="flex-1 overflow-y-auto py-4">
         {menu.map((item) => (
           <NavLink
             key={item.path}

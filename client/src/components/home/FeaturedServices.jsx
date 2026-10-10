@@ -183,12 +183,12 @@ const FeaturedServices = () => {
                       </Link>
 
                       <Link
-                        to="/contact"
-                        className="flex min-h-9 items-center justify-center gap-1 rounded-lg bg-teal-700 px-2 py-2 text-center text-xs font-bold text-white transition hover:bg-teal-800 sm:min-h-11 sm:text-sm"
-                      >
-                        Book Now
-                        <FaArrowRight className="shrink-0 text-[10px] sm:text-xs" />
-                      </Link>
+  to="/booking"
+  className="flex min-h-9 items-center justify-center gap-1 rounded-lg bg-teal-700 px-2 py-2 text-center text-xs font-bold text-white transition hover:bg-teal-800 sm:min-h-11 sm:text-sm"
+>
+  Book Now
+  <FaArrowRight className="shrink-0 text-[10px] sm:text-xs" />
+</Link>
                     </div>
                   </div>
                 </article>
