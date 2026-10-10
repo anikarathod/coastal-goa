@@ -48,7 +48,7 @@ const PackageDetails = () => {
   if (!packageData) {
     return (
       <div className="py-24 text-center">
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-4xl font-bold text-gray-900">
           Package Not Found
         </h1>
 
@@ -59,99 +59,90 @@ const PackageDetails = () => {
     );
   }
 
- return (
-  <section className="min-h-screen bg-gray-50">
+  return (
+    <section className="min-h-screen bg-gray-50 pb-16">
+      {/* Gallery */}
+      <PackageGallery
+        images={[
+          packageData.coverImage,
+          ...(packageData.images || []),
+        ].filter(Boolean)}
+      />
 
-    {/* Gallery */}
-    <PackageGallery
-      images={[
-        packageData.coverImage,
-        ...(packageData.images || []),
-      ].filter(Boolean)}
-    />
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+        
+        {/* Package Info (Contains Title, Description, and Price Box) */}
+        {/* I added a subtle shadow and a very light border to make the card pop */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8 lg:p-10">
+          <PackageInfo packageData={packageData} />
 
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+          {/* Quick Stats */}
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+            {/* Location Box */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 transition-colors duration-200 hover:border-teal-200 hover:bg-teal-50/30">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 sm:text-sm">
+                Location
+              </p>
+              <p className="mt-1.5 text-sm font-semibold text-gray-900 sm:text-base">
+                {packageData.location || "South Goa"}
+              </p>
+            </div>
 
-      {/* Package Info */}
-      <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-6 lg:p-8">
+            {/* Duration Box - Fixed the N/A fallback */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 transition-colors duration-200 hover:border-teal-200 hover:bg-teal-50/30">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 sm:text-sm">
+                Duration
+              </p>
+              <p className="mt-1.5 text-sm font-semibold text-gray-900 sm:text-base">
+                {packageData.duration || "Full Day (6-8 Hours)"}
+              </p>
+            </div>
 
-        <PackageInfo packageData={packageData} />
+            {/* Category Box */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 transition-colors duration-200 hover:border-teal-200 hover:bg-teal-50/30">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 sm:text-sm">
+                Category
+              </p>
+              <p className="mt-1.5 text-sm font-semibold text-gray-900 sm:text-base">
+                {packageData.category || "Tour"}
+              </p>
+            </div>
 
-        {/* Quick Stats */}
-        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-
-          <div className="rounded-xl border p-3 sm:p-4">
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Location
-            </p>
-
-            <p className="mt-1 text-sm font-semibold sm:text-base">
-              {packageData.location || "N/A"}
-            </p>
+            {/* Rating Box */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 transition-colors duration-200 hover:border-teal-200 hover:bg-teal-50/30">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 sm:text-sm">
+                Rating
+              </p>
+              <p className="mt-1.5 flex items-center gap-1.5 text-sm font-semibold text-gray-900 sm:text-base">
+                <span className="text-yellow-500">★</span>
+                {packageData.rating || "4.8"}
+              </p>
+            </div>
           </div>
-
-          <div className="rounded-xl border p-3 sm:p-4">
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Duration
-            </p>
-
-            <p className="mt-1 text-sm font-semibold sm:text-base">
-              {packageData.duration || "N/A"}
-            </p>
-          </div>
-
-          <div className="rounded-xl border p-3 sm:p-4">
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Category
-            </p>
-
-            <p className="mt-1 text-sm font-semibold sm:text-base">
-              {packageData.category || "N/A"}
-            </p>
-          </div>
-
-          <div className="rounded-xl border p-3 sm:p-4">
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Rating
-            </p>
-
-            <p className="mt-1 text-sm font-semibold sm:text-base">
-              ⭐ {packageData.rating || "4.8"}
-            </p>
-          </div>
-
         </div>
 
+        {/* Map Section */}
+        {packageData.latitude && packageData.longitude && (
+          <div className="mt-8 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:mt-10 sm:p-8 lg:mt-12">
+            <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-gray-900 sm:text-2xl">
+              <span className="text-teal-600">📍</span> Tour Location
+            </h2>
+
+            <PackageMap
+              latitude={packageData.latitude}
+              longitude={packageData.longitude}
+              address={packageData.location}
+            />
+          </div>
+        )}
+
+        {/* Related Packages */}
+        <section className="mt-12 sm:mt-16 lg:mt-20">
+          <RelatedPackages packageId={packageData._id} />
+        </section>
       </div>
-
-      {/* Map */}
-      {packageData.latitude && packageData.longitude && (
-        <div className="mt-8 rounded-2xl bg-white p-4 shadow-sm sm:mt-10 sm:p-6 lg:mt-12 lg:p-8">
-
-          <h2 className="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">
-            Location
-          </h2>
-
-          <PackageMap
-            latitude={packageData.latitude}
-            longitude={packageData.longitude}
-            address={packageData.location}
-          />
-
-        </div>
-      )}
-
-         {/* Related Packages */}
-      <section className="mt-10 sm:mt-12 lg:mt-16">
-        <RelatedPackages
-          packageId={packageData._id}
-        />
-      </section>
-
-    </div>
-
-  </section>
-);
+    </section>
+  );
 };
 
 export default PackageDetails;
