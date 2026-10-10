@@ -34,8 +34,8 @@ const PackageInfo = ({ packageData }) => {
   return (
     <section className="grid gap-8 lg:grid-cols-3 lg:gap-10">
 
-      {/* LEFT CONTENT */}
-      <div className="space-y-6 lg:col-span-2 lg:space-y-8">
+      {/* LEFT CONTENT — goes 2nd on mobile, 1st on desktop */}
+      <div className="order-2 space-y-6 lg:order-1 lg:col-span-2 lg:space-y-8">
 
         {/* Header */}
         <div>
@@ -194,10 +194,10 @@ const PackageInfo = ({ packageData }) => {
 
       </div>
 
-      {/* RIGHT SIDEBAR (PRICE & BOOKING) */}
-      <div className="relative">
+      {/* RIGHT SIDEBAR (PRICE & BOOKING) — goes 1st on mobile, 2nd on desktop */}
+      <div className="relative order-1 lg:order-2">
         <div className="sticky top-24 rounded-3xl border border-gray-100 bg-white p-6 shadow-xl sm:p-8">
-          
+
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-gray-500">Starting from</p>
             {discount > 0 && (
