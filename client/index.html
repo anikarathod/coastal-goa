@@ -16,8 +16,29 @@
 
     <meta
       name="keywords"
-      content=", Dinner Cruise, Water Sports, Bungy Jump, South Goa Tour, North Goa Tour, Taxi Booking"
+      content="Dinner Cruise, Water Sports, Bungy Jump, South Goa Tour, North Goa Tour, Taxi Booking"
     />
+
+    <!-- 🎨 No-flash theme script — MUST be before any other scripts -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var theme =
+            saved === "light" || saved === "dark"
+              ? saved
+              : window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          document.documentElement.classList.add(theme);
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.classList.add("light");
+        }
+      })();
+    </script>
 
     <!-- Google Analytics -->
     <script
