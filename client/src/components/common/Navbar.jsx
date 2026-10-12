@@ -18,15 +18,19 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 shadow-sm backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-[72px] sm:px-6 md:h-20 lg:px-8">
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
+        {/* Logo — hard-capped height, never overflows */}
+        <Link
+          to="/"
+          className="flex shrink-0 items-center"
+          aria-label={websiteName}
+        >
           <img
             src="/logo.png"
             alt={websiteName}
-            className="h-10 w-auto object-contain sm:h-12 md:h-14"
+            className="block h-10 w-auto max-h-10 object-contain sm:h-12 sm:max-h-12 md:h-14 md:max-h-14"
           />
         </Link>
 
@@ -37,10 +41,10 @@ const Navbar = () => {
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `relative text-sm font-medium transition lg:text-base ${
+                `relative whitespace-nowrap text-sm font-medium transition lg:text-base ${
                   isActive
                     ? "text-teal-600"
-                    : "text-gray-700 hover:text-teal-600"
+                    : "text-slate-700 hover:text-teal-600"
                 }`
               }
             >
@@ -49,46 +53,44 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Desktop Button */}
-        <div className="hidden md:block">
+        {/* Desktop Book Now button — properly shaped */}
+        <div className="hidden shrink-0 md:block">
           <Link
             to="/booking"
-            className="rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
+            className="inline-flex min-h-10 items-center justify-center whitespace-nowrap rounded-xl bg-teal-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700"
           >
             Book Now
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile hamburger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close menu" : "Open menu"}
-          className="text-3xl text-teal-600 md:hidden"
+          className="shrink-0 rounded-lg p-2 text-2xl text-teal-600 transition hover:bg-teal-50 md:hidden"
         >
           {isOpen ? <HiX /> : <HiMenu />}
         </button>
-
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`overflow-hidden transition-all duration-300 md:hidden ${
-          isOpen ? "max-h-[500px] border-t" : "max-h-0"
+        className={`overflow-hidden border-t border-slate-100 transition-all duration-300 md:hidden ${
+          isOpen ? "max-h-[500px]" : "max-h-0 border-t-0"
         }`}
       >
-        <div className="bg-white px-5 py-4">
-          <div className="flex flex-col gap-4">
-
+        <div className="bg-white px-4 py-3">
+          <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 text-base ${
+                  `flex min-h-11 items-center rounded-lg px-4 text-base font-medium transition ${
                     isActive
                       ? "bg-teal-50 font-semibold text-teal-600"
-                      : "text-gray-700"
+                      : "text-slate-700 hover:bg-slate-50"
                   }`
                 }
               >
@@ -99,7 +101,7 @@ const Navbar = () => {
             <Link
               to="/booking"
               onClick={() => setIsOpen(false)}
-              className="mt-2 rounded-xl bg-teal-600 py-3 text-center font-semibold text-white"
+              className="mt-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-teal-600 px-4 text-base font-semibold text-white transition hover:bg-teal-700"
             >
               Book Now
             </Link>
