@@ -89,7 +89,7 @@ const PackageDetails = () => {
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
   const shareText = packageData
-    ? `Check out ${packageData.title} on Coastal Goa!`
+    ? `Check out ${packageData.title} on Alpha Waves Goa!`
     : "";
 
   // ---- LOADING SKELETON ----
@@ -170,12 +170,12 @@ const PackageDetails = () => {
     <>
       {/* DYNAMIC SEO */}
       <Helmet>
-        <title>{packageData.title} | Coastal Goa</title>
+        <title>{packageData.title} | Alpha Waves Goa</title>
         <meta
           name="description"
           content={
             packageData.description?.slice(0, 160) ||
-            `Book ${packageData.title} tour in Goa with Coastal Goa.`
+            `Book ${packageData.title} tour in Goa with Alpha Waves Goa.`
           }
         />
         <meta property="og:title" content={packageData.title} />

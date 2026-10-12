@@ -134,7 +134,7 @@ const Register = () => {
           <div>
             <div className="flex items-center gap-2 text-2xl font-bold">
               <FaTree />
-              Coastal Goa
+              Alpha Waves Goa
             </div>
             <h2 className="mt-12 text-3xl font-extrabold leading-tight">
               Start Your Goa Adventure
@@ -178,7 +178,7 @@ const Register = () => {
           {/* Mobile logo */}
           <div className="mb-6 flex items-center justify-center gap-2 text-xl font-bold text-teal-700 lg:hidden">
             <FaTree />
-            Coastal Goa
+            Alpha Waves Goa
           </div>
 
           <div className="mb-6">
@@ -186,7 +186,7 @@ const Register = () => {
               Create Account
             </h1>
             <p className="mt-2 text-sm text-gray-500 sm:text-base">
-              Join Coastal Goa and start exploring.
+              Join Alpha Waves Goa and start exploring.
             </p>
           </div>
 

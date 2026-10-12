@@ -28,7 +28,7 @@ const faqData = [
       "Yes, we provide airport pickup and drop services across Goa, 24/7. Your driver will be waiting at the arrivals gate with a name board — no haggling with taxis after a long flight.",
   },
   {
-    question: "How can I contact Coastal Goa?",
+    question: "How can I contact Alpha Waves Goa?",
     answer:
       "You can reach us anytime on WhatsApp, by phone, or through the contact form on this website. We typically respond within 15 minutes during working hours.",
   },

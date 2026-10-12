@@ -10,15 +10,15 @@ const Contact = () => {
     <>
       {/* SEO */}
       <Helmet>
-        <title>Contact Us | Coastal Goa</title>
+        <title>Contact Us | Alpha Waves Goa</title>
         <meta
           name="description"
-          content="Get in touch with Coastal Goa. We're here to help you plan your perfect Goa trip — bookings, inquiries, and custom tour packages."
+          content="Get in touch with Alpha Waves Goa. We're here to help you plan your perfect Goa trip — bookings, inquiries, and custom tour packages."
         />
-        <meta property="og:title" content="Contact Us | Coastal Goa" />
+        <meta property="og:title" content="Contact Us | Alpha Waves Goa" />
         <meta
           property="og:description"
-          content="Reach out to Coastal Goa for bookings, inquiries, or custom Goa tour packages."
+          content="Reach out to Alpha Waves Goa for bookings, inquiries, or custom Goa tour packages."
         />
         <meta property="og:type" content="website" />
       </Helmet>

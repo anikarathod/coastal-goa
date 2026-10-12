@@ -169,7 +169,7 @@ const BookingForm = ({
           : "None";
 
       const whatsappMessage = `
-🌊 *COASTAL GOA BOOKING*
+🌊 *Alpha Waves Goa BOOKING*
 
 👤 Name:
 ${bookingData.customer.fullName}

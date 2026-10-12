@@ -53,7 +53,7 @@ const WhyChooseUs = () => {
         {/* Heading */}
         <div className="mb-10 text-center sm:mb-14">
           <span className="inline-block rounded-full bg-teal-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-teal-700 sm:text-sm">
-            Why Choose Coastal Goa
+            Why Choose Alpha Waves Goa
           </span>
 
           <h2 className="mt-4 text-2xl font-extrabold text-slate-900 sm:text-3xl lg:text-4xl">

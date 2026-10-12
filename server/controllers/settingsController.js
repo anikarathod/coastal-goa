@@ -10,7 +10,7 @@ export const getSettings = async (req, res) => {
 
     if (!settings) {
       settings = await Settings.create({
-        websiteName: "Coastal Goa",
+        websiteName: "Alpha Waves Goa",
       });
     }
 

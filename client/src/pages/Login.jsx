@@ -108,7 +108,7 @@ const Login = () => {
           <div>
             <div className="flex items-center gap-2 text-2xl font-bold">
               <FaTree />
-              Coastal Goa
+              Alpha Waves Goa
             </div>
 
             <h2 className="mt-12 text-3xl font-extrabold leading-tight">
@@ -153,7 +153,7 @@ const Login = () => {
           {/* Mobile logo */}
           <div className="mb-6 flex items-center justify-center gap-2 text-xl font-bold text-teal-700 lg:hidden">
             <FaTree />
-            Coastal Goa
+            Alpha Waves Goa
           </div>
 
           {/* Header */}
@@ -277,7 +277,7 @@ const Login = () => {
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 transition hover:border-teal-300 hover:text-teal-600"
           >
             <FaArrowLeft className="text-xs" />
-            Back to Coastal Goa
+            Back to Alpha Waves Goa
           </Link>
 
           {/* REGISTER LINK */}

@@ -62,7 +62,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Coastal Goa API is running 🚀",
+    message: "Alpha Waves Goa API is running 🚀",
   });
 });
 

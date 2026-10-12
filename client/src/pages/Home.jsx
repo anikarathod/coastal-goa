@@ -44,7 +44,7 @@ const Home = () => {
     <>
       {/* SEO */}
       <Helmet>
-        <title>Coastal Goa | Best Tours, Packages & Travel Services</title>
+        <title>Alpha Waves Goa | Best Tours, Packages & Travel Services</title>
         <meta
           name="description"
           content="Discover the best of Goa with our handpicked tour packages, luxury stays, cruises, and travel services. Book your unforgettable Goa trip today."
@@ -53,7 +53,7 @@ const Home = () => {
           name="keywords"
           content="Goa tours, Goa packages, Goa travel, Dudhsagar Falls, North Goa, South Goa"
         />
-        <meta property="og:title" content="Coastal Goa | Best Tours & Packages" />
+        <meta property="og:title" content="Alpha Waves Goa | Best Tours & Packages" />
         <meta
           property="og:description"
           content="Handpicked Goa tour packages, services, and experiences at the best prices."

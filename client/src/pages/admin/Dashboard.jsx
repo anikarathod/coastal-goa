@@ -164,7 +164,7 @@ const Dashboard = () => {
             {getGreeting()}, Admin 👋
           </p>
           <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
-            Welcome to Coastal Goa
+            Welcome to Alpha Waves Goa
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-teal-100 sm:text-base">
             Here's what's happening with your business today.

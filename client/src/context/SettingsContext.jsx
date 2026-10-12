@@ -10,7 +10,7 @@ const SettingsContext = createContext(null);
 
 /* Default fallbacks — shown while loading or if API fails */
 const DEFAULT_SETTINGS = {
-  websiteName: "Coastal Goa",
+  websiteName: "Alpha Waves Goa",
   email: "",
   phone: "",
   whatsapp: "",

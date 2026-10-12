@@ -152,7 +152,7 @@ const Services = () => {
     <>
       {/* SEO */}
       <Helmet>
-        <title>Goa Travel Services | Coastal Goa</title>
+        <title>Goa Travel Services | Alpha Waves Goa</title>
         <meta
           name="description"
           content="Browse our Goa travel services — transport, adventure, accommodation, cruises, and rentals. Best prices guaranteed."
@@ -161,7 +161,7 @@ const Services = () => {
           name="keywords"
           content="Goa travel services, Goa cruise, Goa rental, Goa adventure"
         />
-        <meta property="og:title" content="Goa Travel Services | Coastal Goa" />
+        <meta property="og:title" content="Goa Travel Services | Alpha Waves Goa" />
         <meta
           property="og:description"
           content="Handpicked services for your Goa trip."

@@ -233,7 +233,7 @@ const Settings = () => {
                   name="websiteName"
                   value={formData.websiteName}
                   onChange={handleChange}
-                  placeholder="Coastal Goa"
+                  placeholder="Alpha Waves Goa"
                   className={inputClass}
                 />
               </div>

@@ -4,7 +4,7 @@ const settingsSchema = new mongoose.Schema(
   {
     websiteName: {
       type: String,
-      default: "Coastal Goa",
+      default: "Alpha Waves Goa",
     },
 
     email: {

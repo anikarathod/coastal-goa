@@ -47,7 +47,7 @@ const BookingSuccess = () => {
 
   // Build WhatsApp message
   const whatsappMessage = encodeURIComponent(
-    `Hi Coastal Goa! 👋\n\nI just booked a package and wanted to confirm.\n\n` +
+    `Hi Alpha Waves Goa! 👋\n\nI just booked a package and wanted to confirm.\n\n` +
       `📋 Booking ID: ${booking.bookingId}\n` +
       `📦 Package: ${booking.packageName}\n` +
       `📅 Travel Date: ${formatDate(booking.travelDate)}\n` +

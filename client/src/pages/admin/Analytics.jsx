@@ -73,7 +73,7 @@ const Analytics = () => {
             Analytics
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Track how visitors use Coastal Goa
+            Track how visitors use Alpha Waves Goa
           </p>
         </div>
 

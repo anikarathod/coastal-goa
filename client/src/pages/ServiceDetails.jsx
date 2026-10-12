@@ -100,7 +100,7 @@ const ServiceDetails = () => {
   };
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareText = service ? `Check out ${service.title} on Coastal Goa!` : "";
+  const shareText = service ? `Check out ${service.title} on Alpha Waves Goa!` : "";
 
   // ---- LOADING SKELETON ----
   if (loading) {
@@ -170,12 +170,12 @@ const ServiceDetails = () => {
     <>
       {/* DYNAMIC SEO */}
       <Helmet>
-        <title>{service.title} | Coastal Goa</title>
+        <title>{service.title} | Alpha Waves Goa</title>
         <meta
           name="description"
           content={
             service.description?.slice(0, 160) ||
-            `Book ${service.title} in Goa with Coastal Goa.`
+            `Book ${service.title} in Goa with Alpha Waves Goa.`
           }
         />
         <meta property="og:title" content={service.title} />
@@ -195,7 +195,7 @@ const ServiceDetails = () => {
             description: service.description,
             provider: {
               "@type": "LocalBusiness",
-              name: "Coastal Goa",
+              name: "Alpha Waves Goa",
             },
             areaServed: service.location || "Goa",
             ...(service.price && {

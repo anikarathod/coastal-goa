@@ -39,7 +39,7 @@ const NotFound = () => {
     <>
       {/* SEO */}
       <Helmet>
-        <title>Page Not Found | Coastal Goa</title>
+        <title>Page Not Found | Alpha Waves Goa</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 

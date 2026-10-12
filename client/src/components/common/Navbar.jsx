@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { settings } = useSettings();
 
-  const websiteName = settings.websiteName || "Coastal Goa";
+  const websiteName = settings.websiteName || "Alpha Waves Goa";
 
   const navLinks = [
     { name: "Home", path: "/" },

@@ -45,7 +45,7 @@ const About = () => {
         <div className="mx-auto max-w-7xl px-6 text-center">
 
           <h1 className="text-5xl font-bold">
-            About Coastal Goa
+            About Alpha Waves Goa
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg text-cyan-100">
@@ -69,7 +69,7 @@ const About = () => {
 
             <img
               src="/images/about.jpg"
-              alt="About Coastal Goa"
+              alt="About Alpha Waves Goa"
               className="rounded-3xl shadow-xl"
             />
 
@@ -82,7 +82,7 @@ const About = () => {
             </h2>
 
             <p className="mb-5 leading-8 text-gray-600">
-              Coastal Goa was founded with one goal —
+              Alpha Waves Goa was founded with one goal —
               to help visitors experience the true beauty
               of Goa beyond ordinary sightseeing.
             </p>
@@ -197,7 +197,7 @@ const About = () => {
 
           <p className="mt-5 text-lg text-cyan-100">
             Book your dream vacation today and let
-            Coastal Goa create unforgettable memories.
+            Alpha Waves Goa create unforgettable memories.
           </p>
 
           <div className="mt-10 flex flex-wrap justify-center gap-5">

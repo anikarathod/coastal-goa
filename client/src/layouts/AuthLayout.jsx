@@ -21,7 +21,7 @@ const AuthLayout = () => {
 
               <div>
                 <h1 className="text-4xl font-bold">
-                  Coastal Goa
+                  Alpha Waves Goa
                 </h1>
 
                 <p className="text-cyan-100">
@@ -100,7 +100,7 @@ const AuthLayout = () => {
                 </div>
 
                 <h1 className="text-3xl font-bold text-gray-800">
-                  Coastal Goa
+                  Alpha Waves Goa
                 </h1>
 
                 <p className="mt-2 text-gray-500">

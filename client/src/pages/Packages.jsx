@@ -167,7 +167,7 @@ const Packages = () => {
     <>
       {/* SEO */}
       <Helmet>
-        <title>Goa Tour Packages | Coastal Goa</title>
+        <title>Goa Tour Packages | Alpha Waves Goa</title>
         <meta
           name="description"
           content="Browse our handpicked Goa tour packages — Dudhsagar Falls, North Goa, South Goa, cruises, and more. Best prices guaranteed."
@@ -176,7 +176,7 @@ const Packages = () => {
           name="keywords"
           content="Goa tour packages, Goa sightseeing, Dudhsagar Falls tour, North Goa tour"
         />
-        <meta property="og:title" content="Goa Tour Packages | Coastal Goa" />
+        <meta property="og:title" content="Goa Tour Packages | Alpha Waves Goa" />
         <meta
           property="og:description"
           content="Handpicked Goa experiences at the best prices."

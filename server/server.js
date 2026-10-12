@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 async function startServer() {
   try {
-    console.log("🚀 Starting Coastal Goa Server...");
+    console.log("🚀 Starting Alpha Waves Goa Server...");
 
     // Connect MongoDB
     await connectDB();

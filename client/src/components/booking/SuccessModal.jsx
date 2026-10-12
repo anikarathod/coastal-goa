@@ -36,7 +36,7 @@ const SuccessModal = ({
         <p className="mt-4 text-center text-sm md:text-base leading-6 md:leading-7 text-gray-600">
           Thank you for choosing
           <span className="font-semibold text-cyan-600">
-            {" "}Coastal Goa{" "}
+            {" "}Alpha Waves Goa{" "}
           </span>
 
           🎉

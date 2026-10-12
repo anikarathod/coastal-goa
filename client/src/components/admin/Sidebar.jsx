@@ -14,7 +14,7 @@ import { useSettings } from "../../context/SettingsContext";
 
 const Sidebar = () => {
   const { settings } = useSettings();
-  const websiteName = settings.websiteName || "Coastal Goa";
+  const websiteName = settings.websiteName || "Alpha Waves Goa";
 
   const menu = [
     {

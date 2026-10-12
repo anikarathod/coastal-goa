@@ -4,7 +4,7 @@ const WhatsAppButton = () => {
   const phoneNumber = "919175884119";
 
   const message =
-    "Hello Coastal Goa! I would like to know more about your tour packages.";
+    "Hello Alpha Waves Goa! I would like to know more about your tour packages.";
 
   const handleClick = () => {
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(

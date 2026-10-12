@@ -1,6 +1,6 @@
 // Company Information
 export const COMPANY = {
-  name: "Coastal Goa",
+  name: "Alpha Waves Goa",
   phone: "+919175884119",
   email: "info.coastalgoa@gmail.com",
   website: "https://coastalgoa.com",
