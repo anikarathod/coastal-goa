@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaWhatsapp } from "react-icons/fa";
-import { useSettings } from "../context/SettingsContext"; // ⚠️ adjust path if needed
-
+import { useSettings } from "../../context/SettingsContext";
 const Hero = () => {
   const { settings } = useSettings();
   const whatsappNumber = settings.whatsapp || "917507057684"; // country code, no +
