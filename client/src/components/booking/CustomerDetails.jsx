@@ -72,7 +72,7 @@ const CustomerDetails = ({
 
             <input
               type="tel"
-              placeholder="+91 9175884119"
+              placeholder="+91 7507057684"
               value={customer.phone}
               onChange={(e) =>
                 updateCustomer(

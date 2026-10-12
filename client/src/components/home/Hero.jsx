@@ -1,100 +1,123 @@
 import { Link } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaWhatsapp } from "react-icons/fa";
+import { useSettings } from "../context/SettingsContext"; // ⚠️ adjust path if needed
 
 const Hero = () => {
+  const { settings } = useSettings();
+  const whatsappNumber = settings.whatsapp || "917507057684"; // country code, no +
+  const whatsappMessage = encodeURIComponent(
+    "Hi Alpha Waves Goa! I'd like to know more about your packages."
+  );
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
   return (
     <>
-      {/* Animation CSS — scoped to this component */}
       <style>{`
         @keyframes fade-up {
-          from {
-            opacity: 0;
-            transform: translateY(16px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-
-        .animate-fade-up {
-          animation: fade-up 0.7s ease-out both;
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0); }
+          50%      { transform: translateY(-6px); }
         }
-
-        /* Respect users who prefer less motion */
+        .animate-fade-up { animation: fade-up 0.7s ease-out both; }
+        .animate-float-slow { animation: float-slow 4s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .animate-fade-up {
-            animation: none;
-          }
+          .animate-fade-up,
+          .animate-float-slow { animation: none; }
         }
       `}</style>
 
-      <section className="relative flex min-h-[540px] items-center overflow-hidden bg-slate-900 text-white sm:min-h-[600px] lg:min-h-[680px]">
+      <section className="relative flex min-h-[560px] items-center overflow-hidden bg-slate-900 text-white sm:min-h-[620px] lg:min-h-[700px]">
+        {/* Background image */}
         <img
           src="/goa-hero.jpg"
-          alt="Aerial view of a Goa beach with palm trees and blue sea"
+          alt="Aerial view of a Goa beach with palm trees and turquoise sea"
           loading="eager"
           decoding="async"
           fetchpriority="high"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
 
-        {/* Stronger overlay so text pops on any photo */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-slate-900/20" />
+        {/* Gradient overlays — stronger at bottom for smooth transition into next section */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-900/30" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950 to-transparent" />
 
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
-          <p
-            className="animate-fade-up mb-4 text-xs font-bold uppercase tracking-[0.25em] text-cyan-200 sm:text-sm"
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+
+          {/* Trust badge pill */}
+          <div
+            className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium backdrop-blur-md sm:text-sm"
           >
-            Discover the Beauty of Goa
-          </p>
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400" />
+            <span>Trusted by 5,000+ travellers across Goa</span>
+          </div>
 
+          {/* Headline */}
           <h1
-            className="animate-fade-up max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            className="animate-fade-up max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ animationDelay: "0.1s" }}
           >
-            Explore <span className="text-cyan-200">Goa</span>
+            Discover Goa Beyond
             <br />
-            With Us
+            <span className="bg-gradient-to-r from-cyan-300 to-teal-200 bg-clip-text text-transparent">
+              the Beaches
+            </span>
           </h1>
 
+          {/* Subheadline */}
           <p
-            className="animate-fade-up mt-5 max-w-lg text-sm leading-6 text-slate-100 sm:text-base sm:leading-7"
+            className="animate-fade-up mt-6 max-w-xl text-base leading-7 text-slate-100/90 sm:text-lg sm:leading-8"
             style={{ animationDelay: "0.2s" }}
           >
-            Cruises, water sports, sightseeing tours &amp; airport transfers —
-            choose your dream package and we&apos;ll handle the rest.
+            Sunset cruises, private tours, water sports and airport
+            transfers — handpicked by locals who know every hidden cove.
           </p>
 
+          {/* CTAs */}
           <div
-            className="animate-fade-up mt-8 flex flex-wrap gap-3"
+            className="animate-fade-up mt-9 flex flex-wrap gap-3"
             style={{ animationDelay: "0.3s" }}
           >
             <Link
               to="/packages"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-cyan-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition hover:bg-cyan-600 hover:shadow-cyan-500/40"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-cyan-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/30 transition hover:-translate-y-0.5 hover:bg-cyan-400 hover:shadow-cyan-400/50"
             >
               Explore Packages <FaArrowRight />
             </Link>
 
-            <Link
-              to="/contact"
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/70 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white hover:text-slate-900"
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/30 transition hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-emerald-400/50"
             >
-              Contact Us
-            </Link>
+              <FaWhatsapp className="text-base" /> Chat on WhatsApp
+            </a>
           </div>
 
-          {/* Trust strip — instant credibility */}
+          {/* Feature strip */}
           <div
-            className="animate-fade-up mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-slate-300 sm:text-sm"
+            className="animate-fade-up mt-12 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3"
             style={{ animationDelay: "0.4s" }}
           >
-            <span>⭐ 4.9 Rated on Google</span>
-            <span className="hidden h-4 w-px bg-white/30 sm:block" />
-            <span>5,000+ Happy Travelers</span>
-            <span className="hidden h-4 w-px bg-white/30 sm:block" />
-            <span>24/7 Local Support</span>
+            {[
+              { icon: "🚐", label: "Hotel Pickup", sub: "Free within radius" },
+              { icon: "⚡", label: "Instant Confirmation", sub: "Within 15 minutes" },
+              { icon: "💰", label: "Best Price", sub: "Guaranteed or refunded" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
+              >
+                <span className="text-xl">{item.icon}</span>
+                <div>
+                  <p className="text-sm font-semibold text-white">{item.label}</p>
+                  <p className="text-xs text-slate-300">{item.sub}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

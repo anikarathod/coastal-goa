@@ -7,51 +7,44 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-100">
+    <div className="flex h-screen overflow-hidden bg-slate-50">
 
-      {/* Mobile Overlay */}
+      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 z-40 h-full w-64
-          bg-white shadow-xl
-          transform transition-transform duration-300
-          lg:relative lg:translate-x-0
-          ${
-            sidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full"
-          }
+          fixed left-0 top-0 z-40 h-full w-72 bg-slate-900 shadow-2xl
+          transform transition-transform duration-300 ease-out
+          lg:relative lg:z-auto lg:w-64 lg:translate-x-0 lg:shadow-none
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         <Sidebar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
         />
       </aside>
 
-      {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      {/* Main content */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
 
         {/* Topbar */}
-        <Topbar
-          setSidebarOpen={setSidebarOpen}
-        />
+        <Topbar onMenuClick={() => setSidebarOpen(true)} />
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6">
           <Outlet />
         </main>
 
       </div>
-
     </div>
   );
 };

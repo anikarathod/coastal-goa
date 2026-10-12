@@ -70,7 +70,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-[60vh] items-center justify-center">
         <Loader />
       </div>
     );
@@ -82,36 +82,28 @@ const Dashboard = () => {
       value: stats.packages || 0,
       icon: <FaBoxOpen />,
       link: "/pearlrathod/packages",
-      gradient: "from-blue-500 to-blue-600",
-      bg: "bg-blue-50",
-      text: "text-blue-600",
+      gradient: "from-teal-500 to-teal-600",
     },
     {
       title: "Services",
       value: stats.services || 0,
       icon: <FaSuitcase />,
       link: "/pearlrathod/services",
-      gradient: "from-green-500 to-green-600",
-      bg: "bg-green-50",
-      text: "text-green-600",
+      gradient: "from-emerald-500 to-emerald-600",
     },
     {
       title: "Bookings",
       value: stats.bookings || 0,
       icon: <FaCalendarCheck />,
       link: "/pearlrathod/bookings",
-      gradient: "from-purple-500 to-purple-600",
-      bg: "bg-purple-50",
-      text: "text-purple-600",
+      gradient: "from-sky-500 to-sky-600",
     },
     {
       title: "Customers",
       value: stats.customers || 0,
       icon: <FaUsers />,
       link: "/pearlrathod/customers",
-      gradient: "from-cyan-500 to-cyan-600",
-      bg: "bg-cyan-50",
-      text: "text-cyan-600",
+      gradient: "from-violet-500 to-violet-600",
     },
     {
       title: "Gallery",
@@ -119,17 +111,13 @@ const Dashboard = () => {
       icon: <FaImages />,
       link: "/pearlrathod/gallery",
       gradient: "from-pink-500 to-pink-600",
-      bg: "bg-pink-50",
-      text: "text-pink-600",
     },
     {
       title: "Contacts",
       value: stats.contacts || 0,
       icon: <FaEnvelope />,
       link: "/pearlrathod/contacts",
-      gradient: "from-orange-500 to-orange-600",
-      bg: "bg-orange-50",
-      text: "text-orange-600",
+      gradient: "from-amber-500 to-amber-600",
     },
   ];
 
@@ -144,7 +132,7 @@ const Dashboard = () => {
       label: "Add Service",
       to: "/pearlrathod/services/new",
       icon: <FaPlus />,
-      color: "bg-blue-600 hover:bg-blue-700",
+      color: "bg-emerald-600 hover:bg-emerald-700",
     },
     {
       label: "Upload Gallery",
@@ -155,49 +143,49 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
 
       {/* WELCOME BANNER */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-600 to-teal-800 p-6 text-white shadow-md sm:p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-600 to-teal-800 p-5 text-white shadow-md sm:p-8">
         <div className="relative z-10">
-          <p className="text-sm font-medium text-teal-100">
+          <p className="text-xs font-medium text-teal-100 sm:text-sm">
             {getGreeting()}, Admin 👋
           </p>
-          <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
+          <h1 className="mt-1 text-xl font-bold sm:text-3xl">
             Welcome to Alpha Waves Goa
           </h1>
-          <p className="mt-2 max-w-2xl text-sm text-teal-100 sm:text-base">
+          <p className="mt-2 max-w-2xl text-xs text-teal-100 sm:text-base">
             Here's what's happening with your business today.
           </p>
         </div>
 
-        {/* Decorative circle */}
+        {/* Decorative circles */}
         <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10" />
         <div className="absolute -bottom-16 -right-4 h-32 w-32 rounded-full bg-white/5" />
       </div>
 
       {/* STAT CARDS */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {cards.map((card) => (
           <Link
             key={card.title}
             to={card.link}
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:gap-4 sm:p-5"
           >
-            <div>
-              <p className="text-sm font-medium text-gray-500">
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-sm sm:font-medium sm:normal-case sm:tracking-normal">
                 {card.title}
               </p>
-              <h2 className="mt-1.5 text-3xl font-extrabold text-gray-900">
+              <h2 className="mt-1 text-xl font-extrabold text-slate-900 sm:mt-1.5 sm:text-3xl">
                 {card.value.toLocaleString("en-IN")}
               </h2>
-              <p className="mt-2 flex items-center gap-1 text-xs font-semibold text-teal-600 opacity-0 transition-opacity group-hover:opacity-100">
+              <p className="mt-2 hidden items-center gap-1 text-xs font-semibold text-teal-600 opacity-0 transition-opacity group-hover:opacity-100 sm:flex">
                 View all <FaArrowRight className="text-[10px]" />
               </p>
             </div>
 
             <div
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} text-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-105`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} text-lg text-white shadow-md transition-transform duration-300 group-hover:scale-105 sm:h-14 sm:w-14 sm:text-2xl`}
             >
               {card.icon}
             </div>
@@ -206,20 +194,20 @@ const Dashboard = () => {
       </div>
 
       {/* QUICK ACTIONS */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6">
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <FaChartLine className="text-teal-600" />
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-base font-bold text-slate-900 sm:text-lg">
             Quick Actions
           </h2>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {quickActions.map(({ label, to, icon, color }) => (
             <Link
               key={label}
               to={to}
-              className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition ${color}`}
+              className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${color}`}
             >
               {icon}
               {label}
@@ -229,17 +217,17 @@ const Dashboard = () => {
       </div>
 
       {/* RECENT BOOKINGS */}
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-        <div className="flex items-center justify-between border-b border-gray-100 p-5 sm:p-6">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-6">
           <div className="flex items-center gap-2">
-            <FaCalendarCheck className="text-purple-600" />
-            <h2 className="text-lg font-bold text-gray-900">
+            <FaCalendarCheck className="text-sky-600" />
+            <h2 className="text-base font-bold text-slate-900 sm:text-lg">
               Recent Bookings
             </h2>
           </div>
           <Link
             to="/pearlrathod/bookings"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-teal-600 hover:text-teal-700"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700 sm:text-sm"
           >
             View all <FaArrowRight className="text-xs" />
           </Link>
@@ -258,42 +246,42 @@ const Dashboard = () => {
             {/* DESKTOP TABLE */}
             <div className="hidden overflow-x-auto md:block">
               <table className="min-w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Customer
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Package
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Travel Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Status
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-100">
                   {recentBookings.slice(0, 5).map((booking) => (
                     <tr
                       key={booking._id}
-                      className="transition hover:bg-gray-50"
+                      className="transition hover:bg-slate-50"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 text-xs font-bold text-teal-700">
                             {booking.name?.charAt(0)?.toUpperCase() || "?"}
                           </div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-slate-900">
                             {booking.name || "Unknown"}
                           </p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-6 py-4 text-sm text-slate-700">
                         {booking.packageName || "—"}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-6 py-4 text-sm text-slate-700">
                         {formatDate(booking.travelDate)}
                       </td>
                       <td className="px-6 py-4">
@@ -306,26 +294,26 @@ const Dashboard = () => {
             </div>
 
             {/* MOBILE CARDS */}
-            <div className="divide-y divide-gray-100 md:hidden">
+            <div className="divide-y divide-slate-100 md:hidden">
               {recentBookings.slice(0, 5).map((booking) => (
                 <div key={booking._id} className="p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 text-xs font-bold text-teal-700">
                         {booking.name?.charAt(0)?.toUpperCase() || "?"}
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-slate-900">
                           {booking.name || "Unknown"}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="truncate text-xs text-slate-500">
                           {booking.packageName || "—"}
                         </p>
                       </div>
                     </div>
                     <BookingStatusBadge status={booking.status} />
                   </div>
-                  <p className="mt-2 flex items-center gap-1.5 text-xs text-gray-500">
+                  <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
                     <FaClock className="text-[10px]" />
                     Travel: {formatDate(booking.travelDate)}
                   </p>
@@ -337,17 +325,17 @@ const Dashboard = () => {
       </div>
 
       {/* RECENT CONTACTS */}
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-        <div className="flex items-center justify-between border-b border-gray-100 p-5 sm:p-6">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-6">
           <div className="flex items-center gap-2">
-            <FaEnvelope className="text-orange-600" />
-            <h2 className="text-lg font-bold text-gray-900">
+            <FaEnvelope className="text-amber-600" />
+            <h2 className="text-base font-bold text-slate-900 sm:text-lg">
               Recent Contact Messages
             </h2>
           </div>
           <Link
             to="/pearlrathod/contacts"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-teal-600 hover:text-teal-700"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700 sm:text-sm"
           >
             View all <FaArrowRight className="text-xs" />
           </Link>
@@ -366,42 +354,42 @@ const Dashboard = () => {
             {/* DESKTOP TABLE */}
             <div className="hidden overflow-x-auto md:block">
               <table className="min-w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Subject
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Received
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-100">
                   {recentContacts.slice(0, 5).map((contact) => (
                     <tr
                       key={contact._id}
-                      className="transition hover:bg-gray-50"
+                      className="transition hover:bg-slate-50"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-orange-600">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 text-xs font-bold text-amber-600">
                             {contact.name?.charAt(0)?.toUpperCase() || "?"}
                           </div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-slate-900">
                             {contact.name || "Unknown"}
                           </p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-6 py-4 text-sm text-slate-700">
                         {contact.subject || "—"}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-6 py-4 text-sm text-slate-700">
                         <a
                           href={`mailto:${contact.email}`}
                           className="hover:text-teal-600 hover:underline"
@@ -409,7 +397,7 @@ const Dashboard = () => {
                           {contact.email}
                         </a>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-6 py-4 text-sm text-slate-500">
                         {formatDate(contact.createdAt)}
                       </td>
                     </tr>
@@ -419,21 +407,21 @@ const Dashboard = () => {
             </div>
 
             {/* MOBILE CARDS */}
-            <div className="divide-y divide-gray-100 md:hidden">
+            <div className="divide-y divide-slate-100 md:hidden">
               {recentContacts.slice(0, 5).map((contact) => (
                 <div key={contact._id} className="p-4">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-orange-600">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 text-xs font-bold text-amber-600">
                       {contact.name?.charAt(0)?.toUpperCase() || "?"}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-semibold text-gray-900">
+                      <p className="truncate font-semibold text-slate-900">
                         {contact.name || "Unknown"}
                       </p>
-                      <p className="truncate text-xs text-gray-500">
+                      <p className="truncate text-xs text-slate-500">
                         {contact.subject || "No subject"}
                       </p>
-                      <p className="truncate text-xs text-gray-400">
+                      <p className="truncate text-xs text-slate-400">
                         {contact.email}
                       </p>
                     </div>
@@ -451,10 +439,10 @@ const Dashboard = () => {
 /* ============= STATUS BADGE ============= */
 const BookingStatusBadge = ({ status }) => {
   const styles = {
-    Pending: "bg-yellow-100 text-yellow-700 ring-yellow-200",
-    Confirmed: "bg-blue-100 text-blue-700 ring-blue-200",
-    Completed: "bg-green-100 text-green-700 ring-green-200",
-    Cancelled: "bg-red-100 text-red-700 ring-red-200",
+    Pending: "bg-amber-100 text-amber-700 ring-amber-200",
+    Confirmed: "bg-emerald-100 text-emerald-700 ring-emerald-200",
+    Completed: "bg-sky-100 text-sky-700 ring-sky-200",
+    Cancelled: "bg-rose-100 text-rose-700 ring-rose-200",
   };
 
   const icons = {
@@ -466,8 +454,8 @@ const BookingStatusBadge = ({ status }) => {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${
-        styles[status] || "bg-gray-100 text-gray-700 ring-gray-200"
+      className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${
+        styles[status] || "bg-slate-100 text-slate-700 ring-slate-200"
       }`}
     >
       {icons[status]}
@@ -479,11 +467,11 @@ const BookingStatusBadge = ({ status }) => {
 /* ============= EMPTY STATE ============= */
 const EmptyState = ({ icon, title, message, ctaTo, ctaLabel }) => (
   <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
-    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-2xl text-gray-400">
+    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl text-slate-400">
       {icon}
     </div>
-    <h3 className="mt-3 text-base font-semibold text-gray-900">{title}</h3>
-    <p className="mt-1 max-w-sm text-sm text-gray-500">{message}</p>
+    <h3 className="mt-3 text-base font-semibold text-slate-900">{title}</h3>
+    <p className="mt-1 max-w-sm text-sm text-slate-500">{message}</p>
     <Link
       to={ctaTo}
       className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-teal-50 px-4 py-2 text-sm font-semibold text-teal-700 transition hover:bg-teal-100"

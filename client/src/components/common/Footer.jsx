@@ -6,57 +6,105 @@ const Footer = () => {
   const websiteName = settings.websiteName || "Alpha Waves Goa";
   const year = new Date().getFullYear();
 
-  return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+  const quickLinks = [
+    { name: "Home", path: "/" },
+    { name: "Packages", path: "/packages" },
+    { name: "Services", path: "/services" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Contact", path: "/contact" },
+  ];
 
-          {/* Brand */}
-          <div>
-            <Link to="/" className="flex items-center">
+  return (
+    <footer className="relative bg-gray-950 text-gray-400">
+      {/* Top accent line */}
+      <div className="h-1 w-full bg-gradient-to-r from-teal-500 via-cyan-400 to-teal-500" />
+
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
+
+          {/* Brand Column */}
+          <div className="md:col-span-5">
+            <Link to="/" className="inline-block">
               <img
                 src="/logo.png"
                 alt={websiteName}
-                className="h-10 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-gray-400">
-              Discover the best of {websiteName}. Handpicked packages,
-              trusted service, and unforgettable memories.
+
+            <p className="mt-5 max-w-sm text-sm leading-relaxed">
+              Discover Goa the way it's meant to be seen — sunset cruises,
+              private tours, and unforgettable memories, curated just for you.
             </p>
+
+            {/* Social pill buttons */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {settings.facebook && (
+                <a
+                  href={settings.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-gray-800 px-4 py-2 text-xs font-medium text-gray-300 transition hover:border-teal-500 hover:text-teal-400"
+                >
+                  Facebook
+                </a>
+              )}
+              {settings.instagram && (
+                <a
+                  href={settings.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-gray-800 px-4 py-2 text-xs font-medium text-gray-300 transition hover:border-teal-500 hover:text-teal-400"
+                >
+                  Instagram
+                </a>
+              )}
+              {settings.youtube && (
+                <a
+                  href={settings.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-gray-800 px-4 py-2 text-xs font-medium text-gray-300 transition hover:border-teal-500 hover:text-teal-400"
+                >
+                  YouTube
+                </a>
+              )}
+            </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Quick Links
+          <div className="md:col-span-3">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white">
+              Explore
             </h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li><Link to="/" className="hover:text-teal-400">Home</Link></li>
-              <li><Link to="/packages" className="hover:text-teal-400">Packages</Link></li>
-              <li><Link to="/services" className="hover:text-teal-400">Services</Link></li>
-              <li><Link to="/gallery" className="hover:text-teal-400">Gallery</Link></li>
-              <li><Link to="/contact" className="hover:text-teal-400">Contact</Link></li>
+            <ul className="mt-5 space-y-3 text-sm">
+              {quickLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="inline-block transition hover:translate-x-1 hover:text-teal-400"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Contact
+          <div className="md:col-span-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white">
+              Get in Touch
             </h3>
-            <ul className="mt-4 space-y-2 text-sm">
+            <ul className="mt-5 space-y-3 text-sm">
               {settings.phone && (
                 <li>
-                  <a href={`tel:${settings.phone}`} className="hover:text-teal-400">
-                    📞 {settings.phone}
-                  </a>
-                </li>
-              )}
-              {settings.email && (
-                <li>
-                  <a href={`mailto:${settings.email}`} className="hover:text-teal-400">
-                    ✉️ {settings.email}
+                  <a
+                    href={`tel:${settings.phone}`}
+                    className="flex items-center gap-3 transition hover:text-teal-400"
+                  >
+                    <span className="text-teal-500">📞</span>
+                    <span>{settings.phone}</span>
                   </a>
                 </li>
               )}
@@ -66,40 +114,47 @@ const Footer = () => {
                     href={`https://wa.me/${settings.whatsapp}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-teal-400"
+                    className="flex items-center gap-3 transition hover:text-teal-400"
                   >
-                    💬 WhatsApp
+                    <span className="text-teal-500">💬</span>
+                    <span>WhatsApp</span>
+                  </a>
+                </li>
+              )}
+              {settings.email && (
+                <li>
+                  <a
+                    href={`mailto:${settings.email}`}
+                    className="flex items-center gap-3 transition hover:text-teal-400"
+                  >
+                    <span className="text-teal-500">✉️</span>
+                    <span>{settings.email}</span>
                   </a>
                 </li>
               )}
               {settings.address && (
-                <li className="text-gray-400">📍 {settings.address}</li>
+                <li className="flex items-start gap-3">
+                  <span className="text-teal-500">📍</span>
+                  <span>{settings.address}</span>
+                </li>
               )}
             </ul>
-
-            {/* Socials */}
-            <div className="mt-4 flex gap-4 text-sm">
-              {settings.facebook && (
-                <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
-                  Facebook
-                </a>
-              )}
-              {settings.instagram && (
-                <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
-                  Instagram
-                </a>
-              )}
-              {settings.youtube && (
-                <a href={settings.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">
-                  YouTube
-                </a>
-              )}
-            </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
-          © {year} {websiteName}. All rights reserved.
+        {/* Bottom Bar */}
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-6 text-xs sm:flex-row">
+          <p>
+            © {year} {websiteName}. All rights reserved.
+          </p>
+          <p className="flex gap-6">
+            <Link to="/privacy" className="transition hover:text-teal-400">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="transition hover:text-teal-400">
+              Terms of Service
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
