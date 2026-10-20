@@ -23,38 +23,29 @@ const Hero = () => {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes ken-burns {
-          0%   { transform: scale(1)    translate(0, 0); }
-          100% { transform: scale(1.08) translate(-1%, -1%); }
-        }
         @keyframes pulse-dot {
           0%, 100% { opacity: 1;   transform: scale(1); }
           50%      { opacity: 0.6; transform: scale(1.3); }
         }
         .animate-fade-up { animation: fade-up 0.7s ease-out both; }
-        .animate-ken-burns { animation: ken-burns 20s ease-out infinite alternate; }
         .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
           .animate-fade-up,
-          .animate-ken-burns,
           .animate-pulse-dot { animation: none; }
         }
       `}</style>
 
-      <section className="relative flex min-h-[500px] items-center overflow-hidden bg-slate-900 text-white sm:min-h-[640px] lg:min-h-[720px]">
-        {/* Background image */}
-        <img
-          src="/goa-hero.jpg"
-          alt="Aerial view of a Goa beach"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-          className="animate-ken-burns absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+      <section className="relative flex min-h-[550px] items-center overflow-hidden bg-slate-950 text-white sm:min-h-[640px] lg:min-h-[720px]">
+        
+        {/* 👇 THE CSS BACKGROUND IMAGE (Option 2) */}
+        <div
+          className="absolute inset-0 h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: "url('/goa-hero.jpg')" }}
         />
 
-        {/* Darker overlay on mobile for readability */}
-        <div className="absolute inset-0 bg-slate-950/70 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/85 sm:via-slate-950/50 sm:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 sm:hidden" />
+        {/* 👇 DARK OVERLAY for text readability */}
+        {/* We use a slightly darker overlay on mobile so the text is always clear */}
+        <div className="absolute inset-0 bg-slate-950/75 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/90 sm:via-slate-950/60 sm:to-transparent" />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-12 sm:px-8 sm:py-24 lg:px-12">
           
@@ -66,7 +57,7 @@ const Hero = () => {
 
           {/* Headline */}
           <h1
-            className="animate-fade-up max-w-3xl text-[2rem] font-extrabold leading-[1.1] tracking-tight !text-white drop-shadow-lg sm:text-5xl md:text-6xl lg:text-7xl"
+            className="animate-fade-up max-w-3xl text-[2.2rem] font-extrabold leading-[1.1] tracking-tight !text-white drop-shadow-lg sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ animationDelay: "0.1s" }}
           >
             Discover Goa Beyond
@@ -85,7 +76,7 @@ const Hero = () => {
             transfers — handpicked by locals.
           </p>
 
-          {/* CTAs - Full width on mobile */}
+          {/* CTAs */}
           <div
             className="animate-fade-up mt-6 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap"
             style={{ animationDelay: "0.3s" }}
@@ -107,7 +98,7 @@ const Hero = () => {
             </a>
           </div>
 
-          {/* Compact Benefit Strip - 3 columns on mobile */}
+          {/* Compact Benefit Strip */}
           <div
             className="animate-fade-up mt-8 grid grid-cols-3 gap-2 sm:mt-12 sm:max-w-2xl sm:gap-4"
             style={{ animationDelay: "0.4s" }}

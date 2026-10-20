@@ -172,13 +172,15 @@ const Services = () => {
 
       {/* HERO HEADER */}
       <div className="relative overflow-hidden bg-slate-900">
-        <img
-          src="/services-hero.jpg" 
-          alt="Goa Services"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-80"
+        
+        {/* 👇 CSS BACKGROUND IMAGE */}
+        <div
+          className="absolute inset-0 h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: "url('/services-hero.jpg')" }}
         />
-        {/* Darker overlay on mobile for readability */}
-        <div className="absolute inset-0 bg-slate-950/70 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/85 sm:via-slate-900/50 sm:to-transparent" />
+
+        {/* 👇 Lighter gradient overlay for mobile so the image pops */}
+        <div className="absolute inset-0 bg-slate-950/30 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/90 sm:via-slate-950/60 sm:to-transparent" />
         
         <div className="relative mx-auto flex min-h-[350px] max-w-7xl flex-col justify-center px-4 py-10 sm:min-h-[400px] sm:px-6 sm:py-16 lg:px-8 lg:py-20">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider !text-white backdrop-blur-sm sm:px-4 sm:py-1.5 sm:text-xs">

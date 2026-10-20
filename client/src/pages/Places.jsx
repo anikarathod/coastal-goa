@@ -79,16 +79,18 @@ const Places = () => {
 
   return (
     <div className="bg-slate-50">
+      
       {/* HERO HEADER */}
       <div className="relative overflow-hidden bg-slate-900">
-        <img
-          src="/hotel-hero.jpg" 
-          alt="Luxury hotel in Goa"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-80"
+        
+        {/* 👇 CSS BACKGROUND IMAGE */}
+        <div
+          className="absolute inset-0 h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: "url('/hotel-hero.jpg')" }}
         />
         
-        {/* Darker overlay on mobile for readability */}
-        <div className="absolute inset-0 bg-slate-950/70 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/85 sm:via-slate-900/50 sm:to-transparent" />
+        {/* 👇 Lighter gradient overlay for mobile so the image pops */}
+        <div className="absolute inset-0 bg-slate-950/30 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/90 sm:via-slate-950/60 sm:to-transparent" />
         
         {/* Subtle warm tint */}
         <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/20 via-transparent to-amber-500/10" />
