@@ -47,11 +47,11 @@ const Contact = () => {
             {/* Quick contact chips */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <a
-                href="mailto:hello@coastalgoa.com"
+                href="mailto:alphawavestour@gmail.com"
                 className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 shadow-sm transition hover:border-teal-300 hover:text-teal-600 sm:text-sm"
               >
                 <FaEnvelope className="text-teal-600" />
-                hello@coastalgoa.com
+                alphawavestour@gmail.com
               </a>
 
               <a

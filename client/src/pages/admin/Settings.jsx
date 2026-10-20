@@ -246,7 +246,7 @@ const Settings = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="hello@coastalgoa.com"
+                    placeholder="alphawavestour@gmail.com"
                     className={inputClass}
                   />
                 </div>
@@ -333,7 +333,7 @@ const Settings = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="hello@coastalgoa.com"
+                    placeholder="alphawavestour@gmail.com"
                     className={`${inputClass} pl-11`}
                   />
                 </div>
