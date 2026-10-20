@@ -13,7 +13,7 @@ import hotelRoutes from "./routes/hotelRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
-import placeRoutes from "./routes/placeRoutes.js"; // 👈 ADD THIS
+import placeRoutes from "./routes/placeRoutes.js"; 
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -22,7 +22,16 @@ const app = express();
    Middleware
 =========================================== */
 
-app.use(cors());
+// 👇 FIXED CORS CONFIGURATION
+app.use(
+  cors({
+    origin: [
+      "https://coastal-goa.vercel.app", // Your live Vercel frontend
+      "http://localhost:5173",          // Your local dev server
+    ],
+    credentials: true, // Required for cookies / auth
+  })
+);
 
 app.use(express.json());
 
@@ -56,7 +65,7 @@ app.use("/api/settings", settingsRoutes);
 
 app.use("/api/analytics", analyticsRoutes);
 
-app.use("/api/places", placeRoutes); // 👈 ADD THIS
+app.use("/api/places", placeRoutes); 
 
 /* ===========================================
    Root
