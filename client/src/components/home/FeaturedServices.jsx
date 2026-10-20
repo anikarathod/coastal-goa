@@ -7,8 +7,9 @@ import {
   FaTag,
   FaSuitcase,
   FaRedo,
+  FaImage,
 } from "react-icons/fa";
-import api from "../../services/api";
+import api, { resolveImage } from "../../services/api";
 
 const FeaturedServices = () => {
   const [services, setServices] = useState([]);
@@ -43,6 +44,17 @@ const FeaturedServices = () => {
   };
 
   const formatPrice = (price) => `₹${Number(price).toLocaleString("en-IN")}`;
+
+  // Extract the best-available image field from a service object
+  const getRawImage = (service) =>
+    service?.coverImage ??
+    service?.cover_image ??
+    service?.coverImageUrl ??
+    service?.image ??
+    service?.imageUrl ??
+    service?.image_url ??
+    service?.thumbnail ??
+    (Array.isArray(service?.images) ? service.images[0] : null);
 
   return (
     <section
@@ -128,12 +140,7 @@ const FeaturedServices = () => {
                 ? `/services/${slug}`
                 : `/services/${service._id}`;
 
-              const image =
-                service.coverImage ??
-                service.image ??
-                service.imageUrl ??
-                service.thumbnail ??
-                service.coverImageUrl;
+              const image = resolveImage(getRawImage(service));
 
               const basePrice =
                 service.price ??
@@ -165,28 +172,28 @@ const FeaturedServices = () => {
                   key={service._id ?? service.id ?? `${name}-${index}`}
                   className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-lg"
                 >
-                  {/* IMAGE — fixed pixel height, no gray gaps */}
+                  {/* IMAGE */}
                   <Link
                     to={link}
                     aria-label={`View ${name}`}
                     className="relative block h-40 w-full overflow-hidden bg-slate-100 sm:h-48 md:h-52"
                   >
-                    {image ? (
+                    {/* Fallback layer (behind the img) */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-200 text-teal-600">
+                      <FaImage className="text-3xl opacity-40" />
+                    </div>
+
+                    {image && (
                       <img
                         src={image}
                         alt={name}
                         loading="lazy"
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src =
-                            "https://placehold.co/600x400?text=Service";
+                          // Hide the broken image so the fallback layer shows
+                          e.currentTarget.style.display = "none";
                         }}
                       />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-slate-400">
-                        No image
-                      </div>
                     )}
 
                     {/* Gradient overlay */}

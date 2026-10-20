@@ -1,77 +1,86 @@
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { useSettings } from "../../context/SettingsContext";
 
 const Footer = () => {
   const { settings } = useSettings();
-  const websiteName = settings.websiteName || "Alpha Waves Goa";
-  const year = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
   const quickLinks = [
     { name: "Home", path: "/" },
     { name: "Packages", path: "/packages" },
     { name: "Services", path: "/services" },
+    { name: "Places", path: "/places" },
     { name: "Gallery", path: "/gallery" },
     { name: "Contact", path: "/contact" },
   ];
 
+  const phone = settings.phone || "7507057684";
+  const address = "Candolim, Goa";
+  const facebook = settings.facebook || "#";
+  const instagram = settings.instagram || "#";
+  const youtube = settings.youtube || "#";
+
   return (
-    <footer className="relative bg-slate-900 text-slate-300">
-      {/* Subtle gradient from slate-800 to slate-900 for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-800/40 via-slate-900 to-slate-900" />
+    <footer className="relative bg-[#030719] text-[#C3CEDF]">
+      {/* Subtle teal accent line */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#00A6A6]/60 to-transparent" />
 
-      {/* Top accent line */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal-500/60 to-transparent" />
-
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
-
-          {/* Brand Column */}
-          <div className="md:col-span-5">
-            <Link to="/" className="inline-block">
+      <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-20">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8 lg:gap-12">
+          
+          {/* Column 1 — Brand */}
+          <div className="flex flex-col items-center text-center md:col-span-5 md:items-start md:text-left">
+            <Link to="/" aria-label="Alpha Waves Goa Home">
               <img
                 src="/logo.png"
-                alt={websiteName}
-                className="h-14 w-auto object-contain"
+                alt="Alpha Waves Goa Tours & Travels"
+                className="h-14 w-auto object-contain md:h-20"
               />
             </Link>
 
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-[#C3CEDF]">
               Discover Goa the way it's meant to be seen — sunset cruises,
               private tours, and unforgettable memories, curated just for you.
             </p>
 
-            {/* Social icons */}
-            <div className="mt-7 flex gap-3">
-              {settings.facebook && (
+            {/* Social Icons */}
+            <div className="mt-6 flex justify-center gap-4 md:justify-start">
+              {facebook !== "#" && (
                 <a
-                  href={settings.facebook}
+                  href={facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-slate-300 ring-1 ring-slate-700/60 transition hover:-translate-y-0.5 hover:bg-teal-600 hover:text-white hover:ring-teal-500"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-transparent ring-1 ring-white/20 text-white transition-all duration-300 hover:bg-[#00A6A6] hover:ring-[#00A6A6] hover:-translate-y-1"
                 >
                   <FaFacebookF className="text-sm" />
                 </a>
               )}
-              {settings.instagram && (
+              {instagram !== "#" && (
                 <a
-                  href={settings.instagram}
+                  href={instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-slate-300 ring-1 ring-slate-700/60 transition hover:-translate-y-0.5 hover:bg-teal-600 hover:text-white hover:ring-teal-500"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-transparent ring-1 ring-white/20 text-white transition-all duration-300 hover:bg-[#00A6A6] hover:ring-[#00A6A6] hover:-translate-y-1"
                 >
                   <FaInstagram className="text-sm" />
                 </a>
               )}
-              {settings.youtube && (
+              {youtube !== "#" && (
                 <a
-                  href={settings.youtube}
+                  href={youtube}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-slate-300 ring-1 ring-slate-700/60 transition hover:-translate-y-0.5 hover:bg-teal-600 hover:text-white hover:ring-teal-500"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-transparent ring-1 ring-white/20 text-white transition-all duration-300 hover:bg-[#00A6A6] hover:ring-[#00A6A6] hover:-translate-y-1"
                 >
                   <FaYoutube className="text-sm" />
                 </a>
@@ -79,17 +88,17 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="md:col-span-3">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white">
+          {/* Column 2 — Explore */}
+          <div className="flex flex-col items-center text-center md:col-span-3 md:items-start md:text-left">
+            <h3 className="text-sm font-bold uppercase tracking-widest !text-white">
               Explore
             </h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-4 space-y-3 text-sm font-medium text-[#C3CEDF] md:mt-6">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="inline-block text-slate-400 transition hover:translate-x-1 hover:text-teal-400"
+                    className="inline-block transition-colors duration-200 hover:text-[#00A6A6]"
                   >
                     {link.name}
                   </Link>
@@ -98,84 +107,62 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div className="md:col-span-4">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white">
+          {/* Column 3 — Get in Touch */}
+          <div className="flex flex-col items-center text-center md:col-span-4 md:items-start md:text-left">
+            <h3 className="text-sm font-bold uppercase tracking-widest !text-white">
               Get in Touch
             </h3>
-            <ul className="mt-5 space-y-3.5 text-sm">
-              {settings.phone && (
-                <li>
-                  <a
-                    href={`tel:${settings.phone}`}
-                    className="flex items-center gap-3 text-slate-400 transition hover:text-teal-400"
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-sm ring-1 ring-slate-700/60">
-                      📞
-                    </span>
-                    <span>{settings.phone}</span>
-                  </a>
-                </li>
-              )}
-              {settings.whatsapp && (
-                <li>
-                  <a
-                    href={`https://wa.me/${settings.whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-slate-400 transition hover:text-teal-400"
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-sm ring-1 ring-slate-700/60">
-                      💬
-                    </span>
-                    <span>WhatsApp</span>
-                  </a>
-                </li>
-              )}
-              {settings.email && (
-                <li>
-                  <a
-                    href={`mailto:${settings.email}`}
-                    className="flex items-center gap-3 text-slate-400 transition hover:text-teal-400"
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-sm ring-1 ring-slate-700/60">
-                      ✉️
-                    </span>
-                    <span className="truncate">{settings.email}</span>
-                  </a>
-                </li>
-              )}
-              {settings.address && (
-                <li className="flex items-start gap-3 text-slate-400">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-sm ring-1 ring-slate-700/60">
-                    📍
+            <ul className="mt-4 space-y-4 text-sm font-medium text-[#C3CEDF] md:mt-6">
+              
+              <li>
+                <a
+                  href={`tel:${phone.replace(/\s+/g, '')}`}
+                  className="flex items-center justify-center gap-3 transition-colors duration-200 hover:text-[#00A6A6] md:justify-start"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-[#00A6A6]">
+                    <FaPhoneAlt className="text-xs" />
                   </span>
-                  <span className="pt-1">{settings.address}</span>
-                </li>
-              )}
+                  <span>{phone}</span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3 transition-colors duration-200 hover:text-[#00A6A6] md:justify-start"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-[#00A6A6]">
+                    <FaMapMarkerAlt className="text-xs" />
+                  </span>
+                  <span>{address}</span>
+                </a>
+              </li>
+
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="relative mt-16 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 text-xs text-slate-500 sm:flex-row sm:pr-40">
-          <p>
-            © {year} {websiteName}. All rights reserved.
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs sm:mt-16 sm:flex-row sm:pt-8 sm:pr-40">
+          <p className="text-center text-[#C3CEDF] sm:text-left">
+            © {currentYear} {settings.websiteName || "Alpha Waves Goa"}. All rights reserved.
           </p>
-          <p className="flex gap-6">
-            <Link
-              to="/privacy"
-              className="transition hover:text-teal-400"
+          <div className="flex gap-6 text-[#C3CEDF]">
+            <Link 
+              to="/privacy" 
+              className="transition-colors duration-200 hover:text-[#00A6A6]"
             >
               Privacy Policy
             </Link>
-            <Link
-              to="/terms"
-              className="transition hover:text-teal-400"
+            <Link 
+              to="/terms" 
+              className="transition-colors duration-200 hover:text-[#00A6A6]"
             >
               Terms of Service
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </footer>

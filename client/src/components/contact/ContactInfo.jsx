@@ -15,9 +15,9 @@ const ContactInfo = () => {
   const [loading, setLoading] = useState(true);
   const [contact, setContact] = useState({
     address: "Near Candolim Beach, Bardez, Goa - 403516",
-    phone: "+91 91758 84119",
-    whatsapp: "+91 91758 84119",
-    email: "info.coastalgoa@gmail.com",
+    phone: "+91  7507057684",
+    whatsapp: "+91  7507057684",
+    email: "alphawavestour@gmail.com",
     hours: "Mon - Sun : 8:00 AM - 9:00 PM",
     facebook: "",
     instagram: "",

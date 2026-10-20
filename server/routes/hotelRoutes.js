@@ -1,5 +1,5 @@
+// routes/hotelRoutes.js
 import express from "express";
-
 import {
   getHotels,
   getFeaturedHotels,
@@ -10,45 +10,36 @@ import {
 } from "../controllers/hotelController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-/* ===========================================
-   Public Routes
-=========================================== */
-
-// Get All Hotels
-router.get("/", getHotels);
-
-// Get Featured Hotels
+/* Public */
 router.get("/featured", getFeaturedHotels);
-
-// Get Single Hotel
+router.get("/", getHotels);
 router.get("/:slug", getHotel);
 
-/* ===========================================
-   Admin Routes
-=========================================== */
-
-// Create Hotel
+/* Admin */
 router.post(
   "/",
   authMiddleware,
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "galleryImages", maxCount: 20 },
+  ]),
   createHotel
 );
 
-// Update Hotel
 router.put(
   "/:id",
   authMiddleware,
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "galleryImages", maxCount: 20 },
+  ]),
   updateHotel
 );
 
-// Delete Hotel
-router.delete(
-  "/:id",
-  authMiddleware,
-  deleteHotel
-);
+router.delete("/:id", authMiddleware, deleteHotel);
 
 export default router;

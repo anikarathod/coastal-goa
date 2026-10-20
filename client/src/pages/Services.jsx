@@ -10,6 +10,7 @@ import {
   FaUndo,
   FaTools,
   FaSpinner,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 import api from "../services/api";
@@ -169,21 +170,34 @@ const Services = () => {
         <meta property="og:type" content="website" />
       </Helmet>
 
+      {/* HERO HEADER */}
+      <div className="relative overflow-hidden bg-slate-900">
+        <img
+          src="/services-hero.jpg" // 👈 Add your own image named services-hero.jpg to the public folder
+          alt="Goa Services"
+          className="absolute inset-0 h-full w-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/20 via-transparent to-amber-500/10" />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider !text-white backdrop-blur-sm sm:px-4 sm:py-1.5 sm:text-xs">
+            <FaMapMarkerAlt />
+            Our Services
+          </span>
+
+          <h1 className="mt-4 max-w-2xl text-2xl font-extrabold tracking-tight !text-white drop-shadow-md sm:text-3xl md:text-4xl lg:text-5xl">
+            Everything You Need for Goa
+          </h1>
+
+          <p className="mt-3 max-w-xl text-sm !text-white/90 drop-shadow-sm sm:mt-4 sm:text-base">
+            Handpicked services for an unforgettable Goa trip.
+          </p>
+        </div>
+      </div>
+
       <section className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-          {/* HEADING */}
-          <div className="mb-6 text-center sm:mb-10">
-            <span className="inline-block rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal-700">
-              Our Services
-            </span>
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-              Everything You Need for Goa
-            </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600 sm:text-base">
-              Handpicked services for an unforgettable Goa trip.
-            </p>
-          </div>
 
           {/* TOOLBAR */}
           <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4">

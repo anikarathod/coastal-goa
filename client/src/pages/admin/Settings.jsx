@@ -258,7 +258,7 @@ const Settings = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+91 91758 84119"
+                    placeholder="+91  7507057684"
                     className={inputClass}
                   />
                 </div>
@@ -303,7 +303,7 @@ const Settings = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+91 91758 84119"
+                    placeholder="+91  7507057684"
                     className={`${inputClass} pl-11`}
                   />
                 </div>
@@ -318,7 +318,7 @@ const Settings = () => {
                     name="whatsapp"
                     value={formData.whatsapp}
                     onChange={handleChange}
-                    placeholder="+91 91758 84119"
+                    placeholder="+91  7507057684"
                     className={`${inputClass} pl-11`}
                   />
                 </div>

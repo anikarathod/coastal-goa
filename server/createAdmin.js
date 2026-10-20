@@ -17,7 +17,7 @@ try {
 
   const admin = new Admin({
     name: "Admin",
-    email: "info.coastalgoa@gmail.com",
+    email: "alphawavestour@gmail.com",
     password: hashedPassword,
     role: "super-admin",
   });

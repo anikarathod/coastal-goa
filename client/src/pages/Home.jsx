@@ -3,8 +3,10 @@ import { Helmet } from "react-helmet-async";
 import api from "../services/api";
 
 import Hero from "../components/home/Hero";
+import TopCategories from "../components/home/TopCategories"; // 👈 Imported here
 import FeaturedPackages from "../components/home/FeaturedPackages";
 import FeaturedServices from "../components/home/FeaturedServices";
+import FeaturedPlaces from "../components/home/FeaturedPlaces"; 
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import GalleryPreview from "../components/home/GalleryPreview";
 import FAQ from "../components/home/FAQ";
@@ -65,19 +67,25 @@ const Home = () => {
         {/* 1. Hero Banner */}
         <Hero />
 
-        {/* 2. Tour Packages */}
+        {/* 2. Top Categories (Sightseeing, Water Sports, etc.) */}
+        <TopCategories /> {/* 👈 Added right here */}
+
+        {/* 3. Tour Packages */}
         <FeaturedPackages />
 
-        {/* 3. Travel Services — only if we have data */}
+        {/* 4. Travel Services — only if we have data */}
         {services.length > 0 && <FeaturedServices services={services} />}
 
-        {/* 4. Why Choose Us */}
+        {/* 5. Featured Places (Hotels, Shops, Restaurants) */}
+        <FeaturedPlaces /> 
+
+        {/* 6. Why Choose Us */}
         <WhyChooseUs />
 
-        {/* 5. Gallery */}
+        {/* 7. Gallery */}
         <GalleryPreview />
 
-        {/* 6. Frequently Asked Questions */}
+        {/* 8. Frequently Asked Questions */}
         <FAQ />
       </main>
     </>

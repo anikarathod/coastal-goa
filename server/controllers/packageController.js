@@ -1,5 +1,4 @@
 import Package from "../models/Package.js";
-import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 import slugify from "slugify";
 
 // ==========================================
@@ -29,7 +28,7 @@ export const getPackages = async (req, res) => {
 
 // ==========================================
 // GET HOMEPAGE PACKAGES
-// Latest 6 active packages posted by admin
+// Latest 6 active packages
 // ==========================================
 
 export const getFeaturedPackages = async (req, res) => {
@@ -131,43 +130,36 @@ const parseJsonFields = (body, data) => {
   ];
 
   for (const field of fields) {
-    if (body[field] !== undefined) {
-      if (typeof body[field] === "string") {
+    if (body[field] === undefined) continue;
+
+    if (typeof body[field] === "string") {
+      try {
         data[field] = JSON.parse(body[field]);
-      } else {
-        data[field] = body[field];
+      } catch (err) {
+        console.warn(`Failed to parse ${field}:`, err.message);
+        // leave it as-is (skip), don't crash the request
       }
+    } else {
+      data[field] = body[field];
     }
   }
 };
 
 // ==========================================
-// HELPER: UPLOAD PACKAGE IMAGES
+// HELPER: COLLECT IMAGES
+// Multer (CloudinaryStorage) already uploaded the files,
+// so `file.path` is the final HTTPS URL. Nothing else to do.
 // ==========================================
 
-const uploadPackageImages = async (files, data) => {
-  if (files?.coverImage?.[0]) {
-    const image = await uploadToCloudinary(
-      files.coverImage[0],
-      "coastal-goa/packages"
-    );
-
-    data.coverImage = image.secure_url;
+const collectPackageImages = (files, data) => {
+  if (files?.coverImage?.[0]?.path) {
+    data.coverImage = files.coverImage[0].path;
   }
 
   if (files?.images?.length) {
-    const uploadedImages = [];
-
-    for (const file of files.images) {
-      const image = await uploadToCloudinary(
-        file,
-        "coastal-goa/packages"
-      );
-
-      uploadedImages.push(image.secure_url);
-    }
-
-    data.images = uploadedImages;
+    data.images = files.images
+      .map((file) => file.path)
+      .filter(Boolean);
   }
 };
 
@@ -185,12 +177,10 @@ export const createPackage = async (req, res) => {
 
     // Convert boolean fields
     data.featured =
-      req.body.featured === "true" ||
-      req.body.featured === true;
+      req.body.featured === "true" || req.body.featured === true;
 
     data.isActive =
-      req.body.isActive !== "false" &&
-      req.body.isActive !== false;
+      req.body.isActive !== "false" && req.body.isActive !== false;
 
     // Convert numeric fields
     if (req.body.price !== undefined) {
@@ -207,16 +197,12 @@ export const createPackage = async (req, res) => {
 
     if (req.body.latitude !== undefined) {
       data.latitude =
-        req.body.latitude === ""
-          ? null
-          : Number(req.body.latitude);
+        req.body.latitude === "" ? null : Number(req.body.latitude);
     }
 
     if (req.body.longitude !== undefined) {
       data.longitude =
-        req.body.longitude === ""
-          ? null
-          : Number(req.body.longitude);
+        req.body.longitude === "" ? null : Number(req.body.longitude);
     }
 
     // Generate slug
@@ -235,8 +221,8 @@ export const createPackage = async (req, res) => {
     // Parse JSON fields
     parseJsonFields(req.body, data);
 
-    // Upload images
-    await uploadPackageImages(req.files, data);
+    // Attach Cloudinary URLs (Multer already uploaded them)
+    collectPackageImages(req.files, data);
 
     // Save package
     const newPackage = await Package.create(data);
@@ -284,14 +270,12 @@ export const updatePackage = async (req, res) => {
     // Convert boolean fields
     if (req.body.featured !== undefined) {
       data.featured =
-        req.body.featured === "true" ||
-        req.body.featured === true;
+        req.body.featured === "true" || req.body.featured === true;
     }
 
     if (req.body.isActive !== undefined) {
       data.isActive =
-        req.body.isActive === "true" ||
-        req.body.isActive === true;
+        req.body.isActive === "true" || req.body.isActive === true;
     }
 
     // Convert numeric fields
@@ -309,29 +293,30 @@ export const updatePackage = async (req, res) => {
 
     if (req.body.latitude !== undefined) {
       data.latitude =
-        req.body.latitude === ""
-          ? null
-          : Number(req.body.latitude);
+        req.body.latitude === "" ? null : Number(req.body.latitude);
     }
 
     if (req.body.longitude !== undefined) {
       data.longitude =
-        req.body.longitude === ""
-          ? null
-          : Number(req.body.longitude);
+        req.body.longitude === "" ? null : Number(req.body.longitude);
     }
 
     // Parse JSON fields
     parseJsonFields(req.body, data);
 
-    // Upload replacement cover image and/or new gallery images
-    await uploadPackageImages(req.files, data);
+    // Capture newly uploaded images (Multer + Cloudinary already handled them)
+    const newFiles = {};
+    collectPackageImages(req.files, newFiles);
 
-    // Keep existing gallery images when no new images are uploaded
-    if (req.files?.images?.length) {
+    if (newFiles.coverImage) {
+      data.coverImage = newFiles.coverImage;
+    }
+
+    // Merge new gallery images with existing ones
+    if (newFiles.images?.length) {
       data.images = [
         ...(packageItem.images || []),
-        ...(data.images || []),
+        ...newFiles.images,
       ];
     }
 

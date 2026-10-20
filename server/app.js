@@ -13,6 +13,7 @@ import hotelRoutes from "./routes/hotelRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
+import placeRoutes from "./routes/placeRoutes.js"; // 👈 ADD THIS
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -54,6 +55,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/settings", settingsRoutes);
 
 app.use("/api/analytics", analyticsRoutes);
+
+app.use("/api/places", placeRoutes); // 👈 ADD THIS
 
 /* ===========================================
    Root

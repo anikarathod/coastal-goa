@@ -7,14 +7,17 @@ import {
   FaChevronUp,
   FaTimes,
   FaSearch,
+  FaUndo,
+  FaBoxOpen,
   FaSpinner,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 import api from "../services/api";
 
 import Pagination from "../components/common/Pagination";
-import PackageGrid from "../components/packages/PackageGrid";
-import PackageFilter from "../components/packages/PackageFilter";
+// Assuming you have a PackageGrid component. If not, change this to your actual component.
+import PackageGrid from "../components/packages/PackageGrid"; 
 
 const Packages = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,9 +34,6 @@ const Packages = () => {
   const [filters, setFilters] = useState({
     category: searchParams.get("category") || "",
     location: searchParams.get("location") || "",
-    duration: searchParams.get("duration") || "",
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
     sort: searchParams.get("sort") || "latest",
   });
 
@@ -44,7 +44,6 @@ const Packages = () => {
     totalItems: 0,
   });
 
-  // Abort controller to cancel stale requests
   const abortRef = useRef(null);
 
   // ---- DEBOUNCE SEARCH (500ms) ----
@@ -53,7 +52,6 @@ const Packages = () => {
       setSearch(searchInput);
       setPagination((prev) => ({ ...prev, page: 1 }));
     }, 500);
-
     return () => clearTimeout(timer);
   }, [searchInput]);
 
@@ -64,9 +62,6 @@ const Packages = () => {
     if (search) params.search = search;
     if (filters.category) params.category = filters.category;
     if (filters.location) params.location = filters.location;
-    if (filters.duration) params.duration = filters.duration;
-    if (filters.minPrice) params.minPrice = filters.minPrice;
-    if (filters.maxPrice) params.maxPrice = filters.maxPrice;
     if (filters.sort && filters.sort !== "latest") params.sort = filters.sort;
     if (pagination.page > 1) params.page = pagination.page;
 
@@ -74,7 +69,7 @@ const Packages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, filters, pagination.page]);
 
-  // ---- FETCH PACKAGES ----
+  // ---- FETCH ----
   useEffect(() => {
     fetchPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,7 +83,6 @@ const Packages = () => {
   }, [pagination.page]);
 
   const fetchPackages = async () => {
-    // Cancel any previous request
     if (abortRef.current) abortRef.current.abort();
     abortRef.current = new AbortController();
 
@@ -98,6 +92,7 @@ const Packages = () => {
       if (isFirstLoad) setLoading(true);
       else setRefreshing(true);
 
+      // 👇 Make sure this endpoint matches your backend route
       const res = await api.get("/packages", {
         params: {
           page: pagination.page,
@@ -116,10 +111,7 @@ const Packages = () => {
         totalItems: res.data?.totalItems || 0,
       }));
     } catch (err) {
-      // Ignore aborted requests
-      if (err.name === "CanceledError" || err.code === "ERR_CANCELED") {
-        return;
-      }
+      if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
 
       console.error("Error fetching packages:", err);
       setPackages([]);
@@ -134,30 +126,26 @@ const Packages = () => {
     }
   };
 
+  const updateFilter = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  };
+
   const resetFilters = useCallback(() => {
     setSearchInput("");
     setSearch("");
-
     setFilters({
       category: "",
       location: "",
-      duration: "",
-      minPrice: "",
-      maxPrice: "",
       sort: "latest",
     });
-
     setPagination((prev) => ({ ...prev, page: 1 }));
   }, []);
 
-  // Count active filters
   const activeFiltersCount = [
     search,
     filters.category,
     filters.location,
-    filters.duration,
-    filters.minPrice,
-    filters.maxPrice,
     filters.sort !== "latest" ? filters.sort : "",
   ].filter(Boolean).length;
 
@@ -170,35 +158,46 @@ const Packages = () => {
         <title>Goa Tour Packages | Alpha Waves Goa</title>
         <meta
           name="description"
-          content="Browse our handpicked Goa tour packages — Dudhsagar Falls, North Goa, South Goa, cruises, and more. Best prices guaranteed."
-        />
-        <meta
-          name="keywords"
-          content="Goa tour packages, Goa sightseeing, Dudhsagar Falls tour, North Goa tour"
+          content="Explore our handpicked Goa tour packages — cruises, sightseeing, adventure, and more. Best prices guaranteed."
         />
         <meta property="og:title" content="Goa Tour Packages | Alpha Waves Goa" />
         <meta
           property="og:description"
-          content="Handpicked Goa experiences at the best prices."
+          content="Handpicked experiences at the best prices."
         />
-        <meta property="og:type" content="website" />
       </Helmet>
 
-      <section className="min-h-screen bg-gray-50 py-6 sm:py-10 lg:py-14">
-        <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+      {/* HERO HEADER */}
+      <div className="relative overflow-hidden bg-slate-900">
+        <img
+          src="/packages-hero.jpg" // 👈 Add your own image named packages-hero.jpg to the public folder
+          alt="Goa Tour Packages"
+          className="absolute inset-0 h-full w-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/20 via-transparent to-amber-500/10" />
 
-          {/* HEADER */}
-          <div className="mb-6 text-center sm:mb-10">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-              Goa Tour Packages
-            </h1>
-            <p className="mx-auto mt-2 max-w-2xl text-sm text-gray-600 sm:mt-3 sm:text-base">
-              Handpicked experiences at the best prices — no hidden costs.
-            </p>
-          </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider !text-white backdrop-blur-sm sm:px-4 sm:py-1.5 sm:text-xs">
+            <FaMapMarkerAlt />
+            Our Packages
+          </span>
+
+          <h1 className="mt-4 max-w-2xl text-2xl font-extrabold tracking-tight !text-white drop-shadow-md sm:text-3xl md:text-4xl lg:text-5xl">
+            Explore Our Tour Packages
+          </h1>
+
+          <p className="mt-3 max-w-xl text-sm !text-white/90 drop-shadow-sm sm:mt-4 sm:text-base">
+            Handpicked experiences at the best prices — no hidden costs.
+          </p>
+        </div>
+      </div>
+
+      <section className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           {/* TOOLBAR */}
-          <div className="mb-5 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4">
+          <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
 
               {/* SEARCH */}
@@ -206,13 +205,11 @@ const Packages = () => {
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search packages by name or location..."
+                  placeholder="Search packages..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-10 text-sm shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100 sm:text-base"
                 />
-
-                {/* Clear button or spinner */}
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   {refreshing ? (
                     <FaSpinner className="animate-spin text-teal-600" />
@@ -233,17 +230,13 @@ const Packages = () => {
               <div className="hidden lg:block">
                 <select
                   value={filters.sort}
-                  onChange={(e) => {
-                    setFilters((prev) => ({ ...prev, sort: e.target.value }));
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
+                  onChange={(e) => updateFilter("sort", e.target.value)}
                   className="rounded-xl border border-gray-200 bg-white py-3.5 pl-4 pr-10 text-sm font-medium text-gray-700 shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
                 >
                   <option value="latest">Sort: Latest</option>
-                  <option value="price-asc">Price: Low → High</option>
-                  <option value="price-desc">Price: High → Low</option>
+                  <option value="priceLow">Price: Low → High</option>
+                  <option value="priceHigh">Price: High → Low</option>
                   <option value="rating">Top Rated</option>
-                  <option value="popular">Most Popular</option>
                 </select>
               </div>
 
@@ -277,23 +270,81 @@ const Packages = () => {
             {/* FILTER PANEL */}
             <div
               id="package-filters"
-              className={`mt-3 border-t border-gray-100 pt-3 lg:mt-3 lg:block ${
+              className={`mt-3 border-t border-gray-100 pt-4 lg:block ${
                 filtersOpen ? "block" : "hidden"
               }`}
             >
-              <PackageFilter
-                filters={filters}
-                setFilters={(updatedFilters) => {
-                  setFilters(updatedFilters);
-                  setPagination((prev) => ({ ...prev, page: 1 }));
-                }}
-                onReset={resetFilters}
-              />
+              <div className="grid gap-3 md:grid-cols-3">
+
+                {/* CATEGORY */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    Category
+                  </label>
+                  <select
+                    value={filters.category}
+                    onChange={(e) => updateFilter("category", e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+                  >
+                    <option value="">All Categories</option>
+                    <option value="Cruise">Cruise</option>
+                    <option value="Sightseeing">Sightseeing</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Water Sports">Water Sports</option>
+                  </select>
+                </div>
+
+                {/* LOCATION */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    Location
+                  </label>
+                  <select
+                    value={filters.location}
+                    onChange={(e) => updateFilter("location", e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+                  >
+                    <option value="">All Locations</option>
+                    <option value="North Goa">North Goa</option>
+                    <option value="South Goa">South Goa</option>
+                  </select>
+                </div>
+
+                {/* MOBILE SORT */}
+                <div className="lg:hidden">
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    Sort By
+                  </label>
+                  <select
+                    value={filters.sort}
+                    onChange={(e) => updateFilter("sort", e.target.value)}
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+                  >
+                    <option value="latest">Newest</option>
+                    <option value="priceLow">Price: Low → High</option>
+                    <option value="priceHigh">Price: High → Low</option>
+                    <option value="rating">Top Rated</option>
+                  </select>
+                </div>
+
+                {/* RESET */}
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    disabled={!hasActiveFilters}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                  >
+                    <FaUndo className="text-xs" />
+                    Reset
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* RESULTS HEADER */}
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-base font-bold text-gray-900 sm:text-xl">
               {loading ? (
                 <span className="text-gray-400">Loading packages...</span>
@@ -339,7 +390,7 @@ const Packages = () => {
           ) : (
             <div className="rounded-2xl border border-gray-200 bg-white px-4 py-12 text-center sm:py-16">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50">
-                <FaSlidersH className="text-2xl text-teal-700" />
+                <FaBoxOpen className="text-2xl text-teal-700" />
               </div>
 
               <h3 className="mt-4 text-lg font-bold text-gray-900 sm:text-xl">
@@ -348,7 +399,6 @@ const Packages = () => {
 
               <p className="mx-auto mt-2 max-w-md text-sm text-gray-600">
                 Try adjusting your filters or searching for something else.
-                We've got plenty more Goa experiences waiting for you!
               </p>
 
               <button

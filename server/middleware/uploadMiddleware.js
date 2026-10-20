@@ -1,46 +1,64 @@
+// middleware/uploadMiddleware.js
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
+import dotenv from "dotenv";
 
-// Store files in memory
-const storage = multer.memoryStorage();
+dotenv.config();
 
-// Allow Images + Videos + PDFs
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    // Images
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "image/webp",
+// ── Fail fast if env vars are missing ──────────────────────────────
+const required = [
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET",
+];
+const missing = required.filter((k) => !process.env[k]);
+if (missing.length) {
+  throw new Error(
+    `❌ Missing Cloudinary env vars: ${missing.join(", ")}. ` +
+      `Set them in Railway → Variables and in your local .env`
+  );
+}
 
-    // Videos
-    "video/mp4",
-    "video/quicktime",
-    "video/x-msvideo",
-    "video/webm",
-
-    // PDFs
-    "application/pdf",
-  ];
-
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(
-      new Error(
-        "Only images, videos and PDF files are allowed."
-      ),
-      false
-    );
-  }
-};
-
-// Multer config
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 100 * 1024 * 1024, // 100 MB
-  },
-  fileFilter,
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
 });
 
-export default upload;
+if (process.env.NODE_ENV !== "production") {
+  console.log("✅ Cloudinary configured:", {
+    cloud: process.env.CLOUDINARY_CLOUD_NAME,
+    key:   process.env.CLOUDINARY_API_KEY?.slice(0, 6) + "...",
+  });
+}
+
+// ── Reusable uploader factory ──────────────────────────────────────
+export const makeUploader = (folder = "coastal-goa") =>
+  multer({
+    storage: new CloudinaryStorage({
+      cloudinary,
+      params: {
+        folder,
+        allowed_formats: ["jpg", "jpeg", "png", "webp", "gif", "avif"],
+        transformation: [{ quality: "auto", fetch_format: "auto" }],
+      },
+    }),
+    limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB
+    fileFilter: (_req, file, cb) => {
+      if (!/^image\//.test(file.mimetype)) {
+        return cb(new Error("Only image files are allowed"), false);
+      }
+      cb(null, true);
+    },
+  });
+
+// ── Backwards-compatible default export ────────────────────────────
+// If your routes currently do `import upload from "../middleware/uploadMiddleware"`
+// and use `upload.single(...)` — this keeps them working.
+const defaultUploader = makeUploader("coastal-goa");
+
+export const upload = defaultUploader;
+export { cloudinary };
+export default defaultUploader

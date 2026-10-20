@@ -13,6 +13,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Packages", path: "/packages" },
     { name: "Services", path: "/services" },
+    { name: "Places", path: "/places" }, // 👈 Added Places here
     { name: "Gallery", path: "/gallery" },
     { name: "Contact", path: "/contact" },
   ];
@@ -53,7 +54,7 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Desktop Book Now button — properly shaped */}
+        {/* Desktop Book Now button */}
         <div className="hidden shrink-0 md:block">
           <Link
             to="/booking"
@@ -101,7 +102,7 @@ const Navbar = () => {
             <Link
               to="/booking"
               onClick={() => setIsOpen(false)}
-              className="mt-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-teal-600 px-4 text-base font-semibold text-white transition hover:bg-teal-700"
+              className="mt-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-teal-600 px-4 text-base font-semibold !text-white transition hover:bg-teal-700"
             >
               Book Now
             </Link>

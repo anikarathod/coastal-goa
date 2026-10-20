@@ -4,6 +4,7 @@ import {
   FaTachometerAlt,
   FaBoxOpen,
   FaConciergeBell,
+  FaHotel,
   FaCalendarCheck,
   FaUsers,
   FaImages,
@@ -22,6 +23,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: "Analytics", path: "/pearlrathod/analytics", icon: <FaChartBar /> },
     { name: "Packages", path: "/pearlrathod/packages", icon: <FaBoxOpen /> },
     { name: "Services", path: "/pearlrathod/services", icon: <FaConciergeBell /> },
+    { name: "Places", path: "/pearlrathod/places", icon: <FaHotel /> },
     { name: "Bookings", path: "/pearlrathod/bookings", icon: <FaCalendarCheck /> },
     { name: "Customers", path: "/pearlrathod/customers", icon: <FaUsers /> },
     { name: "Gallery", path: "/pearlrathod/gallery", icon: <FaImages /> },
@@ -76,7 +78,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               key={item.path}
               to={item.path}
               end={item.name === "Dashboard"}
-              onClick={onClose}   // auto-close on mobile after tapping a link
+              onClick={onClose}
               className={({ isActive }) =>
                 `mx-2 mb-1 flex min-h-11 items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition lg:mx-3 lg:mb-2 lg:py-3 lg:text-base ${
                   isActive

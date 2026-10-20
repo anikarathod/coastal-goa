@@ -1,6 +1,5 @@
 import Service from "../models/Service.js";
 import slugify from "slugify";
-import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 /* ===========================================
    Get All Services
@@ -8,9 +7,7 @@ import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const getServices = async (req, res) => {
   try {
-    const services = await Service.find().sort({
-      createdAt: -1,
-    });
+    const services = await Service.find().sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -19,11 +16,7 @@ export const getServices = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -33,9 +26,7 @@ export const getServices = async (req, res) => {
 
 export const getFeaturedServices = async (req, res) => {
   try {
-    const services = await Service.find({
-      isActive: true,
-    })
+    const services = await Service.find({ isActive: true })
       .sort({ createdAt: -1 })
       .limit(6);
 
@@ -45,11 +36,7 @@ export const getFeaturedServices = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -59,32 +46,59 @@ export const getFeaturedServices = async (req, res) => {
 
 export const getService = async (req, res) => {
   try {
-    let service = await Service.findOne({
-      slug: req.params.slug,
-    });
+    let service = await Service.findOne({ slug: req.params.slug });
 
     if (!service) {
       service = await Service.findById(req.params.slug);
     }
 
     if (!service) {
-      return res.status(404).json({
-        success: false,
-        message: "Service not found.",
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Service not found." });
     }
 
-    res.status(200).json({
-      success: true,
-      service,
-    });
+    res.status(200).json({ success: true, service });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+/* ===========================================
+   Helpers
+=========================================== */
+
+// Safely parse JSON string fields (arrays/objects submitted via FormData)
+const parseJsonFields = (body, data) => {
+  const fields = ["features", "amenities", "highlights", "inclusions", "exclusions", "sections", "extraDetails"];
+
+  for (const field of fields) {
+    if (body[field] === undefined) continue;
+
+    if (typeof body[field] === "string") {
+      try {
+        data[field] = JSON.parse(body[field]);
+      } catch (err) {
+        console.warn(`Failed to parse ${field}:`, err.message);
+      }
+    } else {
+      data[field] = body[field];
+    }
+  }
+};
+
+// Multer + CloudinaryStorage already uploaded the files.
+// `file.path` = the final HTTPS URL. Just collect them.
+const collectServiceImages = (files, data) => {
+  if (files?.coverImage?.[0]?.path) {
+    data.image = files.coverImage[0].path;
+  }
+
+  if (files?.galleryImages?.length) {
+    data.images = files.galleryImages
+      .map((file) => file.path)
+      .filter(Boolean);
   }
 };
 
@@ -94,71 +108,54 @@ export const getService = async (req, res) => {
 
 export const createService = async (req, res) => {
   try {
-    const data = {
-      ...req.body,
-    };
+    const data = { ...req.body };
 
-    data.slug = slugify(data.title, {
-      lower: true,
-      strict: true,
-    });
-
-    if (req.body.features) {
-      data.features = JSON.parse(req.body.features);
+    // Booleans
+    if (req.body.isActive !== undefined) {
+      data.isActive =
+        req.body.isActive === "true" || req.body.isActive === true;
+    }
+    if (req.body.featured !== undefined) {
+      data.featured =
+        req.body.featured === "true" || req.body.featured === true;
     }
 
-    if (req.body.amenities) {
-      data.amenities = JSON.parse(req.body.amenities);
+    // Numbers
+    if (req.body.price !== undefined) {
+      data.price =
+        req.body.price === "" ? 0 : Number(req.body.price);
+    }
+    if (req.body.discountPrice !== undefined) {
+      data.discountPrice =
+        req.body.discountPrice === ""
+          ? 0
+          : Number(req.body.discountPrice);
     }
 
-    if (req.body.highlights) {
-      data.highlights = JSON.parse(req.body.highlights);
+    // Slug
+    if (!data.title) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Service title is required." });
     }
+    data.slug = slugify(data.title, { lower: true, strict: true });
 
-    const galleryUrls = [];
+    // JSON fields
+    parseJsonFields(req.body, data);
 
-    if (req.files?.coverImage?.[0]) {
-      const uploadedCover =
-        await uploadToCloudinary(
-          req.files.coverImage[0],
-          "coastal-goa/services"
-        );
+    // Cloudinary URLs from Multer
+    collectServiceImages(req.files, data);
 
-      data.image = uploadedCover.secure_url;
-    }
-
-    if (req.files?.galleryImages?.length) {
-      for (const file of req.files.galleryImages) {
-        const uploaded =
-          await uploadToCloudinary(
-            file,
-            "coastal-goa/services"
-          );
-
-        galleryUrls.push(
-          uploaded.secure_url
-        );
-      }
-
-      data.images = galleryUrls;
-    }
-
-    const service =
-      await Service.create(data);
+    const service = await Service.create(data);
 
     res.status(201).json({
       success: true,
-      message:
-        "Service created successfully.",
+      message: "Service created successfully.",
       service,
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -171,65 +168,59 @@ export const updateService = async (req, res) => {
     let service = await Service.findById(req.params.id);
 
     if (!service) {
-      return res.status(404).json({
-        success: false,
-        message: "Service not found.",
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Service not found." });
     }
 
-    const data = {
-      ...req.body,
-    };
-    if (req.body.features) {
-  data.features = JSON.parse(req.body.features);
-}
+    const data = { ...req.body };
 
-if (req.body.amenities) {
-  data.amenities = JSON.parse(req.body.amenities);
-}
-
-if (req.body.highlights) {
-  data.highlights = JSON.parse(req.body.highlights);
-}
+    // Slug
     if (data.title) {
-      data.slug = slugify(data.title, {
-        lower: true,
-        strict: true,
-      });
+      data.slug = slugify(data.title, { lower: true, strict: true });
     }
 
-   const galleryUrls = [];
+    // Booleans
+    if (req.body.isActive !== undefined) {
+      data.isActive =
+        req.body.isActive === "true" || req.body.isActive === true;
+    }
+    if (req.body.featured !== undefined) {
+      data.featured =
+        req.body.featured === "true" || req.body.featured === true;
+    }
 
-if (req.files?.coverImage?.[0]) {
-  const uploadedCover = await uploadToCloudinary(
-    req.files.coverImage[0],
-    "coastal-goa/services"
-  );
+    // Numbers
+    if (req.body.price !== undefined) {
+      data.price =
+        req.body.price === "" ? 0 : Number(req.body.price);
+    }
+    if (req.body.discountPrice !== undefined) {
+      data.discountPrice =
+        req.body.discountPrice === ""
+          ? 0
+          : Number(req.body.discountPrice);
+    }
 
-  data.image = uploadedCover.secure_url;
-}
+    // JSON fields
+    parseJsonFields(req.body, data);
 
-if (req.files?.galleryImages?.length) {
-  for (const file of req.files.galleryImages) {
-    const uploaded = await uploadToCloudinary(
-      file,
-      "coastal-goa/services"
-    );
+    // Capture new files into a separate object, then merge
+    const newFiles = {};
+    collectServiceImages(req.files, newFiles);
 
-    galleryUrls.push(uploaded.secure_url);
-  }
+    if (newFiles.image) {
+      data.image = newFiles.image;
+    }
 
-  data.images = galleryUrls;
-}
+    if (newFiles.images?.length) {
+      data.images = [...(service.images || []), ...newFiles.images];
+    }
 
-    service = await Service.findByIdAndUpdate(
-      req.params.id,
-      data,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    service = await Service.findByIdAndUpdate(req.params.id, data, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       success: true,
@@ -238,11 +229,7 @@ if (req.files?.galleryImages?.length) {
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -255,10 +242,9 @@ export const deleteService = async (req, res) => {
     const service = await Service.findById(req.params.id);
 
     if (!service) {
-      return res.status(404).json({
-        success: false,
-        message: "Service not found.",
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Service not found." });
     }
 
     await Service.findByIdAndDelete(req.params.id);
@@ -269,10 +255,6 @@ export const deleteService = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };

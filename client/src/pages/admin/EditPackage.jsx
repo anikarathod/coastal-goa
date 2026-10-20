@@ -2,11 +2,78 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
 
+/* =========================================
+   Browser-side image compressor
+   - Resizes to max width 1600px
+   - Converts to JPEG at 80% quality
+   - Returns a File object ready to upload
+========================================= */
+const compressImage = (file, maxWidth = 1600, quality = 0.8) =>
+  new Promise((resolve, reject) => {
+    // Non-images: return as-is
+    if (!file.type.startsWith("image/")) {
+      return resolve(file);
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = new Image();
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+
+        let { width, height } = img;
+
+        // Only downscale — never upscale
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error("Compression failed"));
+              return;
+            }
+
+            const compressedFile = new File(
+              [blob],
+              file.name.replace(/\.[^.]+$/, ".jpg"),
+              { type: "image/jpeg", lastModified: Date.now() }
+            );
+
+            resolve(compressedFile);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+/* =========================================
+   Component
+========================================= */
 const EditPackage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [galleryFiles, setGalleryFiles] = useState([]);
@@ -37,7 +104,6 @@ const EditPackage = () => {
   const fetchPackage = async () => {
     try {
       const res = await api.get(`/packages/id/${id}`);
-
       const pkg = res.data.package;
 
       setForm({
@@ -77,7 +143,11 @@ const EditPackage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (saving) return;
+
     try {
+      setSaving(true);
+
       const formData = new FormData();
 
       formData.append("title", form.title);
@@ -106,15 +176,22 @@ const EditPackage = () => {
         JSON.stringify(form.exclusions.split("\n").filter(Boolean))
       );
 
-      // Cover image
+      // Cover image — compress before upload
       if (coverImageFile) {
-        formData.append("coverImage", coverImageFile);
+        const compressedCover = await compressImage(coverImageFile);
+        formData.append("coverImage", compressedCover);
       }
 
-      // Gallery images
-      galleryFiles.forEach((file) => {
-        formData.append("images", file);
-      });
+      // Gallery images — compress each in parallel
+      if (galleryFiles.length > 0) {
+        const compressedGallery = await Promise.all(
+          galleryFiles.map((file) => compressImage(file))
+        );
+
+        compressedGallery.forEach((file) => {
+          formData.append("images", file);
+        });
+      }
 
       await api.put(`/packages/${id}`, formData, {
         headers: {
@@ -130,6 +207,8 @@ const EditPackage = () => {
       alert(
         err.response?.data?.message || "Failed to update package."
       );
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -234,7 +313,6 @@ const EditPackage = () => {
           />
         </div>
 
-        {/* Short Description */}
         <div className="md:col-span-2">
           <label className="mb-2 block font-medium">
             Short Description
@@ -249,7 +327,6 @@ const EditPackage = () => {
           />
         </div>
 
-        {/* Discount Price */}
         <div>
           <label className="mb-2 block font-medium">
             Discount Price
@@ -264,7 +341,6 @@ const EditPackage = () => {
           />
         </div>
 
-        {/* Cover Image */}
         <div>
           <label className="mb-2 block font-medium">
             Cover Image
@@ -276,9 +352,14 @@ const EditPackage = () => {
             onChange={(e) => setCoverImageFile(e.target.files[0])}
             className="w-full rounded-lg border p-3"
           />
+
+          {coverImageFile && (
+            <p className="mt-1 text-xs text-slate-500">
+              Will be auto-compressed before upload
+            </p>
+          )}
         </div>
 
-        {/* Gallery Images */}
         <div className="md:col-span-2">
           <label className="mb-2 block font-medium">
             Gallery Images
@@ -291,9 +372,14 @@ const EditPackage = () => {
             onChange={(e) => setGalleryFiles(Array.from(e.target.files))}
             className="w-full rounded-lg border p-3"
           />
+
+          {galleryFiles.length > 0 && (
+            <p className="mt-1 text-xs text-slate-500">
+              {galleryFiles.length} file(s) — each will be auto-compressed
+            </p>
+          )}
         </div>
 
-        {/* Highlights */}
         <div className="md:col-span-2">
           <label className="mb-2 block font-medium">
             Highlights (One Per Line)
@@ -308,7 +394,6 @@ const EditPackage = () => {
           />
         </div>
 
-        {/* Inclusions */}
         <div>
           <label className="mb-2 block font-medium">
             Inclusions
@@ -323,7 +408,6 @@ const EditPackage = () => {
           />
         </div>
 
-        {/* Exclusions */}
         <div>
           <label className="mb-2 block font-medium">
             Exclusions
@@ -363,9 +447,10 @@ const EditPackage = () => {
         <div className="md:col-span-2 flex gap-4">
           <button
             type="submit"
-            className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700"
+            disabled={saving}
+            className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Update Package
+            {saving ? "Updating..." : "Update Package"}
           </button>
 
           <button

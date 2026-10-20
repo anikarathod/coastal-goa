@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
+import { compressImage } from "../../utils/imageCompressor";
 
 const EditService = () => {
   const { id } = useParams();
@@ -61,6 +62,8 @@ const EditService = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (saving) return;
+
     try {
       setSaving(true);
 
@@ -73,11 +76,15 @@ const EditService = () => {
       formData.append("featured", form.featured);
       formData.append("isActive", form.isActive);
 
+      // Compress image before upload
       if (image) {
-        formData.append("image", image);
+        const compressed = await compressImage(image);
+        formData.append("image", compressed);
       }
 
-      await api.put(`/services/${id}`, formData);
+      await api.put(`/services/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       alert("Service updated successfully.");
 
@@ -169,6 +176,12 @@ const EditService = () => {
             onChange={(e) => setImage(e.target.files[0])}
             className="w-full rounded-lg border p-3"
           />
+
+          {image && (
+            <p className="mt-1 text-xs text-slate-500">
+              Will be auto-compressed before upload
+            </p>
+          )}
         </div>
 
         {form.image && (
@@ -239,7 +252,7 @@ const EditService = () => {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700"
+            className="rounded-lg bg-cyan-600 px-8 py-3 text-white hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? "Updating..." : "Update Service"}
           </button>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaImages } from "react-icons/fa";
-import api from "../../services/api";
+import api, { resolveImage } from "../../services/api";
 import Loader from "../common/Loader";
 
 // Self-contained SVG fallback — no external request needed
@@ -47,31 +47,39 @@ const GalleryPreview = () => {
     };
   }, []);
 
-  const getImageUrl = (item) => {
+  // Extract the raw image string from a gallery item
+  const getRawImage = (item) => {
     let image =
       item?.fileUrl ??
       item?.image ??
       item?.imageUrl ??
+      item?.image_url ??
       item?.coverImage ??
+      item?.cover_image ??
       item?.url ??
       item?.secure_url ??
       item?.src ??
       item?.path ??
-      item?.images?.[0];
+      (Array.isArray(item?.images) ? item.images[0] : null);
 
     if (image && typeof image === "object") {
       image =
         image.fileUrl ??
         image.url ??
         image.imageUrl ??
+        image.image_url ??
         image.secure_url ??
         image.path ??
-        image.src;
+        image.src ??
+        null;
     }
 
-    return typeof image === "string" && image.trim()
-      ? image
-      : FALLBACK_IMAGE;
+    return typeof image === "string" && image.trim() ? image.trim() : null;
+  };
+
+  // Resolve relative paths → absolute URLs (backend origin)
+  const getImageUrl = (item) => {
+    return resolveImage(getRawImage(item)) ?? FALLBACK_IMAGE;
   };
 
   if (loading) {
@@ -123,40 +131,31 @@ const GalleryPreview = () => {
           </div>
         )}
 
-        {/* Auto-fit grid — looks intentional with 2, 4, 6 or 8 images */}
+        {/* Grid */}
         {!error && previewItems.length > 0 && (
-          <div
-            className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5"
-            style={{
-              gridTemplateColumns:
-                "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
-              maxWidth: previewItems.length < 4 ? "820px" : undefined,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
             {previewItems.map((item, index) => (
               <Link
                 key={item._id ?? item.id ?? index}
                 to="/gallery"
                 aria-label={`View ${item.title || "Goa gallery"}`}
-                className="group relative aspect-[4/3] min-w-0 overflow-hidden rounded-xl bg-slate-200 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:rounded-2xl"
+                className="group relative h-40 w-full overflow-hidden rounded-xl bg-slate-200 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:h-48 sm:rounded-2xl lg:h-56"
               >
                 <img
                   src={getImageUrl(item)}
                   alt={item.title || "Goa travel experience"}
                   loading="lazy"
                   onError={(event) => {
-                    event.currentTarget.onerror = null;
+                    if (event.currentTarget.src === FALLBACK_IMAGE) return;
                     event.currentTarget.src = FALLBACK_IMAGE;
                   }}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80 transition group-hover:opacity-100" />
 
-                <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-4">
-                  <h3 className="line-clamp-2 text-xs font-bold capitalize text-white sm:text-sm">
+                <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3.5">
+                  <h3 className="line-clamp-1 text-xs font-bold capitalize text-white sm:text-sm">
                     {item.title || "Discover Goa"}
                   </h3>
                 </div>
@@ -169,7 +168,7 @@ const GalleryPreview = () => {
         <div className="mt-7 text-center sm:mt-10">
           <Link
             to="/gallery"
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-teal-800 sm:min-h-12 sm:px-8 sm:text-base"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 py-3 text-sm font-bold !text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-teal-700 hover:shadow-md sm:min-h-12 sm:px-8 sm:text-base"
           >
             View Full Gallery
             <FaArrowRight />

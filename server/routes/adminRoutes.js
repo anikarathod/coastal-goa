@@ -1,3 +1,6 @@
+// server/routes/adminRoutes.js
+// BACKEND FILE — pure Node.js / Express. No JSX.
+
 import express from "express";
 
 import {
@@ -11,30 +14,9 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-/* Dashboard */
-router.get(
-  "/dashboard",
-  authMiddleware,
-  getDashboard
-);
-
-/* Admins */
-router.get(
-  "/",
-  authMiddleware,
-  getAdmins
-);
-
-router.post(
-  "/",
-  authMiddleware,
-  createAdmin
-);
-
-router.delete(
-  "/:id",
-  authMiddleware,
-  deleteAdmin
-);
+router.get("/dashboard", authMiddleware, getDashboard);
+router.get("/", authMiddleware, getAdmins);
+router.post("/", authMiddleware, createAdmin);
+router.delete("/:id", authMiddleware, deleteAdmin);
 
 export default router;

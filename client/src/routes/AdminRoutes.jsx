@@ -30,8 +30,11 @@ import Customers from "../pages/admin/Customers";
 import Contacts from "../pages/admin/Contacts";
 import Settings from "../pages/admin/Settings";
 
-// Analytics (NEW)
+// Analytics
 import Analytics from "../pages/admin/Analytics";
+
+// Places (hotels / guest houses / restaurants / shops)
+import PlacesAdmin from "../pages/admin/PlacesAdmin";
 
 const AdminRoutes = () => {
   return (
@@ -42,7 +45,7 @@ const AdminRoutes = () => {
           {/* Dashboard */}
           <Route index element={<Dashboard />} />
 
-          {/* Analytics (NEW) */}
+          {/* Analytics */}
           <Route path="analytics" element={<Analytics />} />
 
           {/* Packages */}
@@ -59,6 +62,9 @@ const AdminRoutes = () => {
           <Route path="gallery" element={<Gallery />} />
           <Route path="gallery/new" element={<AddGallery />} />
           <Route path="gallery/edit/:id" element={<EditGallery />} />
+
+          {/* Places — hotels, guest houses, restaurants, shops */}
+          <Route path="places" element={<PlacesAdmin />} />
 
           {/* Bookings */}
           <Route path="bookings" element={<Bookings />} />

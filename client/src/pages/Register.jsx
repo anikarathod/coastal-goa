@@ -251,7 +251,7 @@ const Register = () => {
                   required
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder="+91 91758 84119"
+                  placeholder="+91  7507057684"
                   className="w-full bg-transparent p-3 text-sm outline-none sm:text-base"
                 />
               </div>

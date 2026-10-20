@@ -1,6 +1,7 @@
-import dns from "node:dns";
+// server/server.js
+// ⚠️ BACKEND FILE — must be pure Node.js. NO JSX. NO React.
 
-// Force Node to use Google DNS
+import dns from "node:dns";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 import dotenv from "dotenv";
@@ -15,14 +16,13 @@ async function startServer() {
   try {
     console.log("🚀 Starting Alpha Waves Goa Server...");
 
-    // Connect MongoDB
+    // Connect to MongoDB
     await connectDB();
 
-    // Start Express Server
+    // Start the Express server
     app.listen(PORT, () => {
       console.log(`✅ Server running on http://localhost:${PORT}`);
     });
-
   } catch (error) {
     console.error("❌ Failed to start server");
     console.error(error);

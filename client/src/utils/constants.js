@@ -2,7 +2,7 @@
 export const COMPANY = {
   name: "Alpha Waves Goa",
   phone: "+919175884119",
-  email: "info.coastalgoa@gmail.com",
+  email: "alphawavestour@gmail.com",
   website: "https://coastalgoa.com",
   address: "Near candolim Beach, Bardez, Goa - 403516",
 };
