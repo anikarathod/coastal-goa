@@ -173,24 +173,24 @@ const Services = () => {
       {/* HERO HEADER */}
       <div className="relative overflow-hidden bg-slate-900">
         <img
-          src="/services-hero.jpg" // 👈 Add your own image named services-hero.jpg to the public folder
+          src="/services-hero.jpg" 
           alt="Goa Services"
-          className="absolute inset-0 h-full w-full object-cover opacity-80"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/20 via-transparent to-amber-500/10" />
-
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider !text-white backdrop-blur-sm sm:px-4 sm:py-1.5 sm:text-xs">
+        {/* Darker overlay on mobile for readability */}
+        <div className="absolute inset-0 bg-slate-950/70 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/85 sm:via-slate-900/50 sm:to-transparent" />
+        
+        <div className="relative mx-auto flex min-h-[350px] max-w-7xl flex-col justify-center px-4 py-10 sm:min-h-[400px] sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider !text-white backdrop-blur-sm sm:px-4 sm:py-1.5 sm:text-xs">
             <FaMapMarkerAlt />
             Our Services
           </span>
 
-          <h1 className="mt-4 max-w-2xl text-2xl font-extrabold tracking-tight !text-white drop-shadow-md sm:text-3xl md:text-4xl lg:text-5xl">
+          <h1 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-tight !text-white drop-shadow-md sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
             Everything You Need for Goa
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm !text-white/90 drop-shadow-sm sm:mt-4 sm:text-base">
+          <p className="mt-2 max-w-xl text-sm !text-white/90 drop-shadow-sm sm:mt-3 sm:text-base">
             Handpicked services for an unforgettable Goa trip.
           </p>
         </div>
