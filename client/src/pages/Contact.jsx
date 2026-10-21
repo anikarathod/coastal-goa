@@ -59,7 +59,7 @@ const Contact = () => {
                 className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 shadow-sm transition hover:border-teal-300 hover:text-teal-600 sm:text-sm"
               >
                 <FaPhone className="text-teal-600" />
-                +91  7507057684
+                8600419946
               </a>
             </div>
           </div>
